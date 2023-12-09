@@ -32,12 +32,12 @@ const themes = {
     },
     dark: {
       sidebar: {
-        backgroundColor: '#0b2948',
-        color: '#8ba1b7',
+        backgroundColor: '#2a3343',
+        color: '#ffffff',
       },
       menu: {
         menuContent: '#082440',
-        icon: '#59d0ff',
+        icon: '#fffff',
         hover: {
           backgroundColor: '#00458b',
           color: '#b6c8d9',
@@ -65,7 +65,7 @@ const GcSideBar = () => {
 
     const menuItemStyles = {
         root: {
-          fontSize: '13px',
+          fontSize: '14px',
           fontWeight: 400,
         },
         icon: {
@@ -99,15 +99,15 @@ const GcSideBar = () => {
 
     return (
     <Sidebar 
-        collapsed="true" 
+        collapsed="True"
+        collapsedWidth='3rem'
         backgroundColor={hexToRgba(themes[theme].sidebar.backgroundColor, hasImage ? 0.9 : 1)}
-        
         rootStyles={{
             color: themes[theme].sidebar.color,
-            border: "None"
+            border: "None",
         }}
-        style={{ height: "100%" }}>
-        <Menu>
+        >
+        <Menu menuItemStyles={menuItemStyles}>
           <MenuItem icon={<FileCopyIcon />}> Files </MenuItem>
           <MenuItem icon={<FindInPageIcon />}> Search </MenuItem>
         </Menu>

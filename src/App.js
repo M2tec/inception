@@ -10,7 +10,6 @@ import 'react-tabs/style/react-tabs.css';
 import GcSideBar from './components/GcSideBar';
 import 'react-tabs/style/react-tabs.css';
 
-
 import {
   PanelGroup,
   Panel,
@@ -26,11 +25,12 @@ function App() {
       <Panel collapsible={true} collapsedSizePixels={35} minSizePercentage={10}>
         <SourceBrowser files={files} />
       </Panel>
-      
-      <PanelResizeHandle style={{ backgroundColor: "#0b2948", width: "15px" }} />
+     
+      <PanelResizeHandle style={{ backgroundColor: "#2a3343", width: "8px" }} />
       
       <Panel defaultSizePercentage={60}>
-        <Tabs>
+        
+        {/* <Tabs>
           <TabList>
             <Tab>contract.hl</Tab>
             <Tab>gc_script_template.json</Tab>
@@ -42,7 +42,7 @@ function App() {
           <TabPanel>
             <SourceViewer />
           </TabPanel>
-        </Tabs>
+        </Tabs> */}
 
       </Panel>
     </PanelGroup>

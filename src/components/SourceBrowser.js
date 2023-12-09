@@ -1,27 +1,47 @@
-import { Icon } from '@fluentui/react/lib/Icon';
-import { getFileTypeIconProps, initializeFileTypeIcons } from '@fluentui/react-file-type-icons';
+import { Padding } from "@mui/icons-material";
+import React from "react";
+import { ChevronDown, FiletypeJson, FiletypeJs, ArrowRight } from 'react-bootstrap-icons';
 
-const SourceBrowser = ({ files }) => {
-    initializeFileTypeIcons();
-    
-    if (files.type === 'file') {
-        return (
-            <>
-            
-            <h5 className="file-name"><Icon {...getFileTypeIconProps({ extension: 'json', size: 16, imageFileType: "png" })} />{files.name}</h5>
-            </>
-        )
+const files = [
+    {
+        name: "contract.hl",
+        type: "helios"
+    },
+    {
+        name: "gc_script_template.json",
+        type: "json"
+    },
+    {
+        name: "datum.json",
+        type: "json"
+    },
+    {
+        name: "redeemer.json",
+        type: "json"
     }
+]
 
+const people = [
+    { firstName: "John", lastName: "Smith" },
+    { firstName: "Bill", lastName: "Jones" },
+    { firstName: "Roger", lastName: "Moore" }
+];
+
+const File = ({ name, type }) => (
+    <div className="file-item">
+        <FiletypeJson className="file-icon"/>
+        <span className="file-name"> {name} </span>
+    </div>
+);
+
+export default function SourceBrowser() {
     return (
-        <div className = "folder">
-
-            <h4 className="folder-title">{files.name}</h4>
-            {
-                files.items.map((item) => <SourceBrowser files={item} />)
-            }
+        <div className="source-browser">
+            <div className="folder-item">
+            <ChevronDown className="file-expander"/> <span className="file-name">source</span></div>
+            {files.map((f, i) => (
+                <File {...f} key={i} />
+            ))}
         </div>
-    )
+    );
 }
-
-export default SourceBrowser;

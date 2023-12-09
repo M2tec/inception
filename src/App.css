@@ -1,10 +1,15 @@
-html, .editor , #root, body, #app, #app>div {
+html,
+.editor,
+#root,
+body,
+#app,
+#app>div {
   height: 100%
 }
 
 .App {
   text-align: center;
-  
+
 }
 
 .folder {
@@ -15,10 +20,6 @@ html, .editor , #root, body, #app, #app>div {
   color: white;
 }
 
-.file-name {
-  margin-left: 20px;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -26,7 +27,7 @@ html, .editor , #root, body, #app, #app>div {
 
 .handle {
   background-color: #282c34;
-  width: 10px;
+  width: 8px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -54,7 +55,56 @@ html, .editor , #root, body, #app, #app>div {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.ps-menu-button {
+  padding-left: 8px !important;
+}
+
+.source-browser {
+  background-color: #192230;
+  height: 100%;
+  font-size: 1rem;
+}
+.file-item {
+  padding-left: 3ch;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: 1.5rem;
+  gap: 1ch;
+}
+
+.file-item:hover {
+  background-color:#2a3343;
+}
+
+.folder-item {
+  box-sizing: border-box;
+  line-height: 1.5rem;
+  display: flex;
+  align-items: center;
+  height: 1.5rem;
+  gap: 1ch;
+  padding-left: 1ch;
+}
+
+.file-icon {
+  color:#dcadff;
+  width: 1.5ch;
+  height: 1.5ch;
+}
+
+.file-expander {
+  width: 1ch;
+  height: 1ch;
+  color: white;
+}
+
+.file-name {
+  color:white;
 }

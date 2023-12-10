@@ -1,6 +1,7 @@
 import { Padding } from "@mui/icons-material";
 import React from "react";
 import { ChevronDown, FiletypeJson, FiletypeJs, ArrowRight } from 'react-bootstrap-icons';
+import SourceViewer from "./SourceViewer";
 
 const files = [
     {

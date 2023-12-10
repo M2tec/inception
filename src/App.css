@@ -61,14 +61,18 @@ body,
   }
 }
 
+/* Side bar */
 .ps-menu-button {
   padding-left: 8px !important;
 }
 
+
+/* Source browser */
 .source-browser {
   background-color: #192230;
   height: 100%;
   font-size: 1rem;
+  overflow: hidden;
 }
 .file-item {
   padding-left: 3ch;
@@ -95,11 +99,12 @@ body,
 
 .file-icon {
   color:#dcadff;
-  width: 1.5ch;
+  width: 1.5ch !important;
   height: 1.5ch;
 }
 
 .file-expander {
+  max-width: none;
   width: 1ch;
   height: 1ch;
   color: white;
@@ -107,4 +112,21 @@ body,
 
 .file-name {
   color:white;
+}
+
+/* Tabs */
+
+
+.tab-item {
+  margin: 0px 7px;
+}
+
+.tab-item-span {
+  display: flex;
+  align-items: center;
+
+}
+
+.panel {
+  height: 100% !important;
 }

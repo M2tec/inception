@@ -6,7 +6,6 @@ import FindInPageIcon from '@mui/icons-material/FindInPage';
 import { styled } from '@mui/material/styles';
 
 import Tabs from '@mui/material/Tabs';
-import LinkTab from '@mui/material/Tab';
 import Tab from '@mui/material/Tab';
 
 const StyledTabs = styled((props) => (

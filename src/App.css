@@ -116,7 +116,7 @@ body,
 .tab-item-span {
   display: flex;
   align-items: center;
-
+  padding: 0px !important;
 }
 
 .panel {

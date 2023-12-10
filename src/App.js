@@ -75,7 +75,6 @@ function App() {
           <Tabs
             value={value}
             variant="scrollable"
-            backgroundColor="black"
             textColor="secondary"
             onChange={handleChange}>
             <Tab sx={{textTransform :"none", padding :"5px" }} label={

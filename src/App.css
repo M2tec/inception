@@ -61,12 +61,6 @@ body,
   }
 }
 
-/* Side bar */
-.ps-menu-button {
-  padding-left: 8px !important;
-}
-
-
 /* Source browser */
 .source-browser {
   background-color: #192230;
@@ -115,10 +109,8 @@ body,
 }
 
 /* Tabs */
-
-
 .tab-item {
-  margin: 0px 7px;
+  margin: 4px 4px;
 }
 
 .tab-item-span {

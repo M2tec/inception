@@ -1,6 +1,6 @@
 import React from "react";
-import { ChevronDown, FiletypeJson, FiletypeJs, ArrowRight } from 'react-bootstrap-icons';
-import SourceViewer from "./SourceViewer";
+import { ChevronDown, FiletypeJson } from 'react-bootstrap-icons';
+// import SourceViewer from "./SourceViewer";
 
 const files = [
     {
@@ -20,12 +20,6 @@ const files = [
         type: "json"
     }
 ]
-
-const people = [
-    { firstName: "John", lastName: "Smith" },
-    { firstName: "Bill", lastName: "Jones" },
-    { firstName: "Roger", lastName: "Moore" }
-];
 
 const File = ({ name, type }) => (
     <div className="file-item">

@@ -7,7 +7,7 @@ import GcSideBar from './components/GcSideBar';
 import TabComponent from './components/TabComponent';
 import CssBaseline from '@mui/material/CssBaseline';
 import { grey, indigo } from '@mui/material/colors';
-import { ThemeProvider, useTheme, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import {
   PanelGroup,
@@ -44,7 +44,6 @@ const getDesignTokens = (mode) => ({
 });
 
 function App() {
-  const theme = useTheme();
   // Update the theme only if the mode changes
   const darkModeTheme = createTheme(getDesignTokens('dark'));
 

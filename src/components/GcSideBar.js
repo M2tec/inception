@@ -52,7 +52,7 @@ const GcSideBar = () => {
   };
 
   return (
-    <Tabs
+    <StyledTabs
       orientation="vertical"
       value={value}
       onChange={handleChange}
@@ -60,7 +60,7 @@ const GcSideBar = () => {
 
       <StyledTab icon={<FileCopyIcon />} />w
       <StyledTab icon={<FindInPageIcon />} />
-    </Tabs>
+    </StyledTabs>
   )
 }
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Editor from "@monaco-editor/react";
 import { useResizeDetector } from 'react-resize-detector';
-import { data } from '../data/datum'
+// import { data } from '../data/datum'
 
 const SourceViewer = () => {
     const { width, height, ref } = useResizeDetector();

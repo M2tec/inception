@@ -2,35 +2,34 @@ import React from "react";
 import { ChevronDown, FiletypeJson } from 'react-bootstrap-icons';
 // import SourceViewer from "./SourceViewer";
 
-import project from "../data/Always_Succeed/project.js";
+import project from "../data/Token_Locking/project.js";
 
-// const files = [
-//     {
-//         name: "contract.hl",
-//         type: "helios"
-//     },
-//     {
-//         name: "gc_script_template.json",
-//         type: "json"
-//     },
-//     {
-//         name: "datum.json",
-//         type: "json"
-//     },
-//     {
-//         name: "redeemer.json",
-//         type: "json"
-//     }
-// ]
 
-const File = ({ name, type }) => (
-    <div className="file-item">
-        <FiletypeJson className="file-icon"/>
-        <span className="file-name"> {name} </span>
-    </div>
-);
 
 export default function SourceBrowser() {
+    const [activeItem, setActiveItem] = React.useState(0);
+
+    const File = ({ 
+            item, 
+            isActive, 
+            onClick 
+        }) => {
+        return isActive ? (
+
+        <div onClick={onClick} className="file-item-selected" tyle="cursor: pointer;" >
+            <FiletypeJson className="file-icon"/>
+            <span className="file-name"> {item.name} </span>
+        </div>
+
+        ) : (
+
+        <div onClick={onClick} className="file-item" tyle="cursor: pointer;" >
+            <FiletypeJson className="file-icon"/>
+            <span className="file-name"> {item.name} </span>
+        </div>
+
+        );
+    };
 
     console.log(project)
 
@@ -38,9 +37,17 @@ export default function SourceBrowser() {
         <div className="source-browser">
             <div className="folder-item">
             <ChevronDown className="file-expander"/> <span className="file-name">source</span></div>
-            {project.items.map((f, i) => (
-                <File {...f} key={i} />
-            ))}
+
+            {project.items.map((item , index) => {
+                return (
+                <File 
+                    isActive={activeItem === index}
+                    key={index} 
+                    item={item} 
+                    onClick={() => setActiveItem(index)}
+                />
+                );
+            })}
         </div>
     );
 }

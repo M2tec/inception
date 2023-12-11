@@ -1,5 +1,5 @@
 const project = {
-    "name": "token locking",
+    "name": "Token Locking",
     "type": "folder",
     "items": [
         {

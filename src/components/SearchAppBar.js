@@ -83,7 +83,7 @@ export default function SearchAppBar() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Local: Always_Succeed"
+              placeholder="Local: Token_Locking"
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>

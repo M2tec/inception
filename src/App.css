@@ -77,6 +77,16 @@ body,
   gap: 1ch;
 }
 
+.file-item-selected {
+  padding-left: 3ch;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: 1.5rem;
+  gap: 1ch;
+  background-color: #2a3343;
+}
+
 .file-item:hover {
   background-color:#2a3343;
 }
@@ -122,3 +132,4 @@ body,
 .panel {
   height: 100% !important;
 }
+

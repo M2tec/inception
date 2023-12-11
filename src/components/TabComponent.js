@@ -79,8 +79,6 @@ const TabComponent = () => {
         console.log("Handle");
     }
 
-
-
     return (
         <div className='panel'>
             <StyledTabs

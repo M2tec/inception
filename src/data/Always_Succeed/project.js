@@ -1,3 +1,63 @@
+const project = {
+    "name": "token locking",
+    "type": "folder",
+    "items": [
+        {
+            "name": "contract.hl",
+            "type": "helios",
+            "data": `
+spending MagicNumber
+
+struct Datum {
+    magicNumber: Int
+}
+
+struct Redeemer {
+    magicNumber: Int 
+}
+
+func main(datum: Datum, redeemer: Redeemer, _) -> Bool {   
+    redeemer.magicNumber==datum.magicNumber
+}`
+        },
+        {
+            "name": "datum.json",
+            "type": "datum",
+            "data":`
+export const data = {
+"type": "plutusData",
+"data": {
+"fromJSON": {
+    "schema": 1,
+    "obj": {
+        "int": 42
+        }
+}
+}
+}            
+    `
+},
+{
+    "name": "redeemer.json",
+    "type": "redeemer",
+    "data":`
+{
+"type": "plutusData",
+"data": {
+"fromJSON": {
+    "schema": 1,
+    "obj": {
+        "int": 42
+        }
+}
+}
+}            
+    `
+},
+{
+    "name": "gc_script_template.json",
+    "type": "gc_template",
+    "data":`
 {
     "type": "script",
     "title": "Lock script",
@@ -96,3 +156,10 @@
         }
     }
 }
+`
+        }        
+    ]
+};
+
+export default project;
+

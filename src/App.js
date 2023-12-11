@@ -2,7 +2,6 @@ import React from 'react';
 
 import './App.css';
 import SourceBrowser from './components/SourceBrowser';
-import files from "./data/project.json"
 import GcSideBar from './components/GcSideBar';
 import TabComponent from './components/TabComponent';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -56,7 +55,7 @@ function App() {
           <GcSideBar />
 
           <Panel collapsible={true} collapsedSizePixels={35} minSizePercentage={10}>
-            <SourceBrowser files={files} />
+            <SourceBrowser/>
           </Panel>
 
           <PanelResizeHandle style={{ backgroundColor: "#2a3343", width: "8px" }} />

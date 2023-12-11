@@ -10,6 +10,8 @@ import { FiletypeJson } from 'react-bootstrap-icons';
 
 import { styled } from '@mui/material/styles';
 
+import project from "../data/Token_Locking/project.js";
+
 const StyledTabs = styled((props) => (
     <Tabs
         {...props}
@@ -49,6 +51,8 @@ const StyledTab = styled((props) => (
 }));
 
 const TabComponent = () => {
+
+    console.log(project.items[0].data);
 
     const [value, setValue] = React.useState(0);
 
@@ -108,10 +112,10 @@ const TabComponent = () => {
             </StyledTabs>
 
             <CustomTabPanel value={value} index={0}>
-                <SourceViewer />
+                <SourceViewer data={project.items[0].data} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                <SourceViewer />
+                <SourceViewer item={project.items[1].data} />
             </CustomTabPanel>
         </div>
     );

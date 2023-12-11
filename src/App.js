@@ -9,6 +9,7 @@ import { grey, indigo } from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import SearchAppBar from './components/SearchAppBar';
 
+
 import {
   PanelGroup,
   Panel,

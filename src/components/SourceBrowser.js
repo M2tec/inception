@@ -1,6 +1,5 @@
 import React from "react";
 import { ChevronDown, FiletypeJson } from 'react-bootstrap-icons';
-// import SourceViewer from "./SourceViewer";
 
 import project from "../data/Token_Locking/project.js";
 
@@ -30,8 +29,6 @@ export default function SourceBrowser() {
 
         );
     };
-
-    console.log(project)
 
     return (
         <div className="source-browser">

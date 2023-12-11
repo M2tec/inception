@@ -21,7 +21,7 @@ const Search = styled('div')(({ theme }) => ({
   width: '100%',
   [theme.breakpoints.up('sm')]: {
     marginLeft: theme.spacing(1),
-    width: 'auto',
+    width: '80%',
   },
 }));
 
@@ -44,9 +44,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     [theme.breakpoints.up('sm')]: {
-      width: '70ch',
+      width: '40ch',
       '&:focus': {
-        width: '80ch',
+        width: '50ch',
       },
     },
   },
@@ -59,7 +59,7 @@ export default function SearchAppBar() {
         position="static"
         sx={{backgroundColor: '#2a3343', boxShadow: "none", backgroundImage: "none" }}
         >
-        <Toolbar variant='dense'>
+        <Toolbar>
           <IconButton
             size="large"
             edge="start"
@@ -73,10 +73,11 @@ export default function SearchAppBar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ display: { xs: 'none', sm: 'block', marginRight: '20px' } }}
           >
           GC Playground
           </Typography>
+          <Box sx={{ flexGrow: 1}}>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -86,6 +87,7 @@ export default function SearchAppBar() {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>

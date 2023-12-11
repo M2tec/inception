@@ -20,12 +20,11 @@ const StyledTabs = styled((props) => (
     backgroundColor: 'transparent',
   },
   '& .MuiTabs-indicatorSpan': {
-    maxWidth: 40,
+    
     width: '100%',
-    backgroundColor: '#635ee7',
+    backgroundColor: 'white',
   },
 });
-
 
 const StyledTab = styled((props) => (
   <Tab disableRipple {...props} />

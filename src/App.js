@@ -8,6 +8,7 @@ import TabComponent from './components/TabComponent';
 import CssBaseline from '@mui/material/CssBaseline';
 import { grey, indigo } from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import SearchAppBar from './components/SearchAppBar';
 
 import {
   PanelGroup,
@@ -50,6 +51,7 @@ function App() {
   return (
       <ThemeProvider theme={darkModeTheme}>
         <CssBaseline />
+        <SearchAppBar />
         <PanelGroup direction="horizontal">
           <GcSideBar />
 

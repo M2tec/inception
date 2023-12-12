@@ -6,7 +6,6 @@ export const AppContext = React.createContext();
 export function AppProvider({children}) {
     const files = project.items.map((item , index) => item);
 
-
     const [context, setContext] = React.useState({files: files, active: 0});
     
     // useEffect (() => { 

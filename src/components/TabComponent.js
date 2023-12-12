@@ -1,19 +1,9 @@
 import React from 'react';
-
+import { AppContext } from '../AppContext';
 import SourceViewer from './SourceViewer';
-// import { IconButton } from '@mui/material';
-// import CloseIcon from '@mui/icons-material/Close';
-// import { FiletypeJson } from 'react-bootstrap-icons';
-
-// import project from "../data/Token_Locking/project.js";
 
 import Tab from 'react-bootstrap/Tab'
-// import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
-import Row from 'react-bootstrap/Row';
-
-
-import { AppContext } from '../AppContext';
 
 export default function TabComponent() {
 

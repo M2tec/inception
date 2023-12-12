@@ -1,49 +1,7 @@
 import * as React from 'react';
 
-import FileCopyIcon from '@mui/icons-material/FileCopy';
-import FindInPageIcon from '@mui/icons-material/FindInPage';
-
-import { styled } from '@mui/material/styles';
-
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-
-// import { App } from 'react-bootstrap-icons';
-
-const StyledTabs = styled((props) => (
-  <Tabs
-    {...props}
-    TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
-  />
-))({
-  '& .MuiTabs-indicator': {
-    display: 'flex',
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-  },
-  '& .MuiTabs-indicatorSpan': {
-    
-    width: '100%',
-    backgroundColor: 'white',
-  },
-});
-
-const StyledTab = styled((props) => (
-  <Tab disableRipple {...props} />
-))(({ theme }) => ({
-  textTransform: 'none',
-  fontWeight: theme.typography.fontWeightRegular,
-  fontSize: theme.typography.pxToRem(15),
-  marginRight: theme.spacing(1),
-  minWidth: "50px",
-  color: 'rgba(255, 255, 255, 0.7)',
-  '&.Mui-selected': {
-    color: '#fff',
-  },
-  '&.Mui-focusVisible': {
-    backgroundColor: 'rgba(100, 95, 228, 0.32)',
-  },
-}));
+import { Files, PlayFill} from 'react-bootstrap-icons';
+import Nav from 'react-bootstrap/Nav';
 
 const GcSideBar = () => {
   const [value, setValue] = React.useState(0);
@@ -53,15 +11,27 @@ const GcSideBar = () => {
   };
 
   return (
-    <StyledTabs
-      orientation="vertical"
-      value={value}
-      onChange={handleChange}
-      aria-label="nav tabs example">
-
-      <StyledTab icon={<FileCopyIcon />} />w
-      <StyledTab icon={<FindInPageIcon />} />
-    </StyledTabs>
+    
+    <Nav className="col-md-12 d-none d-md-block bg-light sidebar"
+    activeKey="/home"
+    onSelect={selectedKey => alert(`selected ${selectedKey}`)}
+    >
+        <div className="sidebar-sticky"></div>
+    <Nav.Item>
+        <Nav.Link href="/home">Active</Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+        <Nav.Link eventKey="link-1">Link</Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+        <Nav.Link eventKey="link-2">Link</Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+        <Nav.Link eventKey="disabled" disabled>
+        Disabled
+        </Nav.Link>
+    </Nav.Item>
+    </Nav>
   )
 }
 

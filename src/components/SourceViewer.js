@@ -11,9 +11,9 @@ const SourceViewer = (props) => {
     const { width, height, ref } = useResizeDetector();
     // const [code,setCode]=useState(props.data);
     const [errors,setErrors]=useState({});
-    const handleEditorChange=(value, e)=>{
-      setCode(value);
-    }
+    // const handleEditorChange=(value, e)=>{
+    //   setCode(value);
+    // }
 
     const  handleEditorValidation=(markers)=> {
         if(markers.length<=0){
@@ -24,7 +24,7 @@ const SourceViewer = (props) => {
         setErrors({...errors,code:markers[0].message})
       }
 
-    return <div className="editor" ref={ref}>
+    return <div className="panel" ref={ref}>
             <Editor
               theme="vs-dark"
               width={width}
@@ -33,8 +33,8 @@ const SourceViewer = (props) => {
               //defaultLanguage="json"
               //defaultValue={code}
               value={props.data}
-              onValidate={handleEditorValidation}
-              onChange={handleEditorChange}
+              // onValidate={handleEditorValidation}
+              // onChange={handleEditorChange}
               //onMount={handleEditorMount}
               //onSubmit={onEditorSubmit}
             />

@@ -1,31 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
+import project from "./data/Token_Locking/project.js";
 
-const AppContext = React.createContext();
-const AppUpdateContext = React.createContext();
-
-export function useApp(){
-    return React.useContext(AppContext)
-}
-
-export function useAppUpdate(){
-    return React.useContext(AppUpdateContext)
-}
+export const AppContext = React.createContext();
 
 export function AppProvider({children}) {
-    const [openFileList, setOpenFileList] = React.useState([]);
+    const files = project.items.map((item , index) => item);
+    console.log(files)
 
-    const list = []
-
-    function updateFileList(list) {
-        console.log("Update: " + list)
-        setOpenFileList(() => list)
+    const [context, setContext] = React.useState({files: files, active: 0});
+    
+    useEffect (() => { 
+        project.items = context
+        localStorage.setItem(project.name, JSON.stringify(project));
     }
+    ),[context]
 
     return (
-        <AppContext.Provider value={openFileList}>
-            <AppUpdateContext.Provider value={updateFileList(list)}>
+        <AppContext.Provider value={{context, setContext}}>
             {children}
-            </AppUpdateContext.Provider>
         </AppContext.Provider>
     )
 

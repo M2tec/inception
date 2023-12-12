@@ -3,8 +3,6 @@ import { ChevronDown, FiletypeJson } from 'react-bootstrap-icons';
 
 import project from "../data/Token_Locking/project.js";
 
-
-
 export default function SourceBrowser() {
     const [activeItem, setActiveItem] = React.useState(0);
 

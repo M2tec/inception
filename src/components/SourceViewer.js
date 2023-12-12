@@ -6,8 +6,8 @@ import { CropLandscapeOutlined } from '@mui/icons-material';
 
 const SourceViewer = (props) => {
 
-    const data = props.data
-    console.log(data)
+    // const data = props.data
+    // console.log(data)
 
     const { width, height, ref } = useResizeDetector();
     const [code,setCode]=useState(props.data);
@@ -24,8 +24,6 @@ const SourceViewer = (props) => {
         // markers.forEach(marker => cfg.logger.warn("Playground validation:", marker.message));
         setErrors({...errors,code:markers[0].message})
       }
-
-
 
     return <div className="editor" ref={ref}>
             <Editor

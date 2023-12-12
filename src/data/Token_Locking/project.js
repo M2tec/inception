@@ -24,7 +24,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
             "name": "datum.json",
             "type": "datum",
             "data":`
-export const data = {
+{
 "type": "plutusData",
 "data": {
 "fromJSON": {

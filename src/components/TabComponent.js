@@ -30,7 +30,6 @@ const StyledTabs = styled((props) => (
     },
 });
 
-
 const StyledTab = styled((props) => (
     <Tab disableRipple {...props} />
 ))(({ theme }) => ({
@@ -51,8 +50,9 @@ const StyledTab = styled((props) => (
 }));
 
 const TabComponent = () => {
+    const [activeItem, setActiveItem] = React.useState([true, true, true, false]);
 
-    console.log(project.items[0].data);
+    // console.log(project);
 
     const [value, setValue] = React.useState(0);
 
@@ -79,44 +79,84 @@ const TabComponent = () => {
         );
     }
 
-    function handle() {
+    const Tab = ({
+        item,
+        isActive,
+        onClick
+    }) => {
+        return isActive ? (
+
+            <StyledTab sx={{ textTransform: "none", padding: "5px" }} label={
+                <span className='tab-item-span'>
+                    <FiletypeJson className='tab-item' />
+                    {item.name}
+                    <IconButton component="span" size="small" onClick={() => { close() }}>
+                        <CloseIcon className='tab-item' />
+                    </IconButton>
+                </span>
+            } />
+
+        ) : (
+            <div></div>
+        );
+    };
+
+    const Panel = ({
+        item,
+        index,
+        isActive,
+        onClick
+    }) => {
+        return isActive ? (
+
+            <CustomTabPanel value={value} index={index}>
+                {console.log(index)}
+                <SourceViewer data={item.data} />
+            </CustomTabPanel>
+
+        ) : (
+            <div></div>
+        );
+    };
+
+    function close() {
         console.log("Handle");
     }
 
     return (
         <div className='panel'>
+
             <StyledTabs
                 value={value}
                 variant="scrollable"
                 textColor="secondary"
 
                 onChange={handleChange}>
-                <StyledTab sx={{ textTransform: "none", padding: "5px" }} label={
-                    <span className='tab-item-span'>
-                        <FiletypeJson className='tab-item' />
-                        {'contract.hl'}
-                        <IconButton component="span" size="small" onClick={() => { handle() }}>
-                            <CloseIcon className='tab-item' />
-                        </IconButton>
-                    </span>
-                } />
-                <StyledTab sx={{ textTransform: "none" }} label={
-                    <span className='tab-item-span'>
-                        <FiletypeJson className='tab-item' />
-                        {'gc_script_template.json'}
-                        <IconButton component="span" size="small" onClick={() => { handle() }}>
-                            <CloseIcon className='tab-item' />
-                        </IconButton>
-                    </span>
-                } />
+
+                {project.items.map((item, index) => {
+                    return (
+                        <Tab
+                            isActive={activeItem[index]}
+                            key={index}
+                            item={item}
+                            // onClick={() => setActiveItem(index)}
+                        />
+                    );
+                })}
             </StyledTabs>
 
-            <CustomTabPanel value={value} index={0}>
-                <SourceViewer data={project.items[0].data} />
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-                <SourceViewer item={project.items[1].data} />
-            </CustomTabPanel>
+            {project.items.map((item, index) => {
+                return (
+                    <Panel
+                        isActive={activeItem[index]}
+                        key={index}
+                        index={index}
+                        item={item}
+                        // onClick={() => setActiveItem(index)}
+                    />
+                );
+            })}
+
         </div>
     );
 };

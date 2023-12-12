@@ -1,32 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ChevronDown, FiletypeJson } from 'react-bootstrap-icons';
-
 import project from "../data/Token_Locking/project.js";
+import { useApp, useAppUpdate } from '../AppContext';
 
 export default function SourceBrowser() {
     const [activeItem, setActiveItem] = React.useState(0);
+
+    const openFileList = useApp()
+    const updateFileList = useAppUpdate()
 
     const File = ({ 
             item, 
             isActive, 
             onClick 
         }) => {
-        return isActive ? (
+        let cssSelected = ''
 
-        <div onClick={onClick} className="file-item-selected" tyle="cursor: pointer;" >
+        // Highlight active file
+        isActive ? cssSelected = 'file-item-selected' : cssSelected = 'file-item'
+        
+        return (
+        <div onClick={onClick} className={cssSelected} tyle="cursor: pointer;" >
             <FiletypeJson className="file-icon"/>
             <span className="file-name"> {item.name} </span>
         </div>
-
-        ) : (
-
-        <div onClick={onClick} className="file-item" tyle="cursor: pointer;" >
-            <FiletypeJson className="file-icon"/>
-            <span className="file-name"> {item.name} </span>
-        </div>
-
         );
     };
+
+    useEffect(() => { 
+        // Add file to openFileList when clicked
+        let clickedFile = project.items[activeItem].name
+        let flist = openFileList
+        flist.indexOf(clickedFile) === -1 ? flist.push(clickedFile) : console.log("already open")
+        updateFileList(flist)
+        console.log("Browse: " + openFileList)
+
+    }, [activeItem, openFileList, updateFileList])
 
     return (
         <div className="source-browser">

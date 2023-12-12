@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Editor from "@monaco-editor/react";
 import { useResizeDetector } from 'react-resize-detector';
-import { CropLandscapeOutlined } from '@mui/icons-material';
 // import { data } from '../data/datum'
 
 const SourceViewer = (props) => {
@@ -10,7 +9,7 @@ const SourceViewer = (props) => {
     // console.log(data)
 
     const { width, height, ref } = useResizeDetector();
-    const [code,setCode]=useState(props.data);
+    // const [code,setCode]=useState(props.data);
     const [errors,setErrors]=useState({});
     const handleEditorChange=(value, e)=>{
       setCode(value);

@@ -144,3 +144,20 @@ body,
   color: white !important ;
 }
 
+.sidebar {
+  width: 50px;
+}
+
+.nav-side{
+  background-color: #2a3343 !important;
+  outline: 0px;
+}
+
+.nav-side.active{
+  background-color: #2a3343 !important;
+}
+
+.x {
+  height: 100%;
+  background-color: #2a3343;
+}

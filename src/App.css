@@ -132,3 +132,15 @@ body,
   height: 100% !important;
 }
 
+.nav-link.active {
+  background-color: #1e1e1e !important;
+  border-radius: 0px;
+}
+
+.nav-link {
+  background-color: #1d2738 !important;
+  border-radius: 0px !important;
+  outline: 1px solid black;
+  color: white !important ;
+}
+

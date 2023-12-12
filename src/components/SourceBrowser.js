@@ -6,8 +6,7 @@ import { AppContext } from '../AppContext';
 export default function SourceBrowser() {
     // const [activeItem, setActiveItem] = React.useState(0);
     const { context, setContext } = React.useContext(AppContext)
-    console.log(context)
-
+    
     const File = ({
         item,
         isActive,
@@ -15,7 +14,6 @@ export default function SourceBrowser() {
     }) => {
         let cssSelected = ''
 
-        // context.file[index].open = true
         // Highlight active file
         isActive ? cssSelected = 'file-item-selected' : cssSelected = 'file-item'
 
@@ -26,21 +24,6 @@ export default function SourceBrowser() {
             </div>
         );
     };
-
-    // useEffect(() => {
-
-    //     updateFileList("test");
-    //   }, []);
-
-    // useEffect(() => { 
-    // Add file to openFileList when clicked
-    // let clickedFile = project.items[activeItem].name
-    // let flist = openFileList
-    // flist.indexOf(clickedFile) === -1 ? flist.push(clickedFile) : console.log("already open")
-    // updateFileList(flist)
-    // console.log("Browse: " + openFileList)
-    // 
-    // }, [ openFileList, updateFileList])
 
     return (
         <div className="source-browser">

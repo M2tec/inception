@@ -3,53 +3,52 @@ import Editor from "@monaco-editor/react";
 import { useResizeDetector } from 'react-resize-detector';
 // import { data } from '../data/datum'
 import { heliosSyntax } from './HeliosSyntaxMonaco';
-
+import { AppContext } from '../AppContext';
 
 const SourceViewer = (props) => {
-    
-    const editorRef = React.useRef(null);
+  const { context, setContext } = React.useContext(AppContext)
 
-    function handleEditorDidMount(editor, monaco) {
-      // here is the editor instance
-      // you can store it in `useRef` for further usage
+  const editorRef = React.useRef(null);
 
-      monaco.languages.register({id:'helios'})
+  function handleEditorDidMount(editor, monaco) {
+    // here is the editor instance
+    // you can store it in `useRef` for further usage
+    monaco.languages.register({ id: 'helios' })
+    monaco.languages.setMonarchTokensProvider('helios', heliosSyntax)
+    editorRef.current = editor;
+  }
 
-      monaco.languages.setMonarchTokensProvider('helios', heliosSyntax)
+  const { width, height, ref } = useResizeDetector();
 
-      editorRef.current = editor;
-    }
+  function handleEditorChange(value, event) {
+    console.log('here is the current model value:', value);
+    setContext(oldContext => {
+      let openIndex = -1;
+      const openItem = context.items.find((item, index) => {
+        const isOpen = item.name === props.name
+        if (isOpen)
+          openIndex = index;
+        return isOpen;
+      });
+      const { items } = oldContext;
+      items[openIndex].data = value
+      return { ...oldContext, items };
+    });
+  }
 
-    const { width, height, ref } = useResizeDetector();
-    // const [code,setCode]=useState(props.data);
-    // const [errors,setErrors] = React.useState({});
-    // // const handleEditorChange=(value, e)=>{
-    // //   setCode(value);
-    // // }
-
-    // const  handleEditorValidation=(markers)=> {
-    //     if(markers.length<=0){
-    //       setErrors({...errors,code:errors.code || undefined})
-    //       return;
-    //     }
-    //     // markers.forEach(marker => cfg.logger.warn("Playground validation:", marker.message));
-    //     setErrors({...errors,code:markers[0].message})
-    //   }
+    const openItem = context.items.find((item) => item.name === props.name);
+    const data = openItem.data;
 
     return <div className="panel" ref={ref}>
-            <Editor
-              theme="vs-dark"
-              width={width}
-              height={height}
-              language={props.data.type}
-              //defaultLanguage="json"
-              //defaultValue={code}
-              value={props.data.data}
-              // onValidate={handleEditorValidation}
-              // onChange={handleEditorChange}
-              onMount={handleEditorDidMount}
-              //onSubmit={onEditorSubmit}
-            />
+      <Editor
+        theme="vs-dark"
+        width={width}
+        height={height}
+        language={openItem.type}
+        value={data}
+        onChange={handleEditorChange}
+        onMount={handleEditorDidMount}
+      />
     </div>;
   };
 

@@ -33,7 +33,7 @@ export default function TabComponent() {
 
         // console.log(item[0].data)
         return (
-            <Tab.Pane className='panel' eventKey={name}> <SourceViewer data={item[0]} />
+            <Tab.Pane className='panel' eventKey={name}> <SourceViewer name={name} />
             </Tab.Pane>
         )
     };
@@ -73,28 +73,3 @@ export default function TabComponent() {
         </div>
     );
 };
-
-{/* <Tab.Container id="left-tabs-example" defaultActiveKey="1">
-
-<Nav variant="pills">
-    {context.openFiles.map((item, index) => {
-        return (
-            <GcTab
-                key={index}
-                item={item.name}
-            />
-        );
-    })}
-</Nav>
-
-<Tab.Content className='panel'>
-    {context.files.filter(x => x.open == true).map((item, index) => {
-        return (
-            <GcPane
-                key={index}
-                item={item}
-            />
-        );
-    })}
-</Tab.Content>
-</Tab.Container> */}

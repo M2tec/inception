@@ -26,13 +26,14 @@ export default function TabComponent() {
     const GcPane = ({
         name,
     }) => {
-        console.log(name)
+        // console.log(name)
         let items = context.items
         // console.log(items)
         let item = items.filter(x => x.name == name)
-        console.log(item)
+
+        // console.log(item[0].data)
         return (
-            <Tab.Pane className='panel' eventKey={item.name}> <SourceViewer data={item} />
+            <Tab.Pane className='panel' eventKey={name}> <SourceViewer data={item[0]} />
             </Tab.Pane>
         )
     };
@@ -41,7 +42,7 @@ export default function TabComponent() {
     return (
 
         <div className='panel'>
-            <Tab.Container id="left-tabs-example" defaultActiveKey="1">
+            <Tab.Container id="left-tabs-example" defaultActiveKey={context.openFiles[0]}>
 
                 <Nav variant="pills">
                     {context.openFiles.map((name, index) => {

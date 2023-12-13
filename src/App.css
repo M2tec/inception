@@ -32,12 +32,6 @@ body,
   width: 8px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color:  var(--body_background);
   min-height: 100vh;
@@ -51,16 +45,6 @@ body,
 
 .App-link {
   color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* Source browser */
@@ -164,6 +148,23 @@ body,
   height: 100%;
 }
 
-.navbar-x {
-  padding: 0px 15px;
+.nav-brand {
+  color: white;
+  font-weight:500;
+}
+
+.form-control {
+  background-color: var(--body_background-secondary);
+  border-color: rgb(93, 112, 117);
+  color: white;
+}
+.form-control:focus {
+  background-color: rgb(49, 49, 65);
+  color: white;
+}
+
+.input-group-text{
+  background-color: var(--body_background);
+  color: white;
+  border-color: rgb(93, 112, 117);
 }

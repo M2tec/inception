@@ -10,7 +10,7 @@ export default function SearchAppBar() {
   return (
     <div>
       <Navbar>
-        <Nav.Link className='m-3'><List size="20px" /></Nav.Link>
+        <Nav.Link className='ms-3 me-3'><List size="20px" /></Nav.Link>
         <Navbar.Brand className='nav-brand' href="#home">GC Playground</Navbar.Brand>
 
         <InputGroup className="ms-5 me-5">

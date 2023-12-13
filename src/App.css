@@ -6,6 +6,10 @@ body,
   height: 100%
 }
 
+#root {
+  background-color: var(--body_background);
+}
+
 .App {
   text-align: center;
 
@@ -25,7 +29,6 @@ body,
 }
 
 .handle {
-  background-color: #282c34;
   width: 8px;
 }
 
@@ -36,7 +39,7 @@ body,
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color:  var(--body_background);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -62,7 +65,7 @@ body,
 
 /* Source browser */
 .source-browser {
-  background-color: #192230;
+  background-color: var(--body_background-secondary);
   height: 100%;
   font-size: 1rem;
   overflow: hidden;
@@ -83,11 +86,11 @@ body,
   align-items: center;
   height: 1.5rem;
   gap: 1ch;
-  background-color: #2a3343;
+  background-color: var(--body_background);
 }
 
 .file-item:hover {
-  background-color:#2a3343;
+  background-color: var(--body_background)3;
 }
 
 .folder-item {
@@ -138,7 +141,7 @@ body,
 }
 
 .nav-link {
-  background-color: #1d2738 !important;
+  background-color: var(--body_background-secondary) !important;
   border-radius: 0px !important;
   outline: 1px solid black;
   color: white !important ;
@@ -149,15 +152,18 @@ body,
 }
 
 .nav-side{
-  background-color: #2a3343 !important;
+  background-color: var(--body_background) !important;
   outline: 0px;
 }
 
 .nav-side.active{
-  background-color: #2a3343 !important;
+  background-color:var(--body_background) !important;
 }
 
 .x {
   height: 100%;
-  background-color: #2a3343;
+}
+
+.navbar-x {
+  padding: 0px 15px;
 }

@@ -42,7 +42,11 @@ export default function TabComponent() {
     return (
 
         <div className='panel'>
-            <Tab.Container id="left-tabs-example" defaultActiveKey={context.openFiles[0]}>
+            {console.log(context.active)}
+            <Tab.Container id="left-tabs-example" activeKey={context.active} 
+                onSelect={(k) => setContext(oldContext => {
+                return { ...oldContext, active: k}
+            })}>
 
                 <Nav variant="pills">
                     {context.openFiles.map((name, index) => {

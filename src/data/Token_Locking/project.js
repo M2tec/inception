@@ -2,6 +2,7 @@ const project = {
     "name": "Token_Locking",
     "type": "folder",
     "openFiles": ["contract.hl"],
+    "active": 'contract.hl',
     "theme": 'dark',
     "items": [
         {

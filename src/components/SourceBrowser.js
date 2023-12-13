@@ -34,7 +34,7 @@ export default function SourceBrowser() {
             {context.items.map((item, index) => {
                 return (
                     <File
-                        isActive={context.active === index}
+                        isActive={context.active === context.items[index]}
                         key={index}
                         item={item}
                         onClick={() => setContext(oldContext => {
@@ -43,8 +43,8 @@ export default function SourceBrowser() {
                             const openFiles = oldContext.openFiles || [];
                             let filename = oldContext.items[index].name
                             openFiles.indexOf(filename) === -1 ? openFiles.push(filename) : console.log("This item already exists");
-
-                            return { ...oldContext, active: index, openFiles: openFiles}
+                            // console.log(filename)
+                            return { ...oldContext, active: filename, openFiles: openFiles}
                         })}
                     />
                 );

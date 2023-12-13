@@ -26,8 +26,9 @@ export default function TabComponent() {
     const GcPane = ({
         item,
     }) => {
+        console.log(item)
         return (
-            <Tab.Pane className='panel' eventKey={item.name}> <SourceViewer data={item.data} />
+            <Tab.Pane className='panel' eventKey={item.name}> <SourceViewer data={item} />
             </Tab.Pane>
         )
 

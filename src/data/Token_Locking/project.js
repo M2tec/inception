@@ -22,7 +22,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
         },
         {
             "name": "datum.json",
-            "type": "datum",
+            "type": "json",
             "data":`
 {
 "type": "plutusData",
@@ -39,7 +39,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 },
 {
     "name": "redeemer.json",
-    "type": "redeemer",
+    "type": "json",
     "data":`
 {
 "type": "plutusData",
@@ -56,7 +56,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 },
 {
     "name": "gc_script_template.json",
-    "type": "gc_template",
+    "type": "json",
     "data":`
 {
     "type": "script",

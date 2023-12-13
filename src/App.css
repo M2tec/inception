@@ -164,7 +164,7 @@ body,
 }
 
 .input-group-text{
-  background-color: var(--body_background);
+  background-color: rgb(62, 10, 62);
   color: white;
   border-color: rgb(93, 112, 117);
 }

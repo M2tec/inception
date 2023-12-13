@@ -28,7 +28,7 @@ export default function App() {
             <SourceBrowser />
           </Panel>
 
-          <PanelResizeHandle style={{ backgroundColor: "#2a3343", width: "8px" }} />
+          <PanelResizeHandle style={{ width: "8px" }} />
 
           <Panel defaultSizePercentage={70}>
             <TabComponent />

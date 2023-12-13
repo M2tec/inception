@@ -34,7 +34,7 @@ export default function SourceBrowser() {
             {context.items.map((item, index) => {
                 return (
                     <File
-                        isActive={context.active === context.items[index]}
+                        isActive={context.active === context.items[index].name}
                         key={index}
                         item={item}
                         onClick={() => setContext(oldContext => {

@@ -22,6 +22,7 @@ export default function SearchAppBar() {
           >
             <Dropdown.Item eventKey="1">Local files</Dropdown.Item>
             <Dropdown.Item eventKey="2">Deploy</Dropdown.Item>
+            <Dropdown.Item eventKey="2">Create private testnet</Dropdown.Item>
             <Dropdown.Item eventKey="3" active>
               Run
             </Dropdown.Item>

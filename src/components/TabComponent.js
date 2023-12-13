@@ -24,41 +24,72 @@ export default function TabComponent() {
     };
 
     const GcPane = ({
-        item,
+        name,
     }) => {
+        console.log(name)
+        let items = context.items
+        // console.log(items)
+        let item = items.filter(x => x.name == name)
         console.log(item)
         return (
             <Tab.Pane className='panel' eventKey={item.name}> <SourceViewer data={item} />
             </Tab.Pane>
         )
-
     };
+
+
     return (
+
         <div className='panel'>
             <Tab.Container id="left-tabs-example" defaultActiveKey="1">
 
                 <Nav variant="pills">
-                    {context.files.filter(x => x.open == true).map((item, index) => {
+                    {context.openFiles.map((name, index) => {
                         return (
                             <GcTab
                                 key={index}
-                                item={item.name}
+                                item={name}
                             />
                         );
                     })}
                 </Nav>
 
                 <Tab.Content className='panel'>
-                    {context.files.filter(x => x.open == true).map((item, index) => {
+                    {context.openFiles.map((name,index) => {
                         return (
                             <GcPane
                                 key={index}
-                                item={item}
+                                name={name}
                             />
                         );
                     })}
                 </Tab.Content>
-            </Tab.Container>
+            </Tab.Container> 
         </div>
     );
 };
+
+{/* <Tab.Container id="left-tabs-example" defaultActiveKey="1">
+
+<Nav variant="pills">
+    {context.openFiles.map((item, index) => {
+        return (
+            <GcTab
+                key={index}
+                item={item.name}
+            />
+        );
+    })}
+</Nav>
+
+<Tab.Content className='panel'>
+    {context.files.filter(x => x.open == true).map((item, index) => {
+        return (
+            <GcPane
+                key={index}
+                item={item}
+            />
+        );
+    })}
+</Tab.Content>
+</Tab.Container> */}

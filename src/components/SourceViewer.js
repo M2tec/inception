@@ -6,10 +6,7 @@ import { heliosSyntax } from './HeliosSyntaxMonaco';
 
 
 const SourceViewer = (props) => {
-    console.log(props.data.type)
-    // const data = props.data
-    // console.log(data)
-
+    
     const editorRef = React.useRef(null);
 
     function handleEditorDidMount(editor, monaco) {
@@ -22,7 +19,6 @@ const SourceViewer = (props) => {
 
       editorRef.current = editor;
     }
-
 
     const { width, height, ref } = useResizeDetector();
     // const [code,setCode]=useState(props.data);

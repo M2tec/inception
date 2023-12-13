@@ -28,18 +28,23 @@ export default function SourceBrowser() {
     return (
         <div className="source-browser">
             <div className="folder-item">
+
                 <ChevronDown className="file-expander" /> <span className="file-name">source</span></div>
 
-            {context.files.map((item, index) => {
+            {context.items.map((item, index) => {
                 return (
                     <File
                         isActive={context.active === index}
                         key={index}
                         item={item}
                         onClick={() => setContext(oldContext => {
-                            const files = oldContext.files || [];
-                            files[index].open = true;
-                            return { ...oldContext, active: index, files}
+                            // const files = oldContext.files || [];
+                            // files[index].open = true;
+                            const openFiles = oldContext.openFiles || [];
+                            let filename = oldContext.items[index].name
+                            openFiles.indexOf(filename) === -1 ? openFiles.push(filename) : console.log("This item already exists");
+
+                            return { ...oldContext, active: index, openFiles: openFiles}
                         })}
                     />
                 );

@@ -4,10 +4,11 @@ import project from "./data/Token_Locking/project.js";
 export const AppContext = React.createContext();
 
 export function AppProvider({children}) {
-    const files = project.items.map((item , index) => item);
+    // const files = project.items.map((item , index) => item);
 
-    const [context, setContext] = React.useState({files: files, active: 0});
-    
+    // const [context, setContext] = React.useState({files: files, active: 0});
+    const [context, setContext] = React.useState(project);
+
     // useEffect (() => { 
     //     project.items = context
     //     localStorage.setItem(project.name, JSON.stringify(project));

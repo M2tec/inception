@@ -1,14 +1,18 @@
 import * as React from 'react';
-
-import { Files, PlayFill} from 'react-bootstrap-icons';
+import { 
+  Files, 
+  PlayFill, 
+  CloudUploadFill,
+  ArrowReturnLeft
+} from 'react-bootstrap-icons';
 import Nav from 'react-bootstrap/Nav';
 
 const GcSideBar = () => {
-  const [value, setValue] = React.useState(0);
+  // const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
 
   return (
     <div className='x'>
@@ -22,6 +26,13 @@ const GcSideBar = () => {
     <Nav.Item>
         <Nav.Link className="nav-side" eventKey="link-1"><PlayFill size={"20px"}/></Nav.Link>
     </Nav.Item>
+    <Nav.Item>
+        <Nav.Link className="nav-side" eventKey="link-1"><ArrowReturnLeft size={"20px"}/></Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+        <Nav.Link className="nav-side" eventKey="link-1"><CloudUploadFill size={"20px"}/></Nav.Link>
+    </Nav.Item>
+
     </Nav>
     </div>
   )

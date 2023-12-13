@@ -4,6 +4,7 @@ import { useResizeDetector } from 'react-resize-detector';
 // import { data } from '../data/datum'
 import { heliosSyntax } from './HeliosSyntaxMonaco';
 
+
 const SourceViewer = (props) => {
     console.log(props.data.type)
     // const data = props.data
@@ -17,7 +18,6 @@ const SourceViewer = (props) => {
 
       monaco.languages.register({id:'helios'})
 
-      let keywords = ['spending', 'struct', 'func', 'Int']
       monaco.languages.setMonarchTokensProvider('helios', heliosSyntax)
 
       editorRef.current = editor;
@@ -26,19 +26,19 @@ const SourceViewer = (props) => {
 
     const { width, height, ref } = useResizeDetector();
     // const [code,setCode]=useState(props.data);
-    const [errors,setErrors] = React.useState({});
-    // const handleEditorChange=(value, e)=>{
-    //   setCode(value);
-    // }
+    // const [errors,setErrors] = React.useState({});
+    // // const handleEditorChange=(value, e)=>{
+    // //   setCode(value);
+    // // }
 
-    const  handleEditorValidation=(markers)=> {
-        if(markers.length<=0){
-          setErrors({...errors,code:errors.code || undefined})
-          return;
-        }
-        // markers.forEach(marker => cfg.logger.warn("Playground validation:", marker.message));
-        setErrors({...errors,code:markers[0].message})
-      }
+    // const  handleEditorValidation=(markers)=> {
+    //     if(markers.length<=0){
+    //       setErrors({...errors,code:errors.code || undefined})
+    //       return;
+    //     }
+    //     // markers.forEach(marker => cfg.logger.warn("Playground validation:", marker.message));
+    //     setErrors({...errors,code:markers[0].message})
+    //   }
 
     return <div className="panel" ref={ref}>
             <Editor

@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const heliosSyntax = {
     keywords: [
       'break', 'case', 'catch', 'class', 'continue', 'const',
@@ -6,7 +7,7 @@ export const heliosSyntax = {
       'get', 'if', 'import', 'in', 'instanceof', 'let', 'new', 'null',
       'return', 'set', 'super', 'switch', 'symbol', 'this', 'throw', 'true',
       'try', 'typeof', 'undefined', 'var', 'void', 'while', 'with', 'yield',
-      'async', 'await', 'of', 'spending', 'func'
+      'async', 'await', 'of', 'spending', 'func', 'struct', 'Int'
     ],
   
     typeKeywords: [
@@ -22,6 +23,7 @@ export const heliosSyntax = {
     ],
   
     // we include these common regular expressions
+    
     symbols: /[=><!~?:&|+\-*\/\^%]+/,
     escapes: /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
     digits: /\d+(_+\d+)*/,

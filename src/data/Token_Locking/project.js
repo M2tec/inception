@@ -58,7 +58,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
     `
 },
 {
-    "name": "gc_script_template.json",
+    "name": "gc_script_template.gcscript",
     "type": "json",
     "data":`
 {
@@ -73,8 +73,17 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
         "dependencies": {
             "type": "script",
             "run": {
-                "datum": "--datum--",
-                "lock": "--redeemer--",
+                "datum": "--datum.json--",                
+                "lock": {
+                    "type": "data",
+                    "value": [
+                        {
+                            "policyId": "ada",
+                            "assetName": "ada",
+                            "quantity": "5000000"
+                        }
+                    ]
+                },
                 "stakeCredential": {
                     "type": "data",
                     "value": "ad03a4ae45b21f50fde67956365cff94db41bc08a2c2862403d8a234"
@@ -82,10 +91,10 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
                 "contract": {
                     "type": "plutusScript",
                     "script": {
-                        "scriptHex": "--script--",
-                        "lang": "plutus_v2"
+                      "heliosCode": "{hexToStr('--contract.hl--')}",
+                      "version": "0.15.2"
                     }
-                },
+                  },                
                 "address": {
                     "type": "buildAddress",
                     "name": "ContractAddress",
@@ -104,7 +113,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
                     {
                         "address": "{get('cache.dependencies.address')}",
                         "datum": {
-                            "datumHashHex": "{get('cache.dependencies.datum.dataHashHex')}"
+                            "datumHashHex": "{get('cache.dependencies.datum.dataHashHex')}"                            
                         },
                         "assets": "{get('cache.dependencies.lock')}",
                         "idPattern":"locked"

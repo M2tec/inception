@@ -3,16 +3,14 @@ import {
   Files, 
   PlayFill, 
   CloudUploadFill,
-  ArrowReturnLeft
+  ArrowReturnLeft,
+  Save
 } from 'react-bootstrap-icons';
 import Nav from 'react-bootstrap/Nav';
+import { AppContext } from '../AppContext';
 
 const GcSideBar = () => {
-  // const [value, setValue] = React.useState(0);
-
-  // const handleChange = (event, newValue) => {
-  //   setValue(newValue);
-  // };
+  const { context, setContext } = React.useContext(AppContext)
 
   return (
     <div className='x'>
@@ -21,8 +19,11 @@ const GcSideBar = () => {
     >
         <div className="sidebar-sticky"></div>
     <Nav.Item>
-        <Nav.Link className="nav-side" href="/home"><Files size={"20px"}/></Nav.Link>
+        <Nav.Link className="nav-side"><Files size={"20px"}/></Nav.Link>
     </Nav.Item>
+    {/* <Nav.Item>
+        <Nav.Link className="nav-side"><Save size={"20px"}/></Nav.Link>
+    </Nav.Item> */}
     <Nav.Item>
         <Nav.Link className="nav-side" eventKey="link-1"><PlayFill size={"20px"}/></Nav.Link>
     </Nav.Item>

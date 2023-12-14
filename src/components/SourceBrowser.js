@@ -30,7 +30,7 @@ export default function SourceBrowser() {
             <div className="folder-item">
 
                 <ChevronDown className="file-expander" /> <span className="file-name">source</span></div>
-
+            {console.log(context.items[0])}
             {context.items.map((item, index) => {
                 return (
                     <File

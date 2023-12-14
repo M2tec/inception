@@ -8,8 +8,11 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import { AppContext } from '../AppContext';
 
 export default function SearchAppBar() {
+  const { context, setContext } = React.useContext(AppContext)
+
   return (
     <div>
       <Navbar>
@@ -33,11 +36,12 @@ export default function SearchAppBar() {
 
         <InputGroup className="ms-5 me-5">
           <InputGroup.Text id="basic-addon3">
-            Local: Token locking
+            Local
           </InputGroup.Text>
           <Form.Control id="basic-url"
                     aria-label="Small"
-                    aria-describedby="inputGroup-sizing-sm" />
+                    aria-describedby="inputGroup-sizing-sm" 
+                    placeholder={context.name}/>
         </InputGroup>
 
         <div className='me-3'>

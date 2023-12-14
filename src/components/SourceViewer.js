@@ -26,12 +26,6 @@ const SourceViewer = (props) => {
 
   function handleEditorChange(value, event) {
     // console.log('here is the current model value:', value);
-
-    // let tempStorage = { name: props.name, data: value }
-
-    console.log(props.name)
-
-
     let saveIndex = -1;
     const saveItem = context.items.find((item, index) => {
       const isStorageItem = item.name == props.name;
@@ -41,25 +35,11 @@ const SourceViewer = (props) => {
       return isStorageItem;
     });
 
-    console.log(saveIndex)
-    console.log(saveItem)
-
     let newItems = [...context.items]
-
-
     newItems[saveIndex].data = value
-    console.log(newItems[saveIndex].data)
 
     let tempContext = {...context, items:newItems}
-
-    // let oldItems = { ...newContext.items }
-    // oldItems[saveIndex].data = filedata.data
-
-    //     let newContext2 = {...newContext, items:oldItems}
-    //     console.log(newContext2.items[saveIndex].data)
-    //     console.log(newContext.items[saveIndex].data)
     localStorage.setItem('tempContext', JSON.stringify(tempContext));
-
   }
 
   return <div className="panel" ref={ref}>

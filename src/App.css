@@ -162,6 +162,9 @@ body,
   background-color: rgb(49, 49, 65);
   color: white;
 }
+.form-control::placeholder{
+  color: white;
+}
 
 .input-group-text{
   background-color: rgb(62, 10, 62);
@@ -171,4 +174,18 @@ body,
 
 .fontwhite {
   color: white;
+}
+
+.btn-primary {
+  background-color: var(--body_background);
+  border-width: 0px;
+  border-radius: 0px;
+}
+
+.btn-primary:hover {
+  background-color: rgb(62, 10, 62);
+}
+
+.container {
+  padding: 0px;
 }

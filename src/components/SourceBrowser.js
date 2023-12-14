@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ChevronDown, FiletypeJson } from 'react-bootstrap-icons';
-import project from "../data/Token_Locking/project.js";
 import { AppContext } from '../AppContext';
 
 export default function SourceBrowser() {

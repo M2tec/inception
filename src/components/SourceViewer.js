@@ -28,7 +28,7 @@ const SourceViewer = (props) => {
     // console.log('here is the current model value:', value);
     let saveIndex = -1;
     const saveItem = context.items.find((item, index) => {
-      const isStorageItem = item.name == props.name;
+      const isStorageItem = item.name === props.name;
       if (isStorageItem)
         saveIndex = index;
 

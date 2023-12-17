@@ -32,7 +32,7 @@ export default function SearchAppBar() {
             <Dropdown.Divider />
             <Dropdown.Item eventKey="4">About</Dropdown.Item>
           </DropdownButton>
-        <Navbar.Brand className='nav-brand' href="#home">GC Playground</Navbar.Brand>
+        <Navbar.Brand className='nav-brand' href="#home">Inception</Navbar.Brand>
 
         <InputGroup className="ms-5 me-5">
           <InputGroup.Text id="basic-addon3">

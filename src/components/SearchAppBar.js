@@ -1,7 +1,6 @@
 import * as React from 'react';
-import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { List, Search } from 'react-bootstrap-icons';
+import { List } from 'react-bootstrap-icons';
 import DarkMode from './DarkMode/DarkMode'
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';

@@ -26,7 +26,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
         {
             "name": "datum.json",
             "type": "json",
-            "data":`
+            "data": `
 {
 "type": "plutusData",
 "data": {
@@ -38,11 +38,11 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 }
 }
 }`
-},
-{
-    "name": "redeemer.json",
-    "type": "json",
-    "data":`
+        },
+        {
+            "name": "redeemer.json",
+            "type": "json",
+            "data": `
 {
 "type": "plutusData",
 "data": {
@@ -55,11 +55,11 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 }
 }            
     `
-},
-{
-    "name": "gc_script_template.gcscript",
-    "type": "json",
-    "data":`
+        },
+        {
+            "name": "gc_script_template.gcscript",
+            "type": "json",
+            "data": `
 {
     "type": "script",
     "title": "Lock script",
@@ -169,14 +169,17 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 }
 
 `
-        },
+        }
+    ],
+    "returnItems": [
+
         {
             "name": "return-data.json",
             "type": "json",
-            "data":`
+            "data": `
 { "testing": "data" }
 `
-}       
+        }
     ]
 };
 

@@ -22,7 +22,7 @@ const SourceViewer = (props) => {
     editorRef.current = editor;
   }
 
-  const { width, height, ref } = useResizeDetector();
+  const { width, height, refs } = useResizeDetector();
 
   function handleEditorChange(value, event) {
     // console.log('here is the current model value:', value);
@@ -38,22 +38,25 @@ const SourceViewer = (props) => {
     let newItems = [...context.items]
     newItems[saveIndex].data = value
 
-    let tempContext = {...context, items:newItems}
+    // Store the temporary context in the browser local storage.
+    // On a save event the context gets swapped. To save permanently.
+    // See AppContext.js
+    let tempContext = { ...context, items: newItems }
     localStorage.setItem('tempContext', JSON.stringify(tempContext));
   }
 
-  return <div className="panel" ref={ref}>
-
-    <Editor
+  return (
+    <Editor className="panel" refs={refs}
       theme="vs-dark"
       width={width}
       height={height}
       language={openItem.type}
       value={data}
+      options={{readOnly: true}}
       onChange={handleEditorChange}
       onMount={handleEditorDidMount}
     />
-  </div>;
+  )
 };
 
 export default SourceViewer;

@@ -29,11 +29,11 @@ export default function TabComponent() {
         // console.log(name)
         let items = context.items
         // console.log(items)
-        let item = items.filter(x => x.name == name)
+        // let item = items.filter(x => x.name == name)
 
         // console.log(item[0].data)
         return (
-            <Tab.Pane className='panel' eventKey={name}> <SourceViewer name={name} />
+            <Tab.Pane className='panel' eventKey={name}> <SourceViewer name={name} readOnly={false} />
             </Tab.Pane>
         )
     };

@@ -2,9 +2,6 @@ import React, { useEffect } from "react";
 import project from "./data/Token_Locking/project.js";
 import PropTypes from 'prop-types';
 
-
-
-
 export const AppContext = React.createContext();
 
 export function AppProvider({ children }) {
@@ -41,7 +38,9 @@ export function AppProvider({ children }) {
         }
        
         const tempContext = localStorage.getItem('tempContext');
-        localStorage.setItem('gcide', JSON.stringify(newContext));
+        // console.log(JSON.parse(tempContext))
+
+        localStorage.setItem('gcide', tempContext);
         console.log(`saveContext(): Context saved at ${newContext.updatedAt}`, newContext);
     }
     const [context, setContext] = React.useState(null);
@@ -53,8 +52,6 @@ export function AppProvider({ children }) {
         }
         saveContext(context);
     }, [context]);
-
-
 
     useEffect(() => {
         //Implementing the setInterval method

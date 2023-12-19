@@ -19,9 +19,6 @@ export default function ReturnData() {
     const [data, setData] = React.useState("");
     let { scriptData } = useParams();
 
-    // console.log("Return data: " + scriptData)
-    let name = "return-data.json"
-
     React.useEffect(() => {
         async function decodeActionUrl(scriptData) {
             const resultObj = await encodings.msg.decoder(scriptData);
@@ -36,27 +33,23 @@ export default function ReturnData() {
 
     React.useEffect(() => {
         if (data == "") {
-            console.log({ Data: data })
+            console.log("No data")
             return
         }
 
-        // console.log('here is the current model value:', value);
-        let saveIndex = -1;
-        const saveItem = context.returnItems.find((item, index) => {
-            const isStorageItem = item.name === name;
-            if (isStorageItem)
-                saveIndex = index;
+        let time = new Date().toLocaleString();
+        let newDataItem = { timeReceived:time, data:data }
 
-            return isStorageItem;
-        });
+        console.log({current:context.returnItems})
 
         let newItems = [...context.returnItems]
-        newItems[saveIndex].data = JSON.stringify(data, null,2)
+        newItems.push(newDataItem)
+        console.log({newItems:newItems})
 
         let tempContext = { ...context, returnItems: newItems }
         localStorage.setItem('tempContext', JSON.stringify(tempContext));
 
-    }, [data, context, name])
+    }, [data, context])
 
     return (
         <div className="panel-group">
@@ -64,7 +57,7 @@ export default function ReturnData() {
             <PanelGroup direction="horizontal">
                 <GcSideBar />
                 <Panel>
-                    <SourceViewerReadOnly className="source-browser" name={name}/>
+                    <SourceViewerReadOnly className="source-browser"/>
                 </Panel>
             </PanelGroup>
         </div>

@@ -3,17 +3,11 @@ import Editor from "@monaco-editor/react";
 import { useResizeDetector } from 'react-resize-detector';
 import { AppContext } from '../AppContext';
 
-const SourceViewerReadOnly = (props) => {
+const SourceViewerReadOnly = () => {
   const { context, setContext } = React.useContext(AppContext)
+  const data = JSON.stringify(context.returnItems, null, 4)
 
-  console.log(props.name)
-  console.log(context.returnItems)
-
-  const openItem = context.returnItems.find((item) => item.name === props.name);
-  const data = openItem.data;
-
-  console.log(props.readOnly)
-
+  // const openItem = context.returnItems.find((item) => item.name === props.name);
   const { width, height, refs } = useResizeDetector();
 
   return (
@@ -21,7 +15,7 @@ const SourceViewerReadOnly = (props) => {
         theme="vs-dark"
         width={width}
         height={height}
-        language={openItem.type}
+        language="json"
         value={data}
         options={{readOnly:true}}
       />

@@ -172,14 +172,6 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
         }
     ],
     "returnItems": [
-
-        {
-            "name": "return-data.json",
-            "type": "json",
-            "data": `
-{ "testing": "data" }
-`
-        }
     ]
 };
 

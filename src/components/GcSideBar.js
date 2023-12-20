@@ -65,6 +65,12 @@ const GcSideBar = () => {
     window.location.replace(url)
   }
 
+  function handleClickPopup(e) {
+    let url = window.location.origin;
+    console.log(url)
+    window.location.replace(url)
+  }
+
   return (
     <div className='x'>
 
@@ -72,7 +78,7 @@ const GcSideBar = () => {
         <Row><Button onClick={handleClickFiles} variant="primary"><Files size={"20px"} /></Button></Row>
         <Row><Button onClick={handleClickRun} disabled={!isActiveAGCScript}  variant="primary"><PlayFill size={"20px"} /></Button></Row>
         <Row><Button onClick={handleClickData} variant="primary"><ArrowReturnLeft size={"20px"} /></Button></Row>
-        <Row><Button variant="primary"><CloudUploadFill size={"20px"} /></Button></Row>
+        <Row><Button onClick={handleClickPopup} variant="primary"><CloudUploadFill size={"20px"} /></Button></Row>
       </Container>
     </div>
   )

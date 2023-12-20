@@ -32,7 +32,7 @@ export default function ReturnData() {
     }, [scriptData])
 
     React.useEffect(() => {
-        if (data == "") {
+        if (data === "") {
             console.log("No data")
             return
         }
@@ -42,11 +42,12 @@ export default function ReturnData() {
 
         console.log({current:context.returnItems})
 
-        let newItems = [...context.returnItems]
-        newItems.push(newDataItem)
+        let newItems = [newDataItem, ...context.returnItems]
+
         console.log({newItems:newItems})
 
         let tempContext = { ...context, returnItems: newItems }
+
         localStorage.setItem('tempContext', JSON.stringify(tempContext));
 
     }, [data, context])

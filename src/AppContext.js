@@ -13,15 +13,16 @@ export function AppProvider({ children }) {
 
         if (!json) {
             console.log('!JSON')
-            let data = {...project, updatedAt: Date.now() }
+            let data = { ...project, updatedAt: Date.now() }
             localStorage.setItem('gcide', JSON.stringify(data));
-            return data;}
-           
+            return data;
+        }
+
         return JSON.parse(json);
     }
     const saveContext = (_context) => {
         if (!_context)
-            return;      
+            return;
         const lastContext = loadContext();
 
 
@@ -36,11 +37,14 @@ export function AppProvider({ children }) {
             ..._context,
             updatedAt: now,
         }
-       
-        const tempContext = localStorage.getItem('tempContext');
-        // console.log(JSON.parse(tempContext))
 
-        localStorage.setItem('gcide', tempContext);
+        const tempContext = localStorage.getItem('tempContext');
+        console.log(JSON.parse(tempContext))
+
+        if (tempContext !== null) {
+            localStorage.setItem('gcide', tempContext);
+        }
+
         console.log(`saveContext(): Context saved at ${newContext.updatedAt}`, newContext);
     }
     const [context, setContext] = React.useState(null);

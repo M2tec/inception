@@ -61,7 +61,7 @@ export default function ConnectPopup() {
                 : (
                     <div className='fontwhite'>
                         <pre>{JSON.stringify(resultObj, null, 2)}</pre>
-                        <Button onClick={window.close} variant="primary"><XCircle size={"20px"} />Close</Button>
+                        <Button className="m-4" onClick={window.close} variant="warning"><XCircle className='m-1' size={"20px"} />Close</Button>
                         
                     </div>
                 )

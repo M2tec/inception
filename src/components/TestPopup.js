@@ -12,7 +12,9 @@ export default function TestPopup(props) {
 
         let url = window.location.origin + "/connect"
 
-        let newwindow=window.open(url, "Gamechanger connect id: " + sessionID,'height=875,width=755');
+        let newwindow = window.open(url, "Gamechanger connect id: " + sessionID,'height=875,width=755');
+        newwindow.resizeTo(875,755)
+        newwindow.moveTo(150, 150);
         if (window.focus) {newwindow.focus()}
            return false;     
     }
@@ -26,7 +28,7 @@ export default function TestPopup(props) {
         let url = window.location.origin + "/connect/" + returnData
         console.log(url)
 
-        let newwindow=window.open(url, "Gamechanger connect id: " + sessionID,'height=400,width=300');
+        let newwindow=window.open(url, "Gamechanger connect id: " + sessionID,'height=875,width=755');
         if (window.focus) {newwindow.focus()}
            return false;     
     }

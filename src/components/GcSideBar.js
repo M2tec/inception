@@ -35,20 +35,24 @@ const GcSideBar = () => {
     let contract = context.items[0].data;
     let datum = context.items[1].data;
     let redeemer = context.items[2].data;
-    let gc_script = context.items[3].data;
+    let gc_script_template = context.items[3].data;
 
     const Buffer = gc.utils.Buffer;
     let contractHex = Buffer.from(contract).toString('hex')
 
-    let gc_compile = gc_script
+    let gc_compile = gc_script_template
       .replace("--contract.hl--", contractHex)
       .replace('"--datum.json--"', datum)
       .replace('"--redeemer.json--"', redeemer)
 
-    let tx_object = JSON.parse(gc_compile)
-    tx_object.returnURLPattern = window.location.origin + window.location.pathname + "return-data/{result}";
+    let gc_script = JSON.parse(gc_compile)
+    gc_script.returnURLPattern = window.location.origin + window.location.pathname + "return-data/{result}";
 
-    buildActionUrl_lock(tx_object)
+    // buildActionUrl_lock(tx_object)
+
+    localStorage.setItem('gc_script', JSON.stringify(gc_script));
+
+    
   }
 
   function handleClickData(e) {

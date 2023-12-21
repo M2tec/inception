@@ -183,3 +183,14 @@ body,
 .testing {
   padding: 10px;
 }
+
+
+div.buttonPadding {
+  padding-left: 5;
+  padding-right: 5;
+}
+
+div.noMargin {
+  margin-left: 0;
+  margin-right: 0;
+}

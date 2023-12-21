@@ -52,7 +52,15 @@ const GcSideBar = () => {
 
     localStorage.setItem('gc_script', JSON.stringify(gc_script));
 
-    
+    let url = window.location.origin + "/connect"
+
+    let sessionID = 1
+    let newwindow = window.open(url, "Gamechanger connect id: " + sessionID, 'height=875,width=755');
+    // newwindow.resizeTo(875, 755)
+
+    if (window.focus) { newwindow.focus() }
+    return false;
+
   }
 
   function handleClickData(e) {
@@ -80,7 +88,7 @@ const GcSideBar = () => {
 
       <Container size="sm">
         <Row><Button onClick={handleClickFiles} variant="primary"><Files size={"20px"} /></Button></Row>
-        <Row><Button onClick={handleClickRun} disabled={!isActiveAGCScript}  variant="primary"><PlayFill size={"20px"} /></Button></Row>
+        <Row><Button onClick={handleClickRun} disabled={!isActiveAGCScript} variant="primary"><PlayFill size={"20px"} /></Button></Row>
         <Row><Button onClick={handleClickData} variant="primary"><ArrowReturnLeft size={"20px"} /></Button></Row>
         <Row><Button onClick={handleClickPopup} variant="primary"><CloudUploadFill size={"20px"} /></Button></Row>
       </Container>

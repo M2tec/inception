@@ -4,6 +4,8 @@ import { AppContext } from '../AppContext';
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { XCircle } from 'react-bootstrap-icons';
+import Row from 'react-bootstrap/Row';
+import { Col } from 'react-bootstrap';
 const gc = window.gc;
 
 export default function ConnectPopup() {
@@ -38,7 +40,7 @@ export default function ConnectPopup() {
 
             async function buildActionUrl(gc_script) {
                 const actionUrl = await gc.encode.url({
-                    input: JSON.stringify(gc_script),
+                    input: gc_script,
                     apiVersion: "2",
                     network: "preprod",
                     //encoding:"gzip",
@@ -52,17 +54,19 @@ export default function ConnectPopup() {
                 buildActionUrl(gc_script);
             }
         }
-    }, [resultObj])
+    }, [])
 
     return (
         <>
-            {returnData == undefined ?
+                {window.resizeTo(875, 755)}
+                {returnData == undefined ?
                 <div>Redirecting to Gamechanger wallet</div>
                 : (
-                    <div className='fontwhite'>
+                    <div className='fontwhite p-4'>
+                        <div className='p-4 square border-1 border-danger rounded'>
                         <pre>{JSON.stringify(resultObj, null, 2)}</pre>
-                        <Button className="m-4" onClick={window.close} variant="warning"><XCircle className='m-1' size={"20px"} />Close</Button>
-                        
+                        </div>
+                        <Button className="m-4" onClick={window.close} variant="warning"><Row><Col className='buttonPadding'><XCircle size={"20px"} /></Col><Col className='buttonPadding'>Close</Col></Row></Button>
                     </div>
                 )
             }

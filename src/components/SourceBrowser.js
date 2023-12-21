@@ -8,7 +8,8 @@ export default function SourceBrowser() {
     // const [activeItem, setActiveItem] = React.useState(0);
     const { context, setContext } = React.useContext(AppContext)
     const [addFile, setAddFile] = React.useState(false);
-
+    const [fileName, setFileName] = React.useState("");
+    
     const File = ({
         item,
         isActive,
@@ -28,8 +29,7 @@ export default function SourceBrowser() {
     };
     
     function handleCreateFile() {
-        console.log("hi")
-        setAddFile(true)
+        console.log(fileName)
     }
 
     function handleAddFile() {
@@ -66,7 +66,12 @@ export default function SourceBrowser() {
             })}
             {addFile ?
                 <Form>
-                    <Form.Control className="ms-5 mt-2 w-50" placeholder="Enter filename..." />
+                    <Form.Control 
+                        className="ms-5 mt-2 w-50" 
+                        placeholder="Enter filename..." 
+                        value={fileName}
+                        onChange={(e) => setFileName(e.target.value)}
+                    />
                     <Button onClick={handleCreateFile} variant="success" className="rounded ms-5 mt-2">Add file</Button>
                     <Button onClick={handleCancelAddFile} variant="secondary" className="rounded mt-2 ms-1">Cancel</Button>
                 </Form>

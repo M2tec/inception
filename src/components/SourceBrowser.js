@@ -30,6 +30,18 @@ export default function SourceBrowser() {
     
     function handleCreateFile() {
         console.log(fileName)
+
+        let newItem = {
+            "name": fileName,
+            "type": "helios",
+            "data": ``}
+        
+        let newItems = [...context.items, newItem]
+        
+        setContext({ ...context, items: newItems })
+        // localStorage.setItem('tempContext', JSON.stringify(tempContext));
+        
+        setAddFile(false)
     }
 
     function handleAddFile() {

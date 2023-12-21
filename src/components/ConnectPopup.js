@@ -1,11 +1,10 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { AppContext } from '../AppContext';
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { XCircle } from 'react-bootstrap-icons';
 import Row from 'react-bootstrap/Row';
-import { Col } from 'react-bootstrap';
+import Col from 'react-bootstrap/Col';
 const gc = window.gc;
 
 export default function ConnectPopup() {

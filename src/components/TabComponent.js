@@ -4,21 +4,19 @@ import SourceViewer from './SourceViewer';
 
 import Tab from 'react-bootstrap/Tab'
 import Nav from 'react-bootstrap/Nav';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { X } from 'react-bootstrap-icons';
 
 export default function TabComponent() {
-
     const { context, setContext } = React.useContext(AppContext)
-
-    // function close() {
-    //     console.log("Handle");
-    // }
 
     const GcTab = ({
         item,
     }) => {
         return (
             <Nav.Item>
-                <Nav.Link eventKey={item}>{item}</Nav.Link>
+                <Nav.Link eventKey={item}><span className='me-2'>{item}</span><X size={"20px"}/></Nav.Link>
             </Nav.Item>
         )
     };
@@ -26,23 +24,15 @@ export default function TabComponent() {
     const GcPane = ({
         name,
     }) => {
-        // console.log(name)
-        let items = context.items
-        // console.log(items)
-        // let item = items.filter(x => x.name == name)
-
-        // console.log(item[0].data)
+        // let items = context.items
         return (
             <Tab.Pane className='panel' eventKey={name}> <SourceViewer name={name} readOnly={false} />
             </Tab.Pane>
         )
     };
 
-
     return (
-
         <div className='panel'>
-            {console.log(context.active)}
             <Tab.Container id="left-tabs-example" activeKey={context.active} 
                 onSelect={(k) => setContext(oldContext => {
                 return { ...oldContext, active: k}

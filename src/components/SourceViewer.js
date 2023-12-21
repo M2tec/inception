@@ -52,7 +52,7 @@ const SourceViewer = (props) => {
       height={height}
       language={openItem.type}
       value={data}
-      options={{readOnly: true}}
+      options={{readOnly: false}}
       onChange={handleEditorChange}
       onMount={handleEditorDidMount}
     />

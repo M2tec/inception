@@ -3,6 +3,7 @@ import { ChevronDown, FiletypeJson } from 'react-bootstrap-icons';
 import { AppContext } from '../AppContext';
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
+import RightContext from "./RightContext";
 
 export default function SourceBrowser() {
     // const [activeItem, setActiveItem] = React.useState(0);
@@ -57,6 +58,7 @@ export default function SourceBrowser() {
     return (
         <div className="source-browser">
             <div className="folder-item">
+                
                 <ChevronDown className="file-expander" /> <span className="file-name">source</span></div>
             {context.items.map((item, index) => {
                 return (

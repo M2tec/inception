@@ -2,14 +2,12 @@ import React from 'react';
 import { AppContext } from '../AppContext';
 import SourceViewer from './SourceViewer';
 
-import Tab from 'react-bootstrap/Tab'
-import Nav from 'react-bootstrap/Nav';
-
 import { X } from 'react-bootstrap-icons';
 
 export default function TabComponent() {
     const { context, setContext } = React.useContext(AppContext)
 
+    const [activeTab, setActiveTab] = React.useState(0);
 
     function closeTab(e) {
         console.log("close tab")
@@ -44,23 +42,33 @@ export default function TabComponent() {
         console.log(newContext.openFiles)
     }
 
-    const GcTab = ({
-        item,
+    function toggleTab (index) {
+        setActiveTab(index)
+    }
+
+    const GcTab = ({ 
+        index, 
+        item 
     }) => {
         return (
-            <Nav.Item>
-                <Nav.Link eventKey={item}><span className='me-2'>{item}</span><X name={item.name} onClick={(e) => closeTab(e)} size={"20px"} /></Nav.Link>
-            </Nav.Item>
+           <div 
+                className={activeTab === index ? "TabItem TabItemActive" : "TabItem"}
+                onClick={() => toggleTab(index)}
+                >
+                    <span className='me-2'>{item}</span><X name={item.name} onClick={(e) => closeTab(e)} size={"20px"} /></div>
         )
     };
 
     const GcPane = ({
+        index,
         name,
     }) => {
-        // let items = context.items
         return (
-            <Tab.Pane className='TabPane' eventKey={name}> <SourceViewer name={name} readOnly={false} />
-            </Tab.Pane>
+            <div 
+                className={activeTab === index ? "TabPane  TabPaneActive" : "TabPane" }
+                > 
+                <SourceViewer name={name} readOnly={false} />
+            </div>
         )
     };
 
@@ -76,33 +84,32 @@ export default function TabComponent() {
     }
 
     return (
-        // <div className='TabComponent'>
+            <div className="TabContainer">
+                {/* activeKey={context.active}
+                onSelect={(k) => tabSelect(k) } */}
 
-            <Tab.Container id="tabContainer" activeKey={context.active}
-                onSelect={(k) => tabSelect(k) }>
-
-                <Nav variant="pills">
+                <div className='TabBar'>
                     {context.openFiles.map((name, index) => {
                         return (
                             <GcTab
+                                index={index}
                                 key={index}
                                 item={name}
                             />
                         );
                     })}
-                </Nav>
+                </div>
 
-                <Tab.Content>
-                    {context.openFiles.map((name, index) => {
+                 {context.openFiles.map((name, index) => {
                         return (
                             <GcPane
+                                index={index}
                                 key={index}
                                 name={name}
                             />
                         );
                     })}
-                </Tab.Content>
-            </Tab.Container>
+                </div>
         // </div>
     );
 };

@@ -19,6 +19,7 @@ export default function App() {
     <AppProvider>
       <Routes>
         <Route index element={<Home />} />
+        
         <Route path="return-data" element={<ReturnData />}>
           <Route path=":scriptData" element={<ReturnData />} />
         </Route>
@@ -31,7 +32,6 @@ export default function App() {
         <Route path="testcontextmenu" element={<RightContext />} />
         <Route path="*" element={<NoMatch />} />
 
-        
       </Routes>
     </AppProvider>
   );

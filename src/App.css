@@ -35,8 +35,36 @@ body,
   height: 100%;
 }
 
-#tabContainer {
-  height: 100%;
+.TabPane {
+  height: 80%;
+  display: none;
+}
+
+.TabPaneActive {
+  display: inline;
+}
+
+.TabBar {
+  display: flex;
+  flex-direction: row;
+}
+
+.TabContainer {
+  height: 80%;
+}
+
+.TabItem {
+  padding: 3px 10px;
+  color: white;
+  background-color: #192230;
+  border: solid 1px black;
+}
+
+.TabItemActive {
+  padding: 1px 10px 3px 10px;
+  background-color:#1e1e1e !important;
+  border-top: solid 3px #3e0a3e;
+  border-bottom: 0px;
 }
 
 .TabContent {

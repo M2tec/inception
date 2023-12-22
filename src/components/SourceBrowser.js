@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { ChevronDown, FiletypeJson } from 'react-bootstrap-icons';
 import { AppContext } from '../AppContext';
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import RightContext from "./RightContext";
+
 
 export default function SourceBrowser() {
     // const [activeItem, setActiveItem] = React.useState(0);
@@ -11,6 +11,14 @@ export default function SourceBrowser() {
     const [addFile, setAddFile] = React.useState(false);
     const [fileName, setFileName] = React.useState("");
     
+    const [contextMenu, setContextMenu] = React.useState({
+        position: {
+            x: 0,
+            y: 0
+        },
+        toggled: false
+        })
+
     const File = ({
         item,
         isActive,
@@ -55,24 +63,29 @@ export default function SourceBrowser() {
         setAddFile(false)
     }
 
+    // function handleOnContextMenu(e, item) {
+    //     e.preventDefault();
+    //     console.log(item)
+    // }
+
     return (
         <div className="source-browser">
             <div className="folder-item">
                 
                 <ChevronDown className="file-expander" /> <span className="file-name">source</span></div>
-            {context.items.map((item, index) => {
+                
+                {context.items.map((item, index) => {
                 return (
                     <File
                         isActive={context.active === context.items[index].name}
                         key={index}
                         item={item}
                         onClick={() => setContext(oldContext => {
-                            // const files = oldContext.files || [];
-                            // files[index].open = true;
                             const openFiles = oldContext.openFiles || [];
+                            
                             let filename = oldContext.items[index].name
                             openFiles.indexOf(filename) === -1 ? openFiles.push(filename) : console.log("This item already exists");
-                            // console.log(filename)
+                            
                             return { ...oldContext, active: filename, openFiles: openFiles }
                         })}
                     />

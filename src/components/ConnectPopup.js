@@ -59,7 +59,7 @@ export default function ConnectPopup() {
         <>
                 {window.resizeTo(875, 755)}
                 {returnData == undefined ?
-                <div>Redirecting to Gamechanger wallet</div>
+                    <div>Redirecting to Gamechanger wallet</div>
                 : (
                     <div className='fontwhite p-4'>
                         <div className='p-4 square border-1 border-danger rounded'>

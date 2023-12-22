@@ -4,12 +4,12 @@ import SourceViewer from './SourceViewer';
 
 import Tab from 'react-bootstrap/Tab'
 import Nav from 'react-bootstrap/Nav';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+
 import { X } from 'react-bootstrap-icons';
 
 export default function TabComponent() {
     const { context, setContext } = React.useContext(AppContext)
+
 
     function closeTab(e) {
         console.log("close tab")
@@ -34,7 +34,7 @@ export default function TabComponent() {
         let newContext = {...context, active: context.openFiles[fileIndex], openFiles: newOpenFiles}
         localStorage.setItem('tempContext', JSON.stringify(newContext));
 
-        // setContext(oldContext => { return {...oldContext, active: context.openFiles[fileIndex], openFiles: newOpenFiles}  })
+        setContext(oldContext => { return {...oldContext, active: context.openFiles[fileIndex], openFiles: newOpenFiles}  })
         
         console.log("-------------------")
 
@@ -59,17 +59,27 @@ export default function TabComponent() {
     }) => {
         // let items = context.items
         return (
-            <Tab.Pane className='panel' eventKey={name}> <SourceViewer name={name} readOnly={false} />
+            <Tab.Pane className='TabPane' eventKey={name}> <SourceViewer name={name} readOnly={false} />
             </Tab.Pane>
         )
     };
 
+    function tabSelect(k) {
+
+        console.log(k)
+        // setContext(oldContext => {
+        //     return { ...oldContext, active: k }
+        // })
+        let newContext = { ...context, active: k }
+        localStorage.setItem('tempContext', JSON.stringify(newContext));
+        setContext({...context})
+    }
+
     return (
-        <div className='panel'>
-            <Tab.Container id="left-tabs-example" activeKey={context.active}
-                onSelect={(k) => setContext(oldContext => {
-                    return { ...oldContext, active: k }
-                })}>
+        // <div className='TabComponent'>
+
+            <Tab.Container id="tabContainer" activeKey={context.active}
+                onSelect={(k) => tabSelect(k) }>
 
                 <Nav variant="pills">
                     {context.openFiles.map((name, index) => {
@@ -82,7 +92,7 @@ export default function TabComponent() {
                     })}
                 </Nav>
 
-                <Tab.Content className='panel'>
+                <Tab.Content>
                     {context.openFiles.map((name, index) => {
                         return (
                             <GcPane
@@ -93,6 +103,6 @@ export default function TabComponent() {
                     })}
                 </Tab.Content>
             </Tab.Container>
-        </div>
+        // </div>
     );
 };

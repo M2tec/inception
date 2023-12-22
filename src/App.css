@@ -7,29 +7,49 @@ body,
 }
 
 #root {
+  width: 100%;
   background-color: var(--body_background);
 }
 
-.App {
-  text-align: center;
-
-}
-
-.panel-group {
-  height: 92%;
-}
-
-.folder {
-  background-color: rgb(5, 19, 32);
-  /* background-color: rgb(144, 167, 189); */
+.Home {
   height: 100%;
-  padding: 10px;
-  color: white;
+  display: flex;
+  flex-direction: column;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.View {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.GcSideBar {
+  width: 46px;
+}
+
+.PanelGroup {
+  height: 100%;
+}
+
+.TabComponent {
+  height: 100%;
+}
+
+#tabContainer {
+  height: 100%;
+}
+
+.TabContent {
+  height: 100%;
+  background-color: red;
+}
+
+.TabPane {
+  height: 100%;
+}
+
+.tab-content {
+  height: 90%;
 }
 
 .handle {
@@ -40,8 +60,6 @@ body,
 .source-browser {
   background-color: var(--body_background-secondary);
   height: 100%;
-  font-size: 1rem;
-  overflow: hidden;
 }
 
 .file-item {
@@ -194,3 +212,4 @@ div.noMargin {
   margin-left: 0;
   margin-right: 0;
 }
+

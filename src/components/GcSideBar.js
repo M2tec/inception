@@ -7,7 +7,8 @@ import {
 } from 'react-bootstrap-icons';
 import { AppContext } from '../AppContext';
 import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Col';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import { Container } from 'react-bootstrap';
 
 const gc = window.gc;
@@ -84,15 +85,12 @@ const GcSideBar = () => {
   }
 
   return (
-    <div className='x'>
-
-      <Container size="sm">
-        <Row><Button onClick={handleClickFiles} variant="primary"><Files size={"20px"} /></Button></Row>
-        <Row><Button onClick={handleClickRun} disabled={!isActiveAGCScript} variant="primary"><PlayFill size={"20px"} /></Button></Row>
-        <Row><Button onClick={handleClickData} variant="primary"><ArrowReturnLeft size={"20px"} /></Button></Row>
-        <Row><Button onClick={handleClickPopup} variant="primary"><CloudUploadFill size={"20px"} /></Button></Row>
-      </Container>
-    </div>
+      <div className='GcSideBar'>
+        <Button onClick={handleClickFiles} variant="primary"><Files size={"20px"} /></Button>
+        <Button onClick={handleClickRun} disabled={!isActiveAGCScript} variant="primary"><PlayFill size={"20px"} /></Button>
+        <Button onClick={handleClickData} variant="primary"><ArrowReturnLeft size={"20px"} /></Button>
+        <Button onClick={handleClickPopup} variant="primary"><CloudUploadFill size={"20px"} /></Button>
+      </div>
   )
 }
 

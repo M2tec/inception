@@ -46,7 +46,7 @@ const SourceViewer = (props) => {
   }
 
   return (
-    <Editor className="panel" refs={refs}
+    <Editor refs={refs}
       theme="vs-dark"
       width={width}
       height={height}

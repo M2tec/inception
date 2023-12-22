@@ -38,11 +38,14 @@ export function AppProvider({ children }) {
             updatedAt: now,
         }
 
-        const tempContext = localStorage.getItem('tempContext');
-        console.log(JSON.parse(tempContext))
+        const tempContextTxt = localStorage.getItem('tempContext');
+        let tempContext = JSON.parse(tempContextTxt)
+        // console.log(tempContext)
+        // console.log("Temp: " + tempContext.active )
+        // console.log(newContext.name)
 
-        if (tempContext !== null) {
-            localStorage.setItem('gcide', tempContext);
+        if (tempContextTxt !== null) {
+            localStorage.setItem('gcide', tempContextTxt);
         }
 
         console.log(`saveContext(): Context saved at ${newContext.updatedAt}`, newContext);

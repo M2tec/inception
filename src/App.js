@@ -11,6 +11,8 @@ import TestPopup from './components/TestPopup';
 import ConnectPopup from './components/ConnectPopup';
 import RightContext from './components/RightContext';
 
+
+
 export default function App() {
   // Update the theme only if the mode changes
   return (
@@ -24,9 +26,11 @@ export default function App() {
         <Route path="connect" element={<ConnectPopup />}>
           <Route path=":returnData" element={<ConnectPopup />} />
         </Route>
+
         <Route path="testpopup" element={<TestPopup />} />
         <Route path="testcontextmenu" element={<RightContext />} />
         <Route path="*" element={<NoMatch />} />
+
         
       </Routes>
     </AppProvider>

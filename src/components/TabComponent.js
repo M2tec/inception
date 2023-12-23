@@ -7,45 +7,29 @@ import { X } from 'react-bootstrap-icons';
 export default function TabComponent(props) {
     const { context, setContext } = React.useContext(AppContext)
 
-    const [activeTab, setActiveTab] = React.useState(0);
-
-    console.log(props.active)
-
     function closeTab(e) {
-        console.log("close tab")
-        console.log(context.active)
-        console.log(context.openFiles)
+        setContext(oldContext => {
+            let fileIndex = oldContext.openFiles.indexOf(oldContext.active)
+            console.log(fileIndex)
 
-        let fileIndex = context.openFiles.indexOf(context.active)
-        console.log(fileIndex)
+            // Remove the file from the openFiles list
+            let newOpenFiles = oldContext.openFiles || [];
+            newOpenFiles.splice(fileIndex,1)
 
-        // Remove the file from the openFiles list
-        let newOpenFiles = context.openFiles
-        newOpenFiles.splice(fileIndex,1)
+            if (fileIndex > 0) {
+                fileIndex -= 1
+            }
 
-        // Change the active file index
-        if (fileIndex > 0) {
-            fileIndex -= 1
-        }
+            let newActive = oldContext.openFiles[fileIndex]
+            return { ...oldContext, newActive:newActive, active: newActive, openFiles: newOpenFiles }
+        })
 
-        console.log(fileIndex)
-        console.log(context.openFiles[fileIndex])
-
-        let newContext = {...context, active: context.openFiles[fileIndex], openFiles: newOpenFiles}
-        localStorage.setItem('tempContext', JSON.stringify(newContext));
-
-        setContext(oldContext => { return {...oldContext, active: context.openFiles[fileIndex], openFiles: newOpenFiles}  })
-        
-        console.log("-------------------")
-
-        console.log("newcontext")
-        console.log(newContext)
-        console.log(newContext.active)
-        console.log(newContext.openFiles)
     }
 
     function toggleTab (name) {
-        setContext({...context, active:name})
+        setContext(oldContext => {           
+            return { ...oldContext, active: name }
+        })
     }
 
     const GcTab = ({ 
@@ -56,9 +40,8 @@ export default function TabComponent(props) {
         return (
            <div 
                 className={name === props.active ? "TabItem TabItemActive" : "TabItem"}
-                onClick={() => toggleTab(name)}
                 >
-                    <span className='me-2'>{name}</span><X name={name} onClick={(e) => closeTab(e)} size={"20px"} /></div>
+            <span onClick={() => toggleTab(name)} className='me-2'>{name}</span><X name={name} onClick={(e) => closeTab(e)} size={"20px"} /></div>
         )
     };
 
@@ -66,34 +49,18 @@ export default function TabComponent(props) {
         index,
         name,
     }) => {
-        console.log("Pane render: " + name)
         return (
             <div 
                 className={name === props.active ? "TabPane  TabPaneActive" : "TabPane" }
-                // className="TabPane  TabPaneActive"
                 > 
                 <SourceViewer name={name} readOnly={false} />
             </div>
         )
     };
 
-    function tabSelect(k) {
-
-        console.log(k)
-        // setContext(oldContext => {
-        //     return { ...oldContext, active: k }
-        // })
-        let newContext = { ...context, active: k }
-        localStorage.setItem('tempContext', JSON.stringify(newContext));
-        setContext({...context})
-    }
-
     return (
             <div className="TabContainer">
-                {/* activeKey={context.active}
-                onSelect={(k) => tabSelect(k) } */}
-
-                <div className='TabBar'>
+                 <div className='TabBar'>
                     {context.openFiles.map((name, index) => {
                         return (
                             <GcTab

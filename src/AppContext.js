@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 export const AppContext = React.createContext();
 
 export function AppProvider({ children }) {
-    const updateIntervalMs = 1000 * 25;//5 seconds
+    const updateIntervalMs = 1000 * 205;//5 seconds
 
     const loadContext = () => {
         console.log(`loadContext()`);
@@ -24,7 +24,6 @@ export function AppProvider({ children }) {
         if (!_context)
             return;
         const lastContext = loadContext();
-
 
         const now = Date.now();
         const elapsed = (now - lastContext.updatedAt);
@@ -54,6 +53,7 @@ export function AppProvider({ children }) {
 
     useEffect(() => {
         if (!context) {
+            
             setContext(loadContext());
             return;
         }

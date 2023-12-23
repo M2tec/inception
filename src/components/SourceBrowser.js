@@ -8,10 +8,9 @@ import { Form } from "react-bootstrap";
 export default function SourceBrowser(props) {
     // const [activeItem, setActiveItem] = React.useState(0);
     const { context, setContext } = React.useContext(AppContext)
-    const [addFile, setAddFile] = React.useState(false);
-    const [fileName, setFileName] = React.useState("");
+    const [ addFile, setAddFile] = React.useState(false);
+    const [ fileName, setFileName] = React.useState("");
     
-    console.log(props.active)
 
     const [contextMenu, setContextMenu] = React.useState({
         position: {
@@ -29,12 +28,14 @@ export default function SourceBrowser(props) {
         let cssSelected = ''
 
         // Highlight active file
-        isActive ? cssSelected = 'file-item-selected' : cssSelected = 'file-item'
+        
 
         return (
-            <div onClick={onClick} className={cssSelected} tyle="cursor: pointer;" >
-                <FiletypeJson className="file-icon" />
-                <span className="file-name"> {item.name} </span>
+            <div 
+                onClick={onClick} 
+                className={isActive ? 'file-item-selected' : 'file-item'} 
+                >
+                <FiletypeJson className="file-icon" /><span className="file-name">{item.name}</span>
             </div>
         );
     };
@@ -65,6 +66,20 @@ export default function SourceBrowser(props) {
         setAddFile(false)
     }
 
+    function setActive(item, index){
+        console.log("setActive")
+        console.log(item.name)
+        console.log(index)
+        
+        setContext(oldContext => {
+            const openFiles = oldContext.openFiles || [];
+            
+            let filename = oldContext.items[index].name
+            openFiles.indexOf(filename) === -1 ? openFiles.push(filename) : console.log("This item already exists");
+            
+            return { ...oldContext, active: filename, openFiles: openFiles }
+        })
+    }
     // function handleOnContextMenu(e, item) {
     //     e.preventDefault();
     //     console.log(item)
@@ -82,14 +97,7 @@ export default function SourceBrowser(props) {
                         isActive={props.active === context.items[index].name}
                         key={index}
                         item={item}
-                        onClick={() => setContext(oldContext => {
-                            const openFiles = oldContext.openFiles || [];
-                            
-                            let filename = oldContext.items[index].name
-                            openFiles.indexOf(filename) === -1 ? openFiles.push(filename) : console.log("This item already exists");
-                            
-                            return { ...oldContext, active: filename, openFiles: openFiles }
-                        })}
+                        onClick={() => setActive(item, index)}
                     />
                 );
             })}

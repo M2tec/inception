@@ -4,10 +4,12 @@ import SourceViewer from './SourceViewer';
 
 import { X } from 'react-bootstrap-icons';
 
-export default function TabComponent() {
+export default function TabComponent(props) {
     const { context, setContext } = React.useContext(AppContext)
 
     const [activeTab, setActiveTab] = React.useState(0);
+
+    console.log(props.active)
 
     function closeTab(e) {
         console.log("close tab")
@@ -42,20 +44,21 @@ export default function TabComponent() {
         console.log(newContext.openFiles)
     }
 
-    function toggleTab (index) {
-        setActiveTab(index)
+    function toggleTab (name) {
+        setContext({...context, active:name})
     }
 
     const GcTab = ({ 
         index, 
-        item 
+        name
     }) => {
+
         return (
            <div 
-                className={activeTab === index ? "TabItem TabItemActive" : "TabItem"}
-                onClick={() => toggleTab(index)}
+                className={name === props.active ? "TabItem TabItemActive" : "TabItem"}
+                onClick={() => toggleTab(name)}
                 >
-                    <span className='me-2'>{item}</span><X name={item.name} onClick={(e) => closeTab(e)} size={"20px"} /></div>
+                    <span className='me-2'>{name}</span><X name={name} onClick={(e) => closeTab(e)} size={"20px"} /></div>
         )
     };
 
@@ -63,9 +66,10 @@ export default function TabComponent() {
         index,
         name,
     }) => {
+        console.log("Pane render: " + name)
         return (
             <div 
-                className={activeTab === index ? "TabPane  TabPaneActive" : "TabPane" }
+                className={name === props.active ? "TabPane  TabPaneActive" : "TabPane" }
                 // className="TabPane  TabPaneActive"
                 > 
                 <SourceViewer name={name} readOnly={false} />
@@ -95,7 +99,7 @@ export default function TabComponent() {
                             <GcTab
                                 index={index}
                                 key={index}
-                                item={name}
+                                name={name}
                             />
                         );
                     })}

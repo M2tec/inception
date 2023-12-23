@@ -5,12 +5,14 @@ import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 
 
-export default function SourceBrowser() {
+export default function SourceBrowser(props) {
     // const [activeItem, setActiveItem] = React.useState(0);
     const { context, setContext } = React.useContext(AppContext)
     const [addFile, setAddFile] = React.useState(false);
     const [fileName, setFileName] = React.useState("");
     
+    console.log(props.active)
+
     const [contextMenu, setContextMenu] = React.useState({
         position: {
             x: 0,
@@ -77,7 +79,7 @@ export default function SourceBrowser() {
                 {context.items.map((item, index) => {
                 return (
                     <File
-                        isActive={context.active === context.items[index].name}
+                        isActive={props.active === context.items[index].name}
                         key={index}
                         item={item}
                         onClick={() => setContext(oldContext => {

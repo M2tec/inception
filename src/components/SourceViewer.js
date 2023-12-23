@@ -10,19 +10,16 @@ const SourceViewer = (props) => {
   const { context, setContext } = React.useContext(AppContext)
   const [ manualHeight, setManualHeight] = React.useState(1)
   const [ manualWidth, setManualWidth] = React.useState(1)
-  
-  // const { ref, width = 1, height = 1 } = useResizeObserver();
-  
+    
   const { ref } = useResizeObserver({
     onResize: ({ width, height }) => {
-      console.log("Observer height:\t" + height)// do something here.
-      console.log("Window height:\t" + window.innerHeight)
+      // console.log("Observer height:\t" + height)
+      // console.log("Window height:\t" + window.innerHeight)
 
       // Hack to manually calculate size from css values 
       // Height falls back to total height sometimes for some reason during resize
       setManualHeight( window.innerHeight - 56 - 32 )
       setManualWidth( width)
-
     },
   });
 
@@ -61,7 +58,6 @@ const SourceViewer = (props) => {
 
   return (
     <div className='testing' ref={ref}>
-      {/* {console.log("Editor: " + width + " x " + height)} */}
       <Editor
        theme="vs-dark"
        language={openItem.type}

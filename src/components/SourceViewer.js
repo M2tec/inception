@@ -1,28 +1,27 @@
 import React from 'react';
 import Editor from "@monaco-editor/react";
-import { useResizeDetector } from 'react-resize-detector';
-// import { data } from '../data/datum'
+
 import { heliosSyntax } from './HeliosSyntaxMonaco';
 import { AppContext } from '../AppContext';
 
+import useResizeObserver from "use-resize-observer";
+
+
 const SourceViewer = (props) => {
   const { context, setContext } = React.useContext(AppContext)
+  const { ref, width = 1, height = 1 } = useResizeObserver();
 
   const openItem = context.items.find((item) => item.name === props.name);
-
   const data = openItem.data;
-
-  const editorRef = React.useRef(null);
+  // const editorRef = React.useRef(null);
 
   function handleEditorDidMount(editor, monaco) {
     // here is the editor instance
     // you can store it in `useRef` for further usage
     monaco.languages.register({ id: 'helios' })
     monaco.languages.setMonarchTokensProvider('helios', heliosSyntax)
-    editorRef.current = editor;
+    // editorRef.current = editor;
   }
-
-  const { width, height, refs } = useResizeDetector();
 
   function handleEditorChange(value, event) {
     // console.log('here is the current model value:', value);
@@ -46,16 +45,19 @@ const SourceViewer = (props) => {
   }
 
   return (
-    <Editor refs={refs}
-      theme="vs-dark"
-      width={width}
-      height={height}
-      language={openItem.type}
-      value={data}
-      options={{readOnly: false}}
-      onChange={handleEditorChange}
-      onMount={handleEditorDidMount}
-    />
+    <div className='testing' ref={ref}>
+      {/* Size: {width}x{height} */}
+      <Editor
+       theme="vs-dark"
+       language={openItem.type}
+       value={data}
+       width={width}
+       height={height}
+       options={{readOnly: false}}
+       onChange={handleEditorChange}
+       onMount={handleEditorDidMount}
+     />
+    </div>
   )
 };
 

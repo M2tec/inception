@@ -23,8 +23,20 @@ body,
   flex-direction: row;
 }
 
+.DataView {
+  height: 100%;
+  width: 100%;
+}
+
+.testing {
+  color: white;
+  height: 100%;
+  width: 100%;
+}
+
 .GcSideBar {
-  width: 46px;
+  height: 100%;
+  width: 44px;
 }
 
 .PanelGroup {
@@ -36,12 +48,11 @@ body,
 }
 
 .TabPane {
-  height: 80%;
   display: none;
 }
 
 .TabPaneActive {
-  display: inline;
+  display: flex;
 }
 
 .TabBar {
@@ -50,18 +61,18 @@ body,
 }
 
 .TabContainer {
-  height: 80%;
+  height: 100%;
 }
 
 .TabItem {
-  padding: 3px 10px;
+  padding: 3px 12px;
   color: white;
   background-color: #192230;
   border: solid 1px black;
 }
 
 .TabItemActive {
-  padding: 1px 10px 3px 10px;
+  padding: 1px 12px 3px 12px;
   background-color:#1e1e1e !important;
   border-top: solid 3px #3e0a3e;
   border-bottom: 0px;
@@ -226,9 +237,7 @@ body,
   padding: 0px;
 }
 
-.testing {
-  padding: 10px;
-}
+
 
 
 div.buttonPadding {

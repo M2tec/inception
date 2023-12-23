@@ -65,8 +65,8 @@ export default function TabComponent() {
     }) => {
         return (
             <div 
-                // className={activeTab === index ? "TabPane  TabPaneActive" : "TabPane" }
-                className="TabPane  TabPaneActive"
+                className={activeTab === index ? "TabPane  TabPaneActive" : "TabPane" }
+                // className="TabPane  TabPaneActive"
                 > 
                 <SourceViewer name={name} readOnly={false} />
             </div>
@@ -89,7 +89,7 @@ export default function TabComponent() {
                 {/* activeKey={context.active}
                 onSelect={(k) => tabSelect(k) } */}
 
-                {/* <div className='TabBar'>
+                <div className='TabBar'>
                     {context.openFiles.map((name, index) => {
                         return (
                             <GcTab
@@ -109,12 +109,12 @@ export default function TabComponent() {
                                 name={name}
                             />
                         );
-                    })} */}
-                            <GcPane
+                    })}
+                            {/* <GcPane
                                 index="0"
                                 key="0"
                                 name="contract.hl"
-                            />
+                            /> */}
 
 
                 </div>

@@ -11,7 +11,6 @@ export default function SourceBrowser(props) {
     const [ addFile, setAddFile] = React.useState(false);
     const [ fileName, setFileName] = React.useState("");
     
-
     const [contextMenu, setContextMenu] = React.useState({
         position: {
             x: 0,
@@ -19,6 +18,12 @@ export default function SourceBrowser(props) {
         },
         toggled: false
         })
+
+    const viewType = context.dataItems[props.type]
+    // console.log({Viewtype:viewType})
+    // console.log(context)
+    // console.log(props.type)
+    // console.log(context.dataItems[props.type])
 
     const File = ({
         item,
@@ -67,17 +72,21 @@ export default function SourceBrowser(props) {
     }
 
     function setActive(item, index){
-        console.log("setActive")
-        console.log(item.name)
-        console.log(index)
-        
+        // console.log("setActive")
+        // console.log(item.name)
+        // console.log(index)
+
         setContext(oldContext => {
-            const openFiles = oldContext.openFiles || [];
+            const dataItem = oldContext.dataItems[props.type] || [];
+            const openItems = dataItem.openItems || [];
             
-            let filename = oldContext.items[index].name
-            openFiles.indexOf(filename) === -1 ? openFiles.push(filename) : console.log("This item already exists");
+            let filename = dataItem.items[index].name
+            openItems.indexOf(filename) === -1 ? openItems.push(filename) : console.log("This item already exists");
             
-            return { ...oldContext, active: filename, openFiles: openFiles }
+            let newDataItems = oldContext.dataItems
+            newDataItems[props.type] = dataItem
+            
+            return { ...oldContext, newDataItems }
         })
     }
     // function handleOnContextMenu(e, item) {
@@ -89,12 +98,12 @@ export default function SourceBrowser(props) {
         <div className="source-browser">
             <div className="folder-item">
                 
-                <ChevronDown className="file-expander" /> <span className="file-name">source</span></div>
+                <ChevronDown className="file-expander" /> <span className="file-name">{props.type}</span></div>
                 
-                {context.items.map((item, index) => {
+                {viewType.items.map((item, index) => {
                 return (
                     <File
-                        isActive={props.active === context.items[index].name}
+                        isActive={props.active === viewType.items[index].name}
                         key={index}
                         item={item}
                         onClick={() => setActive(item, index)}

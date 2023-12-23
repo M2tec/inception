@@ -9,7 +9,7 @@ export default function Home() {
             <SearchAppBar />
 
             <div className="View">
-                <GcSideBar /><DataView />
+                <GcSideBar /><DataView type="source"/>
             </div>
         </div>
     );

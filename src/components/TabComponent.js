@@ -7,21 +7,36 @@ import { X } from 'react-bootstrap-icons';
 export default function TabComponent(props) {
     const { context, setContext } = React.useContext(AppContext)
 
+    const viewType = context.dataItems[props.type]
+
     function closeTab(e) {
         setContext(oldContext => {
-            let fileIndex = oldContext.openFiles.indexOf(oldContext.active)
+            const dataItem = oldContext.dataItems[props.type] || [];
+
+
+            let fileIndex = dataItem.openItems.indexOf(dataItem.active)
             console.log(fileIndex)
 
             // Remove the file from the openFiles list
-            let newOpenFiles = oldContext.openFiles || [];
-            newOpenFiles.splice(fileIndex,1)
+            let newOpenItems = dataItem.openItems || [];
+            newOpenItems.splice(fileIndex,1)
 
             if (fileIndex > 0) {
                 fileIndex -= 1
             }
 
-            let newActive = oldContext.openFiles[fileIndex]
-            return { ...oldContext, newActive:newActive, active: newActive, openFiles: newOpenFiles }
+            let newActive = dataItem.openItems[fileIndex]
+
+            dataItem.active = newActive
+            dataItem.openItems = newOpenItems
+
+            let newDataItems = oldContext.dataItems
+            newDataItems[props.type] = dataItem
+            console.log(newDataItems)
+
+            return { ...oldContext, newDataItems }
+
+            // return { ...oldContext, newActive:newActive, active: newActive, openFiles: newOpenFiles }
         })
 
     }
@@ -41,7 +56,8 @@ export default function TabComponent(props) {
            <div 
                 className={name === props.active ? "TabItem TabItemActive" : "TabItem"}
                 >
-            <span onClick={() => toggleTab(name)} className='me-2'>{name}</span><X name={name} onClick={(e) => closeTab(e)} size={"20px"} /></div>
+            <span onClick={() => toggleTab(name)} className='me-2'>{name}</span><X name={name} onClick={(e) => closeTab(e)} size={"20px"} />
+            </div> 
         )
     };
 
@@ -53,7 +69,7 @@ export default function TabComponent(props) {
             <div 
                 className={name === props.active ? "TabPane  TabPaneActive" : "TabPane" }
                 > 
-                <SourceViewer name={name} readOnly={false} />
+                <SourceViewer type={props.type} name={name} readOnly={false} />
             </div>
         )
     };
@@ -61,7 +77,7 @@ export default function TabComponent(props) {
     return (
             <div className="TabContainer">
                  <div className='TabBar'>
-                    {context.openFiles.map((name, index) => {
+                    {viewType.openItems.map((name, index) => {
                         return (
                             <GcTab
                                 index={index}
@@ -72,7 +88,7 @@ export default function TabComponent(props) {
                     })}
                 </div>
 
-                 {context.openFiles.map((name, index) => {
+                 {viewType.openItems.map((name, index) => {
                         return (
                             <GcPane
                                 index={index}

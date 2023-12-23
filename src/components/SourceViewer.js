@@ -10,7 +10,11 @@ const SourceViewer = (props) => {
   const { context, setContext } = React.useContext(AppContext)
   const [ manualHeight, setManualHeight] = React.useState(1)
   const [ manualWidth, setManualWidth] = React.useState(1)
-    
+  
+  const viewType = context.dataItems[props.type]
+  const openItem = viewType.items.find((item) => item.name === props.name);
+  const data = openItem.data;
+
   const { ref } = useResizeObserver({
     onResize: ({ width, height }) => {
       // console.log("Observer height:\t" + height)
@@ -23,8 +27,6 @@ const SourceViewer = (props) => {
     },
   });
 
-  const openItem = context.items.find((item) => item.name === props.name);
-  const data = openItem.data;
   // const editorRef = React.useRef(null);
 
   function handleEditorDidMount(editor, monaco) {
@@ -38,7 +40,7 @@ const SourceViewer = (props) => {
   function handleEditorChange(value, event) {
     // console.log('here is the current model value:', value);
     let saveIndex = -1;
-    const saveItem = context.items.find((item, index) => {
+    const saveItem = viewType.items.find((item, index) => {
       const isStorageItem = item.name === props.name;
       if (isStorageItem)
         saveIndex = index;
@@ -46,13 +48,18 @@ const SourceViewer = (props) => {
       return isStorageItem;
     });
 
-    let newItems = [...context.items]
+    let newItems = [...viewType.items]
     newItems[saveIndex].data = value
 
     // Store the temporary context in the browser local storage.
     // On a save event the context gets swapped. To save permanently.
     // See AppContext.js
-    let tempContext = { ...context, items: newItems }
+    viewType.items = newItems
+    
+    let newDataItems = context.dataItems
+    newDataItems[props.type] = viewType
+
+    let tempContext = { ...context, dataItems: newDataItems}
     localStorage.setItem('tempContext', JSON.stringify(tempContext));
   }
 

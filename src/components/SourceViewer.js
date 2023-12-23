@@ -46,13 +46,13 @@ const SourceViewer = (props) => {
 
   return (
     <div className='testing' ref={ref}>
-      {/* Size: {width}x{height} */}
+      {console.log("Editor: " + width + " x " + height)}
       <Editor
        theme="vs-dark"
        language={openItem.type}
        value={data}
-       width={width}
-       height={height}
+       width={Math.floor(width - 2)}
+       height={Math.floor(height - 2)}
        options={{readOnly: false}}
        onChange={handleEditorChange}
        onMount={handleEditorDidMount}

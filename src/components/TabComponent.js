@@ -34,16 +34,21 @@ export default function TabComponent(props) {
             newDataItems[props.type] = dataItem
             console.log(newDataItems)
 
-            return { ...oldContext, newDataItems }
+            return { ...oldContext, dataItems:newDataItems }
 
-            // return { ...oldContext, newActive:newActive, active: newActive, openFiles: newOpenFiles }
         })
 
     }
 
     function toggleTab (name) {
-        setContext(oldContext => {           
-            return { ...oldContext, active: name }
+        setContext(oldContext => {
+            const dataItem = oldContext.dataItems[props.type] 
+            dataItem.active = name
+            
+            let newDataItems = oldContext.dataItems
+            newDataItems[props.type] = dataItem
+            
+            return { ...oldContext, dataItems:newDataItems }
         })
     }
 

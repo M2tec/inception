@@ -115,8 +115,6 @@ export default function TabComponent() {
                                 key="0"
                                 name="contract.hl"
                             /> */}
-
-
                 </div>
         // </div>
     );

@@ -6,30 +6,23 @@ import { AppContext } from '../AppContext';
 
 import useResizeObserver from "use-resize-observer";
 
-import _debounce from 'lodash/debounce';
-
-function debounce(func, timeout = 300){
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => { func.apply(this, args); }, timeout);
-  };
-}
-
-
 const SourceViewer = (props) => {
   const { context, setContext } = React.useContext(AppContext)
-  const [ height1, setHeight1] = React.useState(1)
-  const [ width1, setWidth1] = React.useState(1)
+  const [ manualHeight, setManualHeight] = React.useState(1)
+  const [ manualWidth, setManualWidth] = React.useState(1)
   
   // const { ref, width = 1, height = 1 } = useResizeObserver();
   
   const { ref } = useResizeObserver({
     onResize: ({ width, height }) => {
-      console.log(height)// do something here.
-      setHeight1(height)
-      setWidth1(width)
-      // const debounceFn = React.useCallback(_debounce(setHeight1(height), 1000), []);
+      console.log("Observer height:\t" + height)// do something here.
+      console.log("Window height:\t" + window.innerHeight)
+
+      // Hack to manually calculate size from css values 
+      // Height falls back to total height sometimes for some reason during resize
+      setManualHeight( window.innerHeight - 56 - 32 )
+      setManualWidth( width)
+
     },
   });
 
@@ -69,17 +62,12 @@ const SourceViewer = (props) => {
   return (
     <div className='testing' ref={ref}>
       {/* {console.log("Editor: " + width + " x " + height)} */}
-      {console.log("Height1: " + height1)}
       <Editor
        theme="vs-dark"
        language={openItem.type}
        value={data}
-      //  width={Math.floor(width - 2)}
-      //  height={Math.floor(height - 2)}
-      //  width={width}
-       height={height1} 
-       width={width1}
-      //  height={600}
+       height={manualHeight} 
+       width={manualWidth}
        options={{readOnly: false}}
        onChange={handleEditorChange}
        onMount={handleEditorDidMount}

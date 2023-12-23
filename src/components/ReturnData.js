@@ -1,9 +1,9 @@
 import React from "react";
-import SourceViewerReadOnly from "./SourceViewerReadOnly";
 import SearchAppBar from './SearchAppBar';
 import { useParams } from 'react-router-dom';
 import GcSideBar from './GcSideBar';
 import { AppContext } from '../AppContext';
+import DataView from "./DataView";
 
 import {
     PanelGroup,
@@ -55,12 +55,10 @@ export default function ReturnData() {
     return (
         <div className="panel-group">
             <SearchAppBar />
-            <PanelGroup direction="horizontal">
-                <GcSideBar />
-                <Panel>
-                    <SourceViewerReadOnly className="source-browser"/>
-                </Panel>
-            </PanelGroup>
+
+            <div className="View">
+                <GcSideBar /><DataView type="returndata"/>
+            </div>
         </div>
     );
 }

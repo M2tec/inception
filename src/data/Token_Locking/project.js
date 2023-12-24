@@ -171,6 +171,17 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 }
 
 `
+        },
+        {
+            name: "gc_test_template.gcscript",
+            type: "json",
+            data: `
+{
+    "datum": "--datum.json--",                
+    "heliosCode": "{hexToStr('--contract.hl--')}",
+    "redeemer": "--redeemer.json--"               
+}
+`
         }
             ]},
         returndata: {

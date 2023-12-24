@@ -35,57 +35,52 @@ export default function Home() {
 
         let activeScript = viewType.active
         // console.log(viewType.active)
-
-        viewType.items.forEach(item => {
-        
         const activeItem = viewType.items.find((item) => item.name === activeScript);
         console.log(activeItem)
-        // let itemIndex = viewType.items.name.indexOf(activeScript)
+
+        let gc_compile = activeItem.data
+
+        viewType.items.forEach(item => {
 
             if (!item.name.endsWith('.gcscript')) {
 
                 if (item.name.endsWith('.json')){
                     console.log(item.name)
 
-                    let matchToken = "--" + item.name + "--"
+                    let matchToken = '"--' + item.name + '--"'
+                    console.log("Token: " + matchToken)
 
-                    activeItem.data.replace(matchToken, item.data)
+                    gc_compile = gc_compile.replace(matchToken, item.data)
+                    console.log(gc_compile)
                 }
 
+                if (item.name.endsWith('.hl')){
+                    console.log(item.name)
+                    
+                    const Buffer = gc.utils.Buffer;
+                    let contractHex = Buffer.from(item.data).toString('hex')
 
+                    let matchToken = '--' + item.name + '--'
+                    console.log("Token: " +  matchToken)
+
+                    gc_compile = gc_compile.replace(matchToken, contractHex)
+                }
             }
-            console.log(JSON.parse(activeItem.data))
 
         });
+   
+        let gc_script = JSON.parse(gc_compile)
+        gc_script.returnURLPattern = window.location.origin + window.location.pathname + "return-data/{result}";
 
-        
+        localStorage.setItem('gc_script', JSON.stringify(gc_script));
 
+        let url = window.location.origin + "/connect"
 
-        // let contract = context.items[0].data;
-        // let datum = context.items[1].data;
-        // let redeemer = context.items[2].data;
-        // let gc_script_template = context.items[3].data;
+        let sessionID = 1
+        let newwindow = window.open(url, "Gamechanger connect id: " + sessionID, 'height=875,width=755');
 
-        // const Buffer = gc.utils.Buffer;
-        // let contractHex = Buffer.from(contract).toString('hex')
-
-        // let gc_compile = gc_script_template
-        //     .replace("--contract.hl--", contractHex)
-        //     .replace('"--datum.json--"', datum)
-        //     .replace('"--redeemer.json--"', redeemer)
-
-        // let gc_script = JSON.parse(gc_compile)
-        // gc_script.returnURLPattern = window.location.origin + window.location.pathname + "return-data/{result}";
-
-        // localStorage.setItem('gc_script', JSON.stringify(gc_script));
-
-        // let url = window.location.origin + "/connect"
-
-        // let sessionID = 1
-        // let newwindow = window.open(url, "Gamechanger connect id: " + sessionID, 'height=875,width=755');
-
-        // if (window.focus) { newwindow.focus() }
-        // return false;
+        if (window.focus) { newwindow.focus() }
+        return false;
     }
 
     function handleClickData(e) {

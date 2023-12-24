@@ -103,8 +103,6 @@ body,
   width: 8px;
 }
 
-
-
 .file-item {
   padding-left: 3ch;
   box-sizing: border-box;
@@ -115,18 +113,27 @@ body,
 }
 
 .file-item-selected {
-  padding-left: 3ch;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  height: 1.5rem;
-  gap: 1ch;
   background-color: var(--body_background);
 }
 
 .file-item:hover {
-  background-color: var(--body_background)3;
+  background-color: var(--body_background);
 }
+
+
+.trash-icon {
+  display: none;
+  /* color: rgb(133, 133, 133) */
+  /* background-color: var(--body_background); */
+}
+
+
+.file-item:hover .trash-icon {
+  display: block;
+  color: rgb(127, 127, 127)
+  /* background-color: var(--body_background); */
+}
+
 
 .folder-item {
   box-sizing: border-box;
@@ -140,8 +147,8 @@ body,
 
 .file-icon {
   color:#dcadff;
-  width: 1.5ch !important;
-  height: 1.5ch;
+  /* width: 1.5ch !important;
+  height: 1.5ch; */
 }
 
 .file-expander {

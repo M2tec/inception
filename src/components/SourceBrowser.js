@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { ChevronDown, FiletypeJson } from 'react-bootstrap-icons';
+import { 
+    ChevronDown, 
+    FiletypeJson,
+    Trash
+} from 'react-bootstrap-icons';
+
 import { AppContext } from '../AppContext';
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
@@ -11,36 +16,50 @@ export default function SourceBrowser(props) {
     const [ addFile, setAddFile] = React.useState(false);
     const [ fileName, setFileName] = React.useState("");
     
-    const [contextMenu, setContextMenu] = React.useState({
-        position: {
-            x: 0,
-            y: 0
-        },
-        toggled: false
+    const viewType = context.dataItems[props.type]
+
+    function deleteItem (e,item) {
+        console.log(item.name)
+
+        setContext(oldContext => {
+
+            let newContext = {...oldContext}
+
+            console.log(newContext.dataItems[props.type])
+            
+            const index = newContext.dataItems[props.type].items.map(e => e.name).indexOf(item.name);
+            console.log(index)
+
+            // console.log(newContext.dataItems[props.type].items.splice(index, 1))
+
+            let newItems = newContext.dataItems[props.type].items
+            console.log(newItems)
+            newItems = newItems.splice(index, 1)
+            console.log(newItems)
+            // newContext.dataItems[props.type].items.splice(index, 1)
+
+            return newContext
         })
 
-    const viewType = context.dataItems[props.type]
-    // console.log({Viewtype:viewType})
-    // console.log(context)
-    // console.log(props.type)
-    // console.log(context.dataItems[props.type])
+    }
 
     const File = ({
         item,
         isActive,
         onClick
     }) => {
-        let cssSelected = ''
-
-        // Highlight active file
-        
-
         return (
             <div 
-                onClick={onClick} 
-                className={isActive ? 'file-item-selected' : 'file-item'} 
+                className={isActive ? 'file-item-selected file-item' : 'file-item'} 
                 >
-                <FiletypeJson className="file-icon" /><span className="file-name">{item.name}</span>
+                    <FiletypeJson size={"15px"} className="file-icon" />
+                    <span 
+                        onClick={onClick} 
+                        className="file-name">{item.name}</span>
+                    <Trash 
+                        onClick={(e) => deleteItem(e,item)}
+                        size={"15px"} 
+                        className="trash-icon" />
             </div>
         );
     };
@@ -48,12 +67,6 @@ export default function SourceBrowser(props) {
     function handleCreateFile(e, fileName) {
         console.log(e)
         console.log(fileName)
-
-        
-
-        
-        // setContext({ ...context, items: newItems })
-        // localStorage.setItem('tempContext', JSON.stringify(tempContext));
 
         setContext(oldContext => {
 
@@ -80,10 +93,6 @@ export default function SourceBrowser(props) {
     }
 
     function setActive(item, index){
-        // console.log("setActive")
-        // console.log(item.name)
-        // console.log(index)
-
         setContext(oldContext => {
             const dataItem = oldContext.dataItems[props.type] || [];
             

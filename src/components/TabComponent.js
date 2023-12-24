@@ -11,13 +11,8 @@ export default function TabComponent(props) {
 
     function closeTab(e,name) {
        
-
         setContext(oldContext => {
             const dataItem = oldContext.dataItems[props.type] || [];
-
-            // Get file index of active item
-            // let fileIndex = dataItem.openItems.indexOf(dataItem.active)
-            // console.log(fileIndex)
 
             // Get file index of close item
             let fileIndex = dataItem.openItems.indexOf(name)
@@ -25,8 +20,6 @@ export default function TabComponent(props) {
             // Remove the file from the openFiles list
             let newOpenItems = dataItem.openItems || [];
             newOpenItems.splice(fileIndex,1)
-
-            console.log("name: " + name)
 
             if (name == dataItem.active) {
 
@@ -45,7 +38,6 @@ export default function TabComponent(props) {
             console.log(newDataItems)
 
             return { ...oldContext, dataItems:newDataItems }
-
         })
 
     }

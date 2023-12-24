@@ -61,6 +61,7 @@ body,
 .TabBar {
   display: flex;
   flex-direction: row;
+  overflow-x: scroll;
 }
 
 .TabContainer {
@@ -68,7 +69,10 @@ body,
 }
 
 .TabItem {
-  height:32px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height:35px;
   padding: 3px 12px;
   color: white;
   background-color: #192230;

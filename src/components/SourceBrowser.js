@@ -45,29 +45,37 @@ export default function SourceBrowser(props) {
         );
     };
     
-    function handleCreateFile() {
+    function handleCreateFile(e, fileName) {
+        console.log(e)
         console.log(fileName)
 
-        let newItem = {
-            "name": fileName,
-            "type": "helios",
-            "data": ``}
         
-        let newItems = [...context.items, newItem]
+
         
-        setContext({ ...context, items: newItems })
+        // setContext({ ...context, items: newItems })
         // localStorage.setItem('tempContext', JSON.stringify(tempContext));
-        
+
+        setContext(oldContext => {
+
+            let newContext = {...oldContext}
+            
+            let newItem = {
+                "name": fileName,
+                "type": "",
+                "data": ``}
+            
+            newContext.dataItems[props.type].items.push(newItem)
+
+            return newContext
+        })
         setAddFile(false)
     }
 
     function handleAddFile() {
-        console.log("hi")
         setAddFile(true)
     }
 
     function handleCancelAddFile() {
-        console.log("hi")
         setAddFile(false)
     }
 
@@ -88,7 +96,7 @@ export default function SourceBrowser(props) {
             let newDataItems = oldContext.dataItems
             newDataItems[props.type] = dataItem
                         
-            return { ...oldContext, newDataItems }
+            return { ...oldContext, dataItems:newDataItems }
         })
     }
     // function handleOnContextMenu(e, item) {
@@ -120,7 +128,7 @@ export default function SourceBrowser(props) {
                         value={fileName}
                         onChange={(e) => setFileName(e.target.value)}
                     />
-                    <Button onClick={handleCreateFile} variant="success" className="rounded ms-5 mt-2">Add file</Button>
+                    <Button onClick={(e) => handleCreateFile(e, fileName)} variant="success" className="rounded ms-5 mt-2">Add file</Button>
                     <Button onClick={handleCancelAddFile} variant="secondary" className="rounded mt-2 ms-1">Cancel</Button>
                 </Form>
                 :

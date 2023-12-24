@@ -78,14 +78,16 @@ export default function SourceBrowser(props) {
 
         setContext(oldContext => {
             const dataItem = oldContext.dataItems[props.type] || [];
-            const openItems = dataItem.openItems || [];
             
+            const openItems = dataItem.openItems || [];
             let filename = dataItem.items[index].name
             openItems.indexOf(filename) === -1 ? openItems.push(filename) : console.log("This item already exists");
             
+            dataItem.active = item.name;
+
             let newDataItems = oldContext.dataItems
             newDataItems[props.type] = dataItem
-            
+                        
             return { ...oldContext, newDataItems }
         })
     }

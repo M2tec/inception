@@ -14,9 +14,7 @@ const gc = window.gc;
 
 export default function Home() {
     const { context, setContext } = React.useContext(AppContext)
-    
 
-    // const [menuActive, setMenuActive] = React.useState("home");
     const [type, setType] = React.useState("source")
 
     let viewType = context.dataItems[type]

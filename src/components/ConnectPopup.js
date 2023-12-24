@@ -1,17 +1,19 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { AppContext } from '../AppContext';
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { XCircle } from 'react-bootstrap-icons';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import moment from 'moment';
+
 const gc = window.gc;
 
 export default function ConnectPopup() {
+    const { context, setContext } = React.useContext(AppContext)
+
     document.querySelector("body").setAttribute('data-theme', 'dark')
 
-    const location = useLocation();
-    // const { context, setContext } = React.useContext(AppContext)
     const [resultObj, setResultObj] = React.useState({});
     let { returnData } = useParams();
 
@@ -26,7 +28,27 @@ export default function ConnectPopup() {
                 const resultObj = await gc.encodings.msg.decoder(returnData);
                 setResultObj(resultObj)
                 localStorage.setItem("gc_return_data", JSON.stringify(resultObj))
-                // setData(resultObj);
+
+                setContext(oldContext => {
+
+                    let newContext = {...oldContext}
+                    
+                    moment.locale('en');
+                    let fileName = "returndata-" + moment().format('y-M-D_h-m') + ".json"
+
+                    console.log("save item")
+                    let newItem = {
+                        name: fileName,
+                        type: "json",
+                        data: '`' + JSON.stringify(resultObj) + '`'}
+
+                    newContext.dataItems["returndata"].items.unshift(newItem)
+        
+
+                    localStorage.setItem('tempContext', JSON.stringify(newContext));
+        
+                    return newContext
+                })
             }
 
             if (returnData !== undefined) {
@@ -53,12 +75,12 @@ export default function ConnectPopup() {
                 buildActionUrl(gc_script);
             }
         }
-    }, [])
+    }, [returnData])
 
     return (
         <>
                 {window.resizeTo(875, 755)}
-                {returnData == undefined ?
+                {returnData === undefined ?
                     <div>Redirecting to Gamechanger wallet</div>
                 : (
                     <div className='fontwhite p-4'>

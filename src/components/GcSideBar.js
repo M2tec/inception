@@ -7,22 +7,9 @@ import {
 } from 'react-bootstrap-icons';
 import { AppContext } from '../AppContext';
 import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import { Container } from 'react-bootstrap';
+
 
 const gc = window.gc;
-
-async function buildActionUrl_lock(lock_script) {
-  const url = await gc.encode.url({
-    input: JSON.stringify(lock_script),
-    apiVersion: "2",
-    network: "preprod",
-    //encoding:"gzip",
-  });
-
-  window.open(url)
-}
 
 const GcSideBar = () => {
   const { context, setContext } = React.useContext(AppContext)
@@ -49,15 +36,12 @@ const GcSideBar = () => {
     let gc_script = JSON.parse(gc_compile)
     gc_script.returnURLPattern = window.location.origin + window.location.pathname + "return-data/{result}";
 
-    // buildActionUrl_lock(tx_object)
-
     localStorage.setItem('gc_script', JSON.stringify(gc_script));
 
     let url = window.location.origin + "/connect"
 
     let sessionID = 1
     let newwindow = window.open(url, "Gamechanger connect id: " + sessionID, 'height=875,width=755');
-    // newwindow.resizeTo(875, 755)
 
     if (window.focus) { newwindow.focus() }
     return false;

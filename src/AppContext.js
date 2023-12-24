@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 export const AppContext = React.createContext();
 
 export function AppProvider({ children }) {
-    const updateIntervalMs = 1000 * 205;//5 seconds
+    const updateIntervalMs = 1000 * 10;//5 seconds
 
     const loadContext = () => {
         console.log(`loadContext()`);

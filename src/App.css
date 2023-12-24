@@ -123,15 +123,16 @@ body,
 
 .trash-icon {
   display: none;
-  /* color: rgb(133, 133, 133) */
-  /* background-color: var(--body_background); */
+}
+
+.file-item-selected:hover .trash-icon {
+  display: none !important;
 }
 
 
 .file-item:hover .trash-icon {
   display: block;
   color: rgb(127, 127, 127)
-  /* background-color: var(--body_background); */
 }
 
 
@@ -147,8 +148,6 @@ body,
 
 .file-icon {
   color:#dcadff;
-  /* width: 1.5ch !important;
-  height: 1.5ch; */
 }
 
 .file-expander {
@@ -256,6 +255,11 @@ body,
   color: rgb(94, 94, 94);
   background-color: var(--body_background);
   border: 3px solid var(--body_background);
+}
+
+.btn-add-file {
+  width: 35px;
+  height: 35px;
 }
 
 .container {

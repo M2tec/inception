@@ -18,9 +18,10 @@ export default function SourceBrowser(props) {
     
     const viewType = context.dataItems[props.type]
 
-    function deleteItem (e,item) {
+    function deleteItem (e,item, isActive) {
         console.log(item.name)
 
+        if (!isActive) {
         setContext(oldContext => {
 
             let newContext = {...oldContext}
@@ -37,10 +38,11 @@ export default function SourceBrowser(props) {
             newItems = newItems.splice(index, 1)
             console.log(newItems)
             // newContext.dataItems[props.type].items.splice(index, 1)
+            localStorage.setItem('tempContext', JSON.stringify(newContext));
 
             return newContext
         })
-
+    }
     }
 
     const File = ({
@@ -57,7 +59,7 @@ export default function SourceBrowser(props) {
                         onClick={onClick} 
                         className="file-name">{item.name}</span>
                     <Trash 
-                        onClick={(e) => deleteItem(e,item)}
+                        onClick={(e) => deleteItem(e,item, isActive)}
                         size={"15px"} 
                         className="trash-icon" />
             </div>
@@ -78,6 +80,8 @@ export default function SourceBrowser(props) {
                 "data": ``}
             
             newContext.dataItems[props.type].items.push(newItem)
+
+            localStorage.setItem('tempContext', JSON.stringify(newContext));
 
             return newContext
         })
@@ -134,6 +138,10 @@ export default function SourceBrowser(props) {
                     <Form.Control 
                         className="ms-5 mt-2 w-50" 
                         placeholder="Enter filename..." 
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter")
+                                handleCreateFile(e, fileName);
+                            }}
                         value={fileName}
                         onChange={(e) => setFileName(e.target.value)}
                     />
@@ -141,7 +149,7 @@ export default function SourceBrowser(props) {
                     <Button onClick={handleCancelAddFile} variant="secondary" className="rounded mt-2 ms-1">Cancel</Button>
                 </Form>
                 :
-                <Button onClick={handleAddFile} variant="primary" className="rounded ms-5 mt-2">+</Button>}
+                <Button onClick={handleAddFile} variant="primary" className="btn-add-file rounded ms-5 mt-2">+</Button>}
 
         </div>
     );

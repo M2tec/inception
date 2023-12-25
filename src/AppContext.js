@@ -12,7 +12,7 @@ export function AppProvider({ children }) {
         const json = localStorage.getItem('gcide');
 
         if (!json) {
-            console.log('!JSON')
+            // console.log('!JSON')
             let data = { ...project, updatedAt: Date.now() }
             localStorage.setItem('gcide', JSON.stringify(data));
             return data;

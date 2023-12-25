@@ -26,17 +26,26 @@ export default function SourceBrowser(props) {
 
             let newContext = {...oldContext}
 
-            console.log(newContext.dataItems[props.type])
+            // console.log(newContext.dataItems[props.type])
             
             const index = newContext.dataItems[props.type].items.map(e => e.name).indexOf(item.name);
-            console.log(index)
+            // console.log("Index: " + index)
 
-            // console.log(newContext.dataItems[props.type].items.splice(index, 1))
+            const openIndex = newContext.dataItems[props.type].openItems.indexOf(item.name);
+            // console.log(newContext.dataItems[props.type].openItems)
+            // console.log("item.name: " + item.name)
+            // console.log("OpenIndex: " + openIndex)
+
+            let newOpenItems = newContext.dataItems[props.type].openItems
+            if (openIndex !== -1){
+                newOpenItems = newOpenItems.splice(openIndex, 1)
+            }
+            // console.log({newOpenItems:newOpenItems})
 
             let newItems = newContext.dataItems[props.type].items
-            console.log(newItems)
+            // console.log(newItems)
             newItems = newItems.splice(index, 1)
-            console.log(newItems)
+            // console.log(newItems)
             // newContext.dataItems[props.type].items.splice(index, 1)
             localStorage.setItem('tempContext', JSON.stringify(newContext));
 

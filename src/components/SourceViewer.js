@@ -14,8 +14,12 @@ const SourceViewer = (props) => {
   const viewType = context.dataItems[props.type]
   const openItem = viewType.items.find((item) => item.name === props.name);
 
-  console.log(props.name)
-  console.log(openItem)
+  // console.log(props.type)
+  // console.log(props.name)
+  // console.log(viewType)
+  // console.log(openItem)
+
+
   const data = openItem.data;
 
   const { ref } = useResizeObserver({

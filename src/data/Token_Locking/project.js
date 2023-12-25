@@ -182,6 +182,25 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
     "redeemer": "--redeemer.json--"               
 }
 `
+        },
+        {
+            name: "list_keys.gcscript",
+            type: "json",
+            data: `
+            {
+                "type": "script",
+                "title": "List keys in workspace",
+                "description": "List and sort all keys in current workspace",
+                "exportAs": "data",
+                "run": {
+                    "keys": {
+                        "type": "getPublicKeys",
+                        "keyPattern": "{artifactName}:{pubKeyHashHex}",
+                        "sort": "ascending"
+                    }
+                }
+            }
+`
         }
             ]},
         returndata: {

@@ -68,14 +68,13 @@ export default function Home() {
         });
    
         let gc_script = JSON.parse(gc_compile)
-        gc_script.returnURLPattern = window.location.origin + window.location.pathname + "return-data/{result}";
+        gc_script.returnURLPattern = window.location.origin + window.location.pathname + "connect/{result}";
 
         localStorage.setItem('gc_script', JSON.stringify(gc_script));
 
         let url = window.location.origin + "/connect"
 
-        let sessionID = 1
-        let newwindow = window.open(url, "Gamechanger connect id: " + sessionID, 'height=875,width=755');
+        let newwindow = window.open(url, "Gamechanger connect", 'height=875,width=755');
 
         if (window.focus) { newwindow.focus() }
         return false;

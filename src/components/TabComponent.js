@@ -72,7 +72,6 @@ export default function TabComponent(props) {
         index,
         name,
     }) => {
-        console.log(name)
         return (
             <div 
                 className={name === props.active ? "TabPane  TabPaneActive" : "TabPane" }

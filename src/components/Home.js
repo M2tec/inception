@@ -14,11 +14,88 @@ const gc = window.gc;
 
 export default function Home() {
     const { context, setContext } = React.useContext(AppContext)
-
     const [type, setType] = React.useState("source")
 
     let viewType = context.dataItems[type]
     const isActiveAGCScript = viewType.active && viewType.active.endsWith('.gcscript');
+
+
+    const stateKey = "gc_return_data"
+    const d = ''
+    const [state, setState] = React.useState(d)
+    const isNewSession = React.useRef(true)
+
+
+    React.useEffect(() => {
+        if (isNewSession.current) {
+            const currentState = localStorage.getItem(stateKey)
+            if (currentState) {
+                setState(JSON.parse(currentState))
+            } else {
+                setState(d)
+            }
+            isNewSession.current = false
+            return
+        }
+        try {
+            localStorage.setItem(stateKey, JSON.stringify(state))
+        } catch (error) { }
+    }, [state, stateKey, d])
+
+    React.useEffect(() => {
+        const onReceieveMessage = (e) => {
+            console.log("data received")
+
+            const tempContextTxt = localStorage.getItem('tempContext');
+            let tempContext = JSON.parse(tempContextTxt)
+    
+            if (tempContextTxt !== null) {
+                localStorage.setItem('gcide', tempContextTxt);
+            }
+
+            setContext(oldContext => {  
+                viewType = tempContext.dataItems.returndata
+                // console.log(viewType)
+
+                let latestItem = viewType.items[0].name
+                viewType.active = latestItem                
+                viewType.openItems = [latestItem]
+
+                let newDataItems = tempContext.dataItems
+                newDataItems.returndata = viewType
+                console.log(newDataItems)
+
+
+                return { ...tempContext, dataItems:newDataItems }
+            })
+
+            // setContext(oldContext => {
+            //     viewType = oldContext.dataItems.returndata
+            //     console.log(viewType)
+
+            //     let latestItem = viewType.items[0].name
+            //     viewType.active = latestItem                
+            //     viewType.openItems = [latestItem]
+
+            //     let newDataItems = oldContext.dataItems
+            //     newDataItems.returndata = viewType
+            //     console.log(newDataItems)
+    
+            //     return { ...oldContext, dataItems:newDataItems }
+            // })
+
+
+            handleClickData(e)
+
+            const { key, newValue } = e
+            if (key === stateKey) {
+                setState(JSON.parse(newValue))
+            }
+        }
+        window.addEventListener('storage', onReceieveMessage)
+        return () => window.removeEventListener('storage', onReceieveMessage)
+    }, [stateKey, setState])
+
 
     function handleClickHome(e) {
         setType("source")
@@ -34,7 +111,7 @@ export default function Home() {
         let activeScript = viewType.active
         // console.log(viewType.active)
         const activeItem = viewType.items.find((item) => item.name === activeScript);
-        console.log(activeItem)
+        // console.log(activeItem)
 
         let gc_compile = activeItem.data
 
@@ -42,31 +119,31 @@ export default function Home() {
 
             if (!item.name.endsWith('.gcscript')) {
 
-                if (item.name.endsWith('.json')){
-                    console.log(item.name)
+                if (item.name.endsWith('.json')) {
+                    // console.log(item.name)
 
                     let matchToken = '"--' + item.name + '--"'
-                    console.log("Token: " + matchToken)
+                    // console.log("Token: " + matchToken)
 
                     gc_compile = gc_compile.replace(matchToken, item.data)
-                    console.log(gc_compile)
+                    // console.log(gc_compile)
                 }
 
-                if (item.name.endsWith('.hl')){
-                    console.log(item.name)
-                    
+                if (item.name.endsWith('.hl')) {
+                    // console.log(item.name)
+
                     const Buffer = gc.utils.Buffer;
                     let contractHex = Buffer.from(item.data).toString('hex')
 
                     let matchToken = '--' + item.name + '--'
-                    console.log("Token: " +  matchToken)
+                    // console.log("Token: " + matchToken)
 
                     gc_compile = gc_compile.replace(matchToken, contractHex)
                 }
             }
 
         });
-   
+
         let gc_script = JSON.parse(gc_compile)
         gc_script.returnURLPattern = window.location.origin + window.location.pathname + "connect/{result}";
 
@@ -86,7 +163,7 @@ export default function Home() {
 
     function handleClickPopup(e) {
         let url = window.location.origin;
-        console.log(url)
+        // console.log(url)
         window.location.replace(url)
     }
 
@@ -97,31 +174,31 @@ export default function Home() {
             <div className="View">
 
                 <div className='GcSideBar'>
-                    <Button 
+                    <Button
                         className={type === "source" ? "btn-active" : ""}
-                        onClick={handleClickHome} 
+                        onClick={handleClickHome}
                         variant="primary">
-                            <Files size={"20px"} />
+                        <Files size={"20px"} />
                     </Button>
 
-                    <Button 
-                        onClick={handleClickRun} 
-                        disabled={!isActiveAGCScript} 
+                    <Button
+                        onClick={handleClickRun}
+                        disabled={!isActiveAGCScript}
                         variant="primary">
-                            <PlayFill size={"20px"} />
+                        <PlayFill size={"20px"} />
                     </Button>
-                    
-                    <Button 
+
+                    <Button
                         className={type === "returndata" ? "btn-active" : ""}
-                        onClick={handleClickData} 
+                        onClick={handleClickData}
                         variant="primary">
-                            <ArrowReturnLeft size={"20px"} />
+                        <ArrowReturnLeft size={"20px"} />
                     </Button>
 
-                    <Button 
-                        onClick={handleClickPopup} 
+                    <Button
+                        onClick={handleClickPopup}
                         variant="primary">
-                            <CloudUploadFill size={"20px"} />
+                        <CloudUploadFill size={"20px"} />
                     </Button>
 
                 </div>
@@ -131,3 +208,4 @@ export default function Home() {
         </div>
     );
 }
+

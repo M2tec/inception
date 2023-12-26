@@ -8,7 +8,6 @@ import { AppProvider } from './AppContext';
 
 import TestPopup from './components/TestPopup';
 import ConnectPopup from './components/ConnectPopup';
-import RightContext from './components/RightContext';
 
 export default function App() {
   // Update the theme only if the mode changes

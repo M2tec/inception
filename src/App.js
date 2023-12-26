@@ -25,7 +25,6 @@ export default function App() {
         </Route>
 
         <Route path="testpopup" element={<TestPopup />} />
-        <Route path="testcontextmenu" element={<RightContext />} />
         <Route path="*" element={<NoMatch />} />
 
       </Routes>

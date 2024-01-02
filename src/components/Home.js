@@ -19,12 +19,12 @@ export default function Home() {
     let viewType = context.dataItems[type]
     const isActiveAGCScript = viewType.active && viewType.active.endsWith('.gcscript');
 
-
+    // Following two useEffect hooks are setup to refresh the view when data
+    // is returned from the connect popup
     const stateKey = "gc_return_data"
     const d = ''
     const [state, setState] = React.useState(d)
     const isNewSession = React.useRef(true)
-
 
     React.useEffect(() => {
         if (isNewSession.current) {
@@ -46,6 +46,8 @@ export default function Home() {
         const onReceieveMessage = (e) => {
             console.log("data received")
 
+            // Update the context
+
             const tempContextTxt = localStorage.getItem('tempContext');
             let tempContext = JSON.parse(tempContextTxt)
     
@@ -55,7 +57,6 @@ export default function Home() {
 
             setContext(oldContext => {  
                 viewType = tempContext.dataItems.returndata
-                // console.log(viewType)
 
                 let latestItem = viewType.items[0].name
                 viewType.active = latestItem                
@@ -68,22 +69,6 @@ export default function Home() {
 
                 return { ...tempContext, dataItems:newDataItems }
             })
-
-            // setContext(oldContext => {
-            //     viewType = oldContext.dataItems.returndata
-            //     console.log(viewType)
-
-            //     let latestItem = viewType.items[0].name
-            //     viewType.active = latestItem                
-            //     viewType.openItems = [latestItem]
-
-            //     let newDataItems = oldContext.dataItems
-            //     newDataItems.returndata = viewType
-            //     console.log(newDataItems)
-    
-            //     return { ...oldContext, dataItems:newDataItems }
-            // })
-
 
             handleClickData(e)
 

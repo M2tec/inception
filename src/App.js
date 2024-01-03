@@ -16,10 +16,6 @@ export default function App() {
       <Routes>
         <Route index element={<Home />} />
         
-        {/* <Route path="return-data" element={<ReturnData />}>
-          <Route path=":scriptData" element={<ReturnData />} />
-        </Route> */}
-
         <Route path="connect" element={<ConnectPopup />}>
           <Route path=":returnData" element={<ConnectPopup />} />
         </Route>

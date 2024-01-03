@@ -121,10 +121,6 @@ export default function SourceBrowser(props) {
             return { ...oldContext, dataItems:newDataItems }
         })
     }
-    // function handleOnContextMenu(e, item) {
-    //     e.preventDefault();
-    //     console.log(item)
-    // }
 
     return (
         <div className="source-browser">

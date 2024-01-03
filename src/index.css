@@ -1,15 +1,22 @@
 :root {
   --body_background: rgb(151, 151, 151);
   --body_background-secondary: rgb(126, 126, 126);
+  --body_background-editor: #fffffe;
   --body_color: black;
   --link_color: navy;
+  --text_color: black;
+  --disabled:  rgb(94, 94, 94);
+
 }
 
 [data-theme="dark"] {
   --body_background: #2a3343;
   --body_background-secondary: #192230;
+  --body_background-editor: #1e1e1e;
   --body_color: white;
   --link_color: navy;
+  --text_color: white;
+  --disabled:  #192230;
 }
 
 * {

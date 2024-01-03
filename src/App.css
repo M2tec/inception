@@ -28,12 +28,6 @@ body,
   width: 100%;
 }
 
-.testing {
-  color: white;
-  height: 100%;
-  width: 100%;
-}
-
 .GcSideBar {
   height: 80%;
   width: 50px;
@@ -41,7 +35,8 @@ body,
 
 /* Source browser */
 .source-browser {
-  background-color: var(--body_background-secondary);
+  color:var(--text_color);
+  background-color: var(--body_background-editor);
   height: 100%;
 }
 
@@ -74,14 +69,15 @@ body,
   align-items: center;
   height:35px;
   padding: 3px 12px;
-  color: white;
-  background-color: #192230;
+  color: var(--text_color);
+  background-color: var(--disabled);
   border: solid 1px black;
 }
 
 .TabItemActive {
   padding: 1px 12px 3px 12px;
-  background-color:#1e1e1e !important;
+  color: var(--text_color);
+  background-color: var(--body_background-editor) !important;
   border-top: solid 3px #6d126d;
   border-bottom: 0px;
 }
@@ -155,21 +151,6 @@ body,
   width: 1ch;
   height: 1ch;
   color: white;
-}
-
-.file-name {
-  color:white;
-}
-
-/* Tabs */
-.tab-item {
-  margin: 4px 4px;
-}
-
-.tab-item-span {
-  display: flex;
-  align-items: center;
-  padding: 0px !important;
 }
 
 .panel {

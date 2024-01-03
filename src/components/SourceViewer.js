@@ -11,8 +11,11 @@ const SourceViewer = (props) => {
   const [ manualHeight, setManualHeight] = React.useState(1)
   const [ manualWidth, setManualWidth] = React.useState(1)
   
-  const viewType = context.dataItems[props.type]
+  const viewType = context.dataItems[props.type];
   const openItem = viewType.items.find((item) => item.name === props.name);
+
+  const [ theme, setTheme] = React.useState(document.querySelector("body").getAttribute('data-theme'));
+  console.log(theme)
 
   // console.log(props.type)
   // console.log(props.name)
@@ -71,9 +74,9 @@ const SourceViewer = (props) => {
   }
 
   return (
-    <div className='testing' ref={ref}>
+    <div className='DataView' ref={ref}>
       <Editor
-       theme="vs-dark"
+       theme={theme === "light" ? "light" : "vs-dark"}
        language={openItem.type}
        value={data}
        height={manualHeight} 

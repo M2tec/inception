@@ -1,7 +1,7 @@
 const project = {
     name: "Token_Locking",
     type: "folder",
-    theme: 'dark',
+    theme: 'light',
     dataItems:{ 
         source: {
             openItems: ["contract.hl"],

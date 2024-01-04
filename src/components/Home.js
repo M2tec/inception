@@ -66,7 +66,6 @@ export default function Home() {
                 newDataItems.returndata = viewType
                 console.log(newDataItems)
 
-
                 return { ...tempContext, dataItems:newDataItems }
             })
 

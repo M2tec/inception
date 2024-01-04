@@ -128,9 +128,10 @@ export default function SourceBrowser(props) {
         <div className="source-browser">
 
             <div className="folder-item">
-
-                <ChevronDown className="file-expander" /> <span className="file-name">{props.type}</span></div>
-            <FilesList />
+                <ChevronDown className="file-expander" /> <span className="file-name">{props.type}</span>
+            </div>
+            
+                <FilesList />
 
             {addFile ?
                 <Form>

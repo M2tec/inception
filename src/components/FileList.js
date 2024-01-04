@@ -23,6 +23,7 @@ export default function FilesList() {
 
 function File({ file }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isSelected, setIsSelected] = useState(0);
   const dispatch = useFilesDispatch();
 
   // console.log(file)
@@ -39,7 +40,7 @@ function File({ file }) {
               type: 'changed',
               file: {
                 ...file,
-                text: e.target.value
+                name: e.target.value
               }
             });
           }} />
@@ -55,26 +56,29 @@ function File({ file }) {
       </div>
     );
   }
-  // className={isActive ? 'file-item-selected file-item' : 'file-item'} 
 
   return (
+
     <li key={file.id}>
-      <label className='file-item'>
+
+      <label
+        className={
+          isSelected == file.id ? 'file-item file-item-selected' : 'file-item'
+        }>
+
         <FiletypeJson size={"15px"} className="file-icon" />
 
-        <span
-        // onClick={onClick} 
+        <span onClick={(e) => console.log(e.target.value)  }
         >{fileContent}</span>
 
         <Stickies
-          onClick={() => {
+          onClick={(e) => {
             dispatch({
               type: 'duplicate',
-              id: file.id
+              file: file
             });
           }}
           size={12} />
-
 
         <Trash
           onClick={() => {

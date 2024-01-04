@@ -29,28 +29,54 @@ export function useFilesDispatch() {
     return useContext(FilesDispatchContext);
 }
 
-
-function filesReducer(tasks, action) {
-    console.log(tasks)
+function filesReducer(files, action) {
+    // console.log({ files: files })
+    // console.log({ action: action })
     switch (action.type) {
-        case 'added': {
-            return [...tasks, {
+        case 'selected': {
+            return [...files, {
                 id: action.id,
-                text: action.text,
-                done: false
+                name: action.name,
+            }];
+        }
+        case 'closed': {
+            return [...files, {
+                id: action.id,
+                name: action.name,
+            }];
+        }
+        case 'added': {
+            return [...files, {
+                id: action.id,
+                name: action.name,
             }];
         }
         case 'changed': {
-            return tasks.map(t => {
-                if (t.id === action.task.id) {
-                    return action.task;
+            return files.map(f => {
+                if (f.id === action.file.id) {
+                    return action.file;
                 } else {
-                    return t;
+                    return f;
                 }
             });
         }
+        case 'duplicate': {
+            let ids = files.map((file) => file.id);
+            var largest = Math.max.apply(0, ids);
+
+            let duplicate_file_array = files.filter((file) => {
+                return file.id == action.file.id;
+            })
+
+            let duplicate_file = duplicate_file_array[0]
+            let new_file_name_split = action.file.name.split(".", 2)
+            let new_file_name = new_file_name_split[0] + "-1." + new_file_name_split[1]
+            let new_file = { ...duplicate_file, id: largest + 1, name: new_file_name }
+
+            return [...files, new_file];
+        }
         case 'deleted': {
-            return tasks.filter(t => t.id !== action.id);
+            return files.filter(t => t.id !== action.id);
         }
         default: {
             throw Error('Unknown action: ' + action.type);

@@ -1,81 +1,62 @@
-import React, { useEffect } from "react";
+import React, { createContext, useContext, useReducer } from "react";
 import project from "./data/Token_Locking/project.js";
 import PropTypes from 'prop-types';
 
-export const AppContext = React.createContext();
+// const AppContext = React.createContext(null);
 
-export function AppProvider({ children }) {
-    const updateIntervalMs = 1000 * 10;//5 seconds
+const FilesContext = createContext(null);
+const FilesDispatchContext = createContext(null);
 
-    const loadContext = () => {
-        console.log(`loadContext()`);
-        const json = localStorage.getItem('gcide');
+export function FilesProvider({ children }) {
 
-        if (!json) {
-            // console.log('!JSON')
-            let data = { ...project, updatedAt: Date.now() }
-            localStorage.setItem('gcide', JSON.stringify(data));
-            return data;
-        }
-
-        return JSON.parse(json);
-    }
-    const saveContext = (_context) => {
-        if (!_context)
-            return;
-        const lastContext = loadContext();
-
-        const now = Date.now();
-        const elapsed = (now - lastContext.updatedAt);
-
-        if (elapsed < updateIntervalMs) {
-            console.log(`saveContext(): saving too soon...${elapsed}/${updateIntervalMs}`);
-            return;
-        }
-        const newContext = {
-            ..._context,
-            updatedAt: now,
-        }
-
-        const tempContextTxt = localStorage.getItem('tempContext');
-        let tempContext = JSON.parse(tempContextTxt)
-        // console.log(tempContext)
-        // console.log("Temp: " + tempContext.active )
-        // console.log(newContext.name)
-
-        if (tempContextTxt !== null) {
-            localStorage.setItem('gcide', tempContextTxt);
-        }
-
-        console.log(`saveContext(): Context saved at ${newContext.updatedAt}`, newContext);
-    }
-    const [context, setContext] = React.useState(null);
-
-    useEffect(() => {
-        if (!context) {
-            
-            setContext(loadContext());
-            return;
-        }
-        saveContext(context);
-    }, [context]);
-
-    useEffect(() => {
-        //Implementing the setInterval method
-        const interval = setInterval(() => {
-            saveContext(context);
-        }, updateIntervalMs);
-        //Clearing the interval
-        return () => clearInterval(interval);
-    }, [context]);
-
-    if (!context)
-        return null;
+    const [files, dispatch] = useReducer(filesReducer, initialFiles);
 
     return (
-        <AppContext.Provider value={{ context, setContext }}>
-            {children}
-        </AppContext.Provider>
+        <FilesContext.Provider value={files}>
+            <FilesDispatchContext.Provider value={dispatch}>
+                {children}
+            </FilesDispatchContext.Provider>
+        </FilesContext.Provider>
     )
 
 }
+
+export function useFiles() {
+    return useContext(FilesContext);
+}
+
+export function useFilesDispatch() {
+    return useContext(FilesDispatchContext);
+}
+
+
+function filesReducer(tasks, action) {
+    console.log(tasks)
+    switch (action.type) {
+        case 'added': {
+            return [...tasks, {
+                id: action.id,
+                text: action.text,
+                done: false
+            }];
+        }
+        case 'changed': {
+            return tasks.map(t => {
+                if (t.id === action.task.id) {
+                    return action.task;
+                } else {
+                    return t;
+                }
+            });
+        }
+        case 'deleted': {
+            return tasks.filter(t => t.id !== action.id);
+        }
+        default: {
+            throw Error('Unknown action: ' + action.type);
+        }
+    }
+}
+
+const initialFiles = project.dataItems.source.items;
+console.log(initialFiles)

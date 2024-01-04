@@ -8,6 +8,7 @@ const project = {
             active: 'contract.hl',
             items: [
         {
+            id: 0,
             name: "contract.hl",
             type: "helios",
             data: `
@@ -26,6 +27,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 }`
         },
         {
+            id: 1,
             name: "datum.json",
             type: "json",
             data: `
@@ -42,6 +44,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 }`
         },
         {
+            id: 2,
             name: "redeemer.json",
             type: "json",
             data: `
@@ -59,6 +62,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
     `
         },
         {
+            id: 3,
             name: "gc_script_template.gcscript",
             type: "json",
             data: `
@@ -173,6 +177,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 `
         },
         {
+            id: 4,
             name: "gc_test_template.gcscript",
             type: "json",
             data: `
@@ -184,6 +189,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 `
         },
         {
+            id: 5,
             name: "list_keys.gcscript",
             type: "json",
             data: `

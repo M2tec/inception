@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import SourceBrowser from './SourceBrowser';
-import TabComponent from './TabComponent';
-import { AppContext } from '../AppContext';
+// import TabComponent from './TabComponent';
+// import { AppContext } from '../AppContext';
 
 import {
   PanelGroup,
@@ -11,14 +11,14 @@ import {
 import { set } from "lodash";
 
 export default function DataView(props) {
-  const { context, setContext } = React.useContext(AppContext)
+  // const { context, setContext } = React.useContext(AppContext)
   const [activeItem, setActiveItem] = React.useState("");
 
-  const viewType = context.dataItems[props.type]
+  // const viewType = context.dataItems[props.type]
 
-  useEffect(() => {
-    setActiveItem(viewType.active)
-  }, [context]);
+  // useEffect(() => {
+  //   setActiveItem(viewType.active)
+  // }, [context]);
 
   const onCollapse = () => {
     console.log('collapse')
@@ -49,7 +49,7 @@ export default function DataView(props) {
         <PanelResizeHandle style={{ width: "8px" }} />
 
         <Panel>
-          <TabComponent type={props.type} active={activeItem} />
+          {/* <TabComponent type={props.type} active={activeItem} /> */}
         </Panel>
       </PanelGroup>
     </div>

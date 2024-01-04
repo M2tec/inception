@@ -7,10 +7,10 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import { AppContext } from '../AppContext';
+// import { AppContext } from '../AppContext';
 
 export default function SearchAppBar() {
-  const { context, setContext } = React.useContext(AppContext)
+  // const { context, setContext } = React.useContext(AppContext)
 
   return (
     <div>
@@ -40,7 +40,8 @@ export default function SearchAppBar() {
           <Form.Control id="basic-url"
                     aria-label="Small"
                     aria-describedby="inputGroup-sizing-sm" 
-                    placeholder={context.name}/>
+                    // placeholder={context.name}
+                    />
         </InputGroup>
 
         <div className='me-3'>

@@ -6,6 +6,11 @@ body,
   height: 100%
 }
 
+ul {
+  list-style-type: none; /* Remove bullets */
+  margin-bottom: 0px;
+}
+
 #root {
   width: 100%;
   background-color: var(--body_background);
@@ -100,12 +105,26 @@ body,
 }
 
 .file-item {
-  padding-left: 3ch;
+  width: 600px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   height: 1.5rem;
   gap: 1ch;
+  white-space: pre;
+}
+
+.file-item-child {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  line-height: 1.5rem;
+  gap: 1ch;
+  white-space: pre;
+}
+
+.file-item-text {
+  line-height: 1rem;
 }
 
 .file-item-selected {

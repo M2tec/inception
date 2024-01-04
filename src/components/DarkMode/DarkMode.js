@@ -2,26 +2,25 @@ import React from "react";
 import { ReactComponent as Sun } from "./Sun.svg";
 import { ReactComponent as Moon } from "./Moon.svg";
 import "./DarkMode.css";
-import { AppContext } from '../../AppContext';
+// import { AppContext } from '../../AppContext';
 
 const DarkMode = () => {
-    const { context, setContext } = React.useContext(AppContext)
+    // const { context, setContext } = React.useContext(AppContext)
 
     const setDarkMode = () => {
         document.querySelector("body").setAttribute('data-theme', 'dark')
         localStorage.setItem("selectedTheme","dark")
                
-        let tempContext = { ...context, theme:"dark"}
-        localStorage.setItem('tempContext', JSON.stringify(tempContext));
-
+        // let tempContext = { ...context, theme:"dark"}
+        // localStorage.setItem('tempContext', JSON.stringify(tempContext));
     }
 
     const setLightMode = () => {
         document.querySelector("body").setAttribute('data-theme', 'light')
         localStorage.setItem("selectedTheme","light")
                 
-        let tempContext = { ...context, theme:"light"}
-        localStorage.setItem('tempContext', JSON.stringify(tempContext));
+        // let tempContext = { ...context, theme:"light"}
+        // localStorage.setItem('tempContext', JSON.stringify(tempContext));
         
     }
 

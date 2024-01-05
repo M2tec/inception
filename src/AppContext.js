@@ -29,54 +29,66 @@ export function useFilesDispatch() {
     return useContext(FilesDispatchContext);
 }
 
-function filesReducer(files, action) {
+function filesReducer(state, action) {
+
+    let {files,openFiles,currentFileIndex, theme} = state;
     // console.log({ files: files })
-    // console.log({ action: action })
+    console.log({ action: action })
     switch (action.type) {
+        case 'theme': {
+            console.log("theme")
+            console.log(theme)
+            theme == "dark" ? theme = "light" : theme = "dark"
+
+            document.querySelector("body").setAttribute('data-theme', theme)
+            return {...state, theme};
+        }
         case 'selected': {
-            return [...files, {
-                id: action.id,
-                name: action.name,
-            }];
+            openFiles.indexOf(action.file.id) === -1 ? openFiles.push(action.file.id) : console.log("This item already exists");
+            currentFileIndex = action.file.id;
+
+            return {...state, openFiles, currentFileIndex};
         }
         case 'closed': {
-            return [...files, {
-                id: action.id,
-                name: action.name,
-            }];
+            let newOpenFiles = openFiles.filter((fileId) => fileId !== action.id)
+
+            return {...state, openFiles: newOpenFiles, currentFileIndex};
         }
         case 'added': {
+
             return [...files, {
                 id: action.id,
                 name: action.name,
             }];
         }
         case 'changed': {
-            return files.map(f => {
+            let newFiles = files.map(f => {
                 if (f.id === action.file.id) {
                     return action.file;
                 } else {
                     return f;
                 }
             });
+
+            return {...state, files:newFiles};
         }
         case 'duplicate': {
             let ids = files.map((file) => file.id);
             var largest = Math.max.apply(0, ids);
 
-            let duplicate_file_array = files.filter((file) => {
-                return file.id == action.file.id;
-            })
+            let duplicate_file_array = files.filter((file) => file.id == action.file.id)
 
             let duplicate_file = duplicate_file_array[0]
             let new_file_name_split = action.file.name.split(".", 2)
             let new_file_name = new_file_name_split[0] + "-1." + new_file_name_split[1]
             let new_file = { ...duplicate_file, id: largest + 1, name: new_file_name }
+            let newFiles = [...files, new_file]
 
-            return [...files, new_file];
+            return {...state, files:newFiles};
         }
         case 'deleted': {
-            return files.filter(t => t.id !== action.id);
+            let newFiles = files.filter(t => t.id !== action.id)
+            return {...state, files:newFiles};
         }
         default: {
             throw Error('Unknown action: ' + action.type);
@@ -84,5 +96,8 @@ function filesReducer(files, action) {
     }
 }
 
-const initialFiles = project.dataItems.source.items;
+const initialFiles = {  files:project.dataItems.source.items, 
+                        openFiles: [0], 
+                        currentFileIndex: 0,
+                        theme: "light"}
 console.log(initialFiles)

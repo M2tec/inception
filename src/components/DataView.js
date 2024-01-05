@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import SourceBrowser from './SourceBrowser';
-// import TabComponent from './TabComponent';
-// import { AppContext } from '../AppContext';
+import TabComponent from './TabComponent';
+
 
 import {
   PanelGroup,
   Panel,
   PanelResizeHandle
 } from 'react-resizable-panels';
-import { set } from "lodash";
+
 
 export default function DataView(props) {
   // const { context, setContext } = React.useContext(AppContext)
@@ -49,7 +49,7 @@ export default function DataView(props) {
         <PanelResizeHandle style={{ width: "8px" }} />
 
         <Panel>
-          {/* <TabComponent type={props.type} active={activeItem} /> */}
+          <TabComponent type={props.type} active={activeItem} />
         </Panel>
       </PanelGroup>
     </div>

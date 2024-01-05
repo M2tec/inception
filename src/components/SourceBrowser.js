@@ -12,89 +12,13 @@ import { Form } from "react-bootstrap";
 import FilesList from "./FileList";
 
 export default function SourceBrowser(props) {
-    // const [activeItem, setActiveItem] = React.useState(0);
-    // const { context, setContext } = React.useContext(AppContext)
     const [addFile, setAddFile] = React.useState(false);
     const [fileName, setFileName] = React.useState("");
-
-    // const viewType = context.dataItems[props.type]
-
-    // function deleteItem (e,item, isActive) {
-    //     console.log(item.name)
-
-    //     if (!isActive) {
-    //     setContext(oldContext => {
-
-    //         let newContext = {...oldContext}
-
-    //         // console.log(newContext.dataItems[props.type])
-
-    //         const index = newContext.dataItems[props.type].items.map(e => e.name).indexOf(item.name);
-    //         // console.log("Index: " + index)
-
-    //         const openIndex = newContext.dataItems[props.type].openItems.indexOf(item.name);
-    //         // console.log(newContext.dataItems[props.type].openItems)
-    //         // console.log("item.name: " + item.name)
-    //         // console.log("OpenIndex: " + openIndex)
-
-    //         let newOpenItems = newContext.dataItems[props.type].openItems
-    //         if (openIndex !== -1){
-    //             newOpenItems = newOpenItems.splice(openIndex, 1)
-    //         }
-    //         // console.log({newOpenItems:newOpenItems})
-
-    //         let newItems = newContext.dataItems[props.type].items
-    //         // console.log(newItems)
-    //         newItems = newItems.splice(index, 1)
-    //         // console.log(newItems)
-    //         // newContext.dataItems[props.type].items.splice(index, 1)
-    //         localStorage.setItem('tempContext', JSON.stringify(newContext));
-
-    //         return newContext
-    //     })
-    // }
-    // }
-
-    const File = ({
-        item,
-        isActive,
-        onClick
-    }) => {
-        return (
-            <div
-                className={isActive ? 'file-item-selected file-item' : 'file-item'}
-            >
-                <FiletypeJson size={"15px"} className="file-icon" />
-                <span
-                    onClick={onClick}
-                    className="file-name">{item.name}</span>
-                <Trash
-                    // onClick={(e) => deleteItem(e,item, isActive)}
-                    size={"15px"}
-                    className="trash-icon" />
-            </div>
-        );
-    };
 
     function handleCreateFile(e, fileName) {
         console.log(e)
         console.log(fileName)
 
-        // setContext(oldContext => {
-
-        //     let newContext = {...oldContext}
-
-        //     let newItem = {
-        //         "name": fileName,
-        //         "type": "",
-        //         "data": ``}
-
-        //     newContext.dataItems[props.type].items.push(newItem)
-
-        //     localStorage.setItem('tempContext', JSON.stringify(newContext));
-
-        //     return newContext
-        // })
         setAddFile(false)
     }
 
@@ -105,23 +29,6 @@ export default function SourceBrowser(props) {
     function handleCancelAddFile() {
         setAddFile(false)
     }
-
-    // function setActive(item, index){
-    //     setContext(oldContext => {
-    //         const dataItem = oldContext.dataItems[props.type] || [];
-
-    //         const openItems = dataItem.openItems || [];
-    //         let filename = dataItem.items[index].name
-    //         openItems.indexOf(filename) === -1 ? openItems.push(filename) : console.log("This item already exists");
-
-    //         dataItem.active = item.name;
-
-    //         let newDataItems = oldContext.dataItems
-    //         newDataItems[props.type] = dataItem
-
-    //         return { ...oldContext, dataItems:newDataItems }
-    //     })
-    // }
 
     return (
 

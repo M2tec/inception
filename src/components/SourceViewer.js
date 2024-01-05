@@ -2,28 +2,16 @@ import React from 'react';
 import Editor from "@monaco-editor/react";
 
 import { heliosSyntax } from './HeliosSyntaxMonaco';
-import { AppContext } from '../AppContext';
-
+import { useFiles } from '../AppContext.js';
 import useResizeObserver from "use-resize-observer";
 
 const SourceViewer = (props) => {
-  const { context, setContext } = React.useContext(AppContext)
-  const [ manualHeight, setManualHeight] = React.useState(1)
-  const [ manualWidth, setManualWidth] = React.useState(1)
-  
-  const viewType = context.dataItems[props.type];
-  const openItem = viewType.items.find((item) => item.name === props.name);
+  const { theme } = useFiles();
 
-  // const [ theme, setTheme] = React.useState(document.querySelector("body").getAttribute('data-theme'));
-  // console.log(theme)
+  let file = props.file
 
-  // console.log(props.type)
-  // console.log(props.name)
-  // console.log(viewType)
-  // console.log(openItem)
-
-
-  const data = openItem.data;
+  const [ manualHeight, setManualHeight] = React.useState(1);
+  const [ manualWidth, setManualWidth] = React.useState(1);
 
   const { ref } = useResizeObserver({
     onResize: ({ width, height }) => {
@@ -49,36 +37,14 @@ const SourceViewer = (props) => {
 
   function handleEditorChange(value, event) {
     // console.log('here is the current model value:', value);
-    let saveIndex = -1;
-    const saveItem = viewType.items.find((item, index) => {
-      const isStorageItem = item.name === props.name;
-      if (isStorageItem)
-        saveIndex = index;
-
-      return isStorageItem;
-    });
-
-    let newItems = [...viewType.items]
-    newItems[saveIndex].data = value
-
-    // Store the temporary context in the browser local storage.
-    // On a save event the context gets swapped. To save permanently.
-    // See AppContext.js
-    viewType.items = newItems
-    
-    let newDataItems = context.dataItems
-    newDataItems[props.type] = viewType
-
-    let tempContext = { ...context, dataItems: newDataItems}
-    localStorage.setItem('tempContext', JSON.stringify(tempContext));
   }
 
   return (
     <div className='DataView' ref={ref}>
       <Editor
-       theme={context.theme === "light" ? "light" : "vs-dark"}
-       language={openItem.type}
-       value={data}
+       theme={theme === "light" ? "light" : "vs-dark"}
+       language={file.type}
+       value={file.data}
        height={manualHeight} 
        width={manualWidth}
        options={{readOnly: false}}

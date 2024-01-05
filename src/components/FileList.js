@@ -10,12 +10,14 @@ import {
 
 export default function FilesList() {
 
-  const files = useFiles();
+  const { files, openFiles } = useFiles();
+
   // console.log(files)
+
   return (
     <ul>
       {files.map(item => (
-        <File file={item} />
+        <File key={item.id} file={item} />
       ))}
     </ul>
   );
@@ -68,8 +70,14 @@ function File({ file }) {
 
         <FiletypeJson size={"15px"} className="file-icon" />
 
-        <span onClick={(e) => console.log(e.target.value)  }
-        >{fileContent}</span>
+        <span
+          onClick={(e) => {
+            dispatch({
+              type: 'selected',
+              file: file
+            });
+          }}>
+          {fileContent}</span>
 
         <Stickies
           onClick={(e) => {

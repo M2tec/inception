@@ -20,8 +20,8 @@ const SourceViewer = (props) => {
 
       // Hack to manually calculate size from css values 
       // Height falls back to total height sometimes for some reason during resize
-      setManualHeight( window.innerHeight - 56 - 32 )
-      setManualWidth( width)
+      setManualHeight( height - 35)
+      setManualWidth( width -3)
     },
   });
 

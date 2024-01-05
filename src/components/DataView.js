@@ -11,14 +11,6 @@ import {
 
 
 export default function DataView(props) {
-  // const { context, setContext } = React.useContext(AppContext)
-  const [activeItem, setActiveItem] = React.useState("");
-
-  // const viewType = context.dataItems[props.type]
-
-  // useEffect(() => {
-  //   setActiveItem(viewType.active)
-  // }, [context]);
 
   const onCollapse = () => {
     console.log('collapse')
@@ -29,7 +21,6 @@ export default function DataView(props) {
     console.log('expand')
     // dispatch({ type: "toggleCollapsed", collapsed: true });
   };
-
 
   return (
     <div className="DataView">
@@ -43,13 +34,13 @@ export default function DataView(props) {
           onCollapse={onCollapse}
           onExpand={onExpand}
         >
-          <SourceBrowser type={props.type} active={activeItem} />
+          <SourceBrowser/>
         </Panel>
 
         <PanelResizeHandle style={{ width: "8px" }} />
 
         <Panel>
-          <TabComponent type={props.type} active={activeItem} />
+          <TabComponent/>
         </Panel>
       </PanelGroup>
     </div>

@@ -33,11 +33,9 @@ function filesReducer(state, action) {
 
     let {files,openFiles,currentFileIndex, theme} = state;
     // console.log({ files: files })
-    console.log({ action: action })
+    // console.log({ action: action })
     switch (action.type) {
         case 'theme': {
-            console.log("theme")
-            console.log(theme)
             theme == "dark" ? theme = "light" : theme = "dark"
 
             document.querySelector("body").setAttribute('data-theme', theme)

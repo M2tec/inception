@@ -31,26 +31,81 @@ export function useStateDispatch() {
 
 function stateReducer(state, action) {
 
-    let { files, openFiles, currentFileIndex, theme } = state;
+    let { menu, files, openFiles, currentFileIndex, theme } = state;
     // console.log({ files: files })
     // console.log({ action: action })
+
+    function saveState(state){
+        // console.log({oldState:state})
+
+        let newState = {}
+        switch (state.menu) {
+            case "files": {
+                // console.log("case file")
+                newState = {...state, sourceData: files}
+                break;
+            }
+            case "returndata": {
+                // console.log("case return")
+                newState = {...state, returnData: files}
+                break;
+            }
+            default:
+                console.log('not a file menu')
+        }
+
+        // console.log({newState:newState})
+        localStorage.setItem('state', JSON.stringify(newState))
+        return newState
+    }
+
     switch (action.type) {
+        case 'menu-change': {
+            console.log(action.id)
+
+            let newState = {}
+
+            if (action.id == state.menu) {
+                openFiles = [0]
+                currentFileIndex = [0]
+            }
+    
+            let newData = {}
+            newData.items = files 
+    
+            switch (action.id) {
+                case "files": {
+                    console.log("act.files")
+                    newState = {...state, files: state.sourceData}
+                    break;
+                }
+                case "returndata": {
+                    console.log("act.returndata")
+                    newState = {...state, files: state.returnData}
+                    break;
+                }
+            }
+            saveState(newState)
+
+            newState = { ...newState, menu: action.id, currentFileIndex, openFiles};
+            console.log(newState)
+            return newState;
+        }
+
         case 'theme': {
             theme == "dark" ? theme = "light" : theme = "dark"
 
             document.querySelector("body").setAttribute('data-theme', theme)
 
             let newState = { ...state, theme };
-            localStorage.setItem('state', JSON.stringify(newState))
-            return newState;
+            return saveState(newState);;
         }
         case 'selected': {
             openFiles.indexOf(action.file.id) === -1 ? openFiles.push(action.file.id) : console.log("This item already exists");
             currentFileIndex = action.file.id;
 
             let newState = { ...state, openFiles, currentFileIndex };
-            localStorage.setItem('state', JSON.stringify(newState))
-            return newState;
+            return saveState(newState);;
         }
         case 'closed': {
             let newOpenFiles = openFiles
@@ -66,8 +121,8 @@ function stateReducer(state, action) {
             }
 
             let newState = { ...state, openFiles: newOpenFiles, currentFileIndex };
-            localStorage.setItem('state', JSON.stringify(newState))
-            return newState;
+                        
+            return saveState(newState);;
         }
         case 'added': {
 
@@ -86,10 +141,7 @@ function stateReducer(state, action) {
             });
 
             let newState = { ...state, files: newFiles };
-            localStorage.setItem('state', JSON.stringify(newState))
-            return newState;
-
-            
+            return saveState(newState);;        
         }
         case 'duplicate': {
             let ids = files.map((file) => file.id);
@@ -104,8 +156,7 @@ function stateReducer(state, action) {
             let newFiles = [...files, new_file]
 
             let newState = { ...state, files: newFiles };
-            localStorage.setItem('state', JSON.stringify(newState))
-            return newState;
+            return saveState(newState);;
         }
         case 'deleted': {
 
@@ -120,8 +171,7 @@ function stateReducer(state, action) {
             let newFiles = files.filter(t => t.id !== action.id)
 
             let newState = { ...state, files: newFiles, openFiles: newOpenFiles, currentFileIndex }
-            localStorage.setItem('state', JSON.stringify(newState))
-            return newState;
+            return saveState(newState);;
         }
         default: {
             throw Error('Unknown action: ' + action.type);
@@ -131,11 +181,16 @@ function stateReducer(state, action) {
 
 let storageState = JSON.parse(localStorage.getItem('state'))
 console.log({ storage: storageState })
+
 let initialState = {}
+
 if (storageState == null) {
-    
+  
     initialState = {
-        files: project.dataItems.source.items,
+        menu: "files",
+        sourceData: project.dataItems.sourcedata.items,
+        returnData: project.dataItems.returndata.items,
+        files: project.dataItems.sourcedata.items,
         openFiles: [0],
         currentFileIndex: 0,
         theme: "light"

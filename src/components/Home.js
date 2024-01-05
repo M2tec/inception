@@ -7,14 +7,17 @@ import {
     CloudUploadFill,
     ArrowReturnLeft,
 } from 'react-bootstrap-icons';
-import { AppContext } from '../AppContext';
+import { useAppState, useStateDispatch } from '../AppContext.js';
 import Button from 'react-bootstrap/Button';
 
 const gc = window.gc;
 
 export default function Home() {
     // const { context, setContext } = React.useContext(AppContext)
-    const [type, setType] = React.useState("source")
+    // const [type, setType] = React.useState("source")
+
+    const { files, openFiles } = useAppState();
+    const dispatch = useStateDispatch();
 
     // let viewType = context.dataItems[type]
     // const isActiveAGCScript = viewType.active && viewType.active.endsWith('.gcscript');
@@ -25,6 +28,72 @@ export default function Home() {
     const d = ''
     const [state, setState] = React.useState(d)
     const isNewSession = React.useRef(true)
+
+
+
+    function handleClickData(e) {
+        // setType("returndata")
+    }
+
+    function handleClickPopup(e) {
+        let url = window.location.origin;
+        // console.log(url)
+        window.location.replace(url)
+    }
+
+    return (
+        <div className="Home">
+            <SearchAppBar />
+
+            <div className="View">
+
+                <div className='GcSideBar'>
+                    <Button
+                        onClick={(e) => {
+                        dispatch({
+                            type: 'menu-change',
+                            id: "files"
+                        });
+                        }}
+                        // className={type === "source" ? "btn-active" : ""}
+                        // onClick={handleClickHome}
+                        variant="primary">
+                        <Files size={"20px"} />
+                    </Button>
+
+                    <Button
+                        // onClick={handleClickRun}
+                        // disabled={!isActiveAGCScript}
+                        variant="primary">
+                        <PlayFill size={"20px"} />
+                    </Button>
+
+                    <Button
+                        onClick={(e) => {
+                            dispatch({
+                                type: 'menu-change',
+                                id: "returndata"
+                            });
+                            }}                    
+                        // className={type === "returndata" ? "btn-active" : ""}
+                        // onClick={handleClickData}
+                        variant="primary">
+                        <ArrowReturnLeft size={"20px"} />
+                    </Button>
+
+                    <Button                 
+                        // onClick={handleClickCloudUpload}
+                        variant="primary">
+                        <CloudUploadFill size={"20px"} />
+                    </Button>
+
+                </div>
+                {/* <GcSideBar /> */}
+                <DataView/>
+            </div>
+        </div>
+    );
+}
 
     // React.useEffect(() => {
     //     if (isNewSession.current) {
@@ -140,56 +209,3 @@ export default function Home() {
     //     if (window.focus) { newwindow.focus() }
     //     return false;
     // }
-
-    function handleClickData(e) {
-        setType("returndata")
-    }
-
-    function handleClickPopup(e) {
-        let url = window.location.origin;
-        // console.log(url)
-        window.location.replace(url)
-    }
-
-    return (
-        <div className="Home">
-            <SearchAppBar />
-
-            <div className="View">
-
-                <div className='GcSideBar'>
-                    <Button
-                        className={type === "source" ? "btn-active" : ""}
-                        // onClick={handleClickHome}
-                        variant="primary">
-                        <Files size={"20px"} />
-                    </Button>
-
-                    <Button
-                        // onClick={handleClickRun}
-                        // disabled={!isActiveAGCScript}
-                        variant="primary">
-                        <PlayFill size={"20px"} />
-                    </Button>
-
-                    <Button
-                        className={type === "returndata" ? "btn-active" : ""}
-                        // onClick={handleClickData}
-                        variant="primary">
-                        <ArrowReturnLeft size={"20px"} />
-                    </Button>
-
-                    <Button
-                        // onClick={handleClickPopup}
-                        variant="primary">
-                        <CloudUploadFill size={"20px"} />
-                    </Button>
-
-                </div>
-                {/* <GcSideBar /> */}
-                <DataView type={type} />
-            </div>
-        </div>
-    );
-}
-

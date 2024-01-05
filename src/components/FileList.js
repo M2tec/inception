@@ -10,7 +10,12 @@ import {
 
 export default function FilesList() {
 
-  const { files, openFiles } = useAppState();
+  
+  let { menu, files, returnData } = useAppState();
+
+  if (menu !== "files") {
+    files = returnData
+  }
 
   // console.log(files)
 
@@ -25,7 +30,9 @@ export default function FilesList() {
 
 function File({ file }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [isSelected, setIsSelected] = useState(0);
+  // const [isSelected, setIsSelected] = useState(0);
+
+  let { currentFileIndex } = useAppState();
   const dispatch = useStateDispatch();
 
   // console.log(file)
@@ -65,7 +72,7 @@ function File({ file }) {
 
       <label
         className={
-          isSelected == file.id ? 'file-item file-item-selected' : 'file-item'
+          currentFileIndex == file.id ? 'file-item file-item-selected' : 'file-item'
         }>
 
         <FiletypeJson size={"15px"} className="file-icon" />

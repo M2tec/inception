@@ -3,9 +3,7 @@ const project = {
     type: "folder",
     theme: 'light',
     dataItems:{ 
-        source: {
-            openItems: ["contract.hl"],
-            active: 'contract.hl',
+        sourcedata: {
             items: [
         {
             id: 0,
@@ -210,10 +208,34 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
         }
             ]},
         returndata: {
-            openItems: ["data.json"],
-            active: 'data.json',
             items: [
                 {
+                    id: 0,
+                    name: "data.json",
+                    type: "json",
+                    data: `
+{
+    "exports": {
+        "Lock_Demo": {
+        "lockUTXO": 0,
+        "lock": [
+            {
+            "policyId": "ada",
+            "assetName": "ada",
+            "quantity": "5000000"
+            }
+        ],
+        "smartContract": "56550100002225333573466e1cdd68011bad0031498581",
+        "smartContractHash": "c203151a6a8a55baef2e3d302690858a42c55ebdb7d140eade17a530",
+        "smartContractAddress": "addr_test1zrpqx9g6d299twh09c7nqf5ssk9y9327hkmazs82mct62v9dqwj2u3djrag0mene2cm9elu5mdqmcz9zc2rzgq7c5g6q5xcn4r",
+        "lockTx": "b9cb604d1cead1afdd6c9403cae411234b19efc7cc78c1c060af69746fd223c2"
+        }
+    }
+}
+`
+                },
+                {
+                    id: 1,
                     name: "data.json",
                     type: "json",
                     data: `
@@ -237,8 +259,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 }
 `
                 }
-            ]
-        } 
+            ] } 
     }
 };
 

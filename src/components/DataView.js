@@ -11,7 +11,7 @@ import {
 
 
 export default function DataView(props) {
-
+  
   const onCollapse = () => {
     console.log('collapse')
     // dispatch({ type: "toggleCollapsed", collapsed: false });

@@ -12,7 +12,7 @@ export default function FilesList() {
 
   const { files, openFiles } = useAppState();
 
-  console.log(files)
+  // console.log(files)
 
   return (
     <ul>

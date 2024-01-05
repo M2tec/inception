@@ -31,7 +31,7 @@ export function useStateDispatch() {
 
 function stateReducer(state, action) {
 
-    let {files,openFiles,currentFileIndex, theme} = state;
+    let { files, openFiles, currentFileIndex, theme } = state;
     // console.log({ files: files })
     // console.log({ action: action })
     switch (action.type) {
@@ -40,28 +40,34 @@ function stateReducer(state, action) {
 
             document.querySelector("body").setAttribute('data-theme', theme)
 
-            return {...state, theme};
+            let newState = { ...state, theme };
+            localStorage.setItem('state', JSON.stringify(newState))
+            return newState;
         }
         case 'selected': {
             openFiles.indexOf(action.file.id) === -1 ? openFiles.push(action.file.id) : console.log("This item already exists");
             currentFileIndex = action.file.id;
 
-            return {...state, openFiles, currentFileIndex};
+            let newState = { ...state, openFiles, currentFileIndex };
+            localStorage.setItem('state', JSON.stringify(newState))
+            return newState;
         }
         case 'closed': {
             let newOpenFiles = openFiles
-            if (openFiles.length > 1){
+            if (openFiles.length > 1) {
 
                 newOpenFiles = openFiles.filter((fileId) => fileId !== action.id)
-                
+
 
                 if (action.id == currentFileIndex) {
                     currentFileIndex = newOpenFiles.slice(-1)[0]
                     console.log(currentFileIndex)
+                }
             }
-        }
 
-            return {...state, openFiles: newOpenFiles, currentFileIndex};
+            let newState = { ...state, openFiles: newOpenFiles, currentFileIndex };
+            localStorage.setItem('state', JSON.stringify(newState))
+            return newState;
         }
         case 'added': {
 
@@ -79,7 +85,11 @@ function stateReducer(state, action) {
                 }
             });
 
-            return {...state, files:newFiles};
+            let newState = { ...state, files: newFiles };
+            localStorage.setItem('state', JSON.stringify(newState))
+            return newState;
+
+            
         }
         case 'duplicate': {
             let ids = files.map((file) => file.id);
@@ -93,21 +103,25 @@ function stateReducer(state, action) {
             let new_file = { ...duplicate_file, id: largest + 1, name: new_file_name }
             let newFiles = [...files, new_file]
 
-            return {...state, files:newFiles};
+            let newState = { ...state, files: newFiles };
+            localStorage.setItem('state', JSON.stringify(newState))
+            return newState;
         }
         case 'deleted': {
 
             let newOpenFiles = openFiles
-            if (action.id == currentFileIndex){
+            if (action.id == currentFileIndex) {
 
-                newOpenFiles = openFiles.filter((fileIndex) => fileIndex !== action.id )
+                newOpenFiles = openFiles.filter((fileIndex) => fileIndex !== action.id)
 
                 currentFileIndex = newOpenFiles[0]
             }
 
             let newFiles = files.filter(t => t.id !== action.id)
 
-            return {...state, files:newFiles, openFiles: newOpenFiles, currentFileIndex};
+            let newState = { ...state, files: newFiles, openFiles: newOpenFiles, currentFileIndex }
+            localStorage.setItem('state', JSON.stringify(newState))
+            return newState;
         }
         default: {
             throw Error('Unknown action: ' + action.type);
@@ -115,8 +129,19 @@ function stateReducer(state, action) {
     }
 }
 
-const initialState = {  files:project.dataItems.source.items, 
-                        openFiles: [0], 
-                        currentFileIndex: 0,
-                        theme: "light"}
+let storageState = JSON.parse(localStorage.getItem('state'))
+console.log({ storage: storageState })
+let initialState = {}
+if (storageState == null) {
+    
+    initialState = {
+        files: project.dataItems.source.items,
+        openFiles: [0],
+        currentFileIndex: 0,
+        theme: "light"
+    }
+} else {
+    initialState = storageState;
+}
+
 console.log(initialState)

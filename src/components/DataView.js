@@ -18,7 +18,7 @@ export default function DataView(props) {
   };
 
   const onExpand = () => {
-    console.log('expand')
+    // console.log('expand')
     // dispatch({ type: "toggleCollapsed", collapsed: true });
   };
 

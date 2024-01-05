@@ -2,11 +2,11 @@ import React from 'react';
 import Editor from "@monaco-editor/react";
 
 import { heliosSyntax } from './HeliosSyntaxMonaco';
-import { useFiles } from '../AppContext.js';
+import { useAppState } from '../AppContext.js';
 import useResizeObserver from "use-resize-observer";
 
 const SourceViewer = (props) => {
-  const { theme } = useFiles();
+  const { theme } = useAppState();
 
   let file = props.file
 

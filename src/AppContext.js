@@ -7,9 +7,9 @@ import PropTypes from 'prop-types';
 const FilesContext = createContext(null);
 const FilesDispatchContext = createContext(null);
 
-export function FilesProvider({ children }) {
+export function StateProvider({ children }) {
 
-    const [files, dispatch] = useReducer(filesReducer, initialFiles);
+    const [files, dispatch] = useReducer(stateReducer, initialState);
 
     return (
         <FilesContext.Provider value={files}>
@@ -21,15 +21,15 @@ export function FilesProvider({ children }) {
 
 }
 
-export function useFiles() {
+export function useAppState() {
     return useContext(FilesContext);
 }
 
-export function useFilesDispatch() {
+export function useStateDispatch() {
     return useContext(FilesDispatchContext);
 }
 
-function filesReducer(state, action) {
+function stateReducer(state, action) {
 
     let {files,openFiles,currentFileIndex, theme} = state;
     // console.log({ files: files })
@@ -39,6 +39,7 @@ function filesReducer(state, action) {
             theme == "dark" ? theme = "light" : theme = "dark"
 
             document.querySelector("body").setAttribute('data-theme', theme)
+
             return {...state, theme};
         }
         case 'selected': {
@@ -48,7 +49,17 @@ function filesReducer(state, action) {
             return {...state, openFiles, currentFileIndex};
         }
         case 'closed': {
-            let newOpenFiles = openFiles.filter((fileId) => fileId !== action.id)
+            let newOpenFiles = openFiles
+            if (openFiles.length > 1){
+
+                newOpenFiles = openFiles.filter((fileId) => fileId !== action.id)
+                
+
+                if (action.id == currentFileIndex) {
+                    currentFileIndex = newOpenFiles.slice(-1)[0]
+                    console.log(currentFileIndex)
+            }
+        }
 
             return {...state, openFiles: newOpenFiles, currentFileIndex};
         }
@@ -85,8 +96,18 @@ function filesReducer(state, action) {
             return {...state, files:newFiles};
         }
         case 'deleted': {
+
+            let newOpenFiles = openFiles
+            if (action.id == currentFileIndex){
+
+                newOpenFiles = openFiles.filter((fileIndex) => fileIndex !== action.id )
+
+                currentFileIndex = newOpenFiles[0]
+            }
+
             let newFiles = files.filter(t => t.id !== action.id)
-            return {...state, files:newFiles};
+
+            return {...state, files:newFiles, openFiles: newOpenFiles, currentFileIndex};
         }
         default: {
             throw Error('Unknown action: ' + action.type);
@@ -94,8 +115,8 @@ function filesReducer(state, action) {
     }
 }
 
-const initialFiles = {  files:project.dataItems.source.items, 
+const initialState = {  files:project.dataItems.source.items, 
                         openFiles: [0], 
                         currentFileIndex: 0,
                         theme: "light"}
-console.log(initialFiles)
+console.log(initialState)

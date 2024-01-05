@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useFiles, useFilesDispatch } from '../AppContext.js';
+import { useAppState, useStateDispatch } from '../AppContext.js';
 import {
   FiletypeJson,
   Trash,
@@ -10,9 +10,9 @@ import {
 
 export default function FilesList() {
 
-  const { files, openFiles } = useFiles();
+  const { files, openFiles } = useAppState();
 
-  // console.log(files)
+  console.log(files)
 
   return (
     <ul>
@@ -26,7 +26,7 @@ export default function FilesList() {
 function File({ file }) {
   const [isEditing, setIsEditing] = useState(false);
   const [isSelected, setIsSelected] = useState(0);
-  const dispatch = useFilesDispatch();
+  const dispatch = useStateDispatch();
 
   // console.log(file)
   let fileContent;

@@ -4,7 +4,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import NoMatch from './components/NoMatch';
-import { FilesProvider } from './AppContext';
+import { StateProvider } from './AppContext';
 
 // import TestPopup from './components/TestPopup';
 // import ConnectPopup from './components/ConnectPopup';
@@ -12,7 +12,7 @@ import { FilesProvider } from './AppContext';
 export default function App() {
   // Update the theme only if the mode changes
   return (
-    <FilesProvider>
+    <StateProvider>
       <Routes>
         <Route index element={<Home />} />
         
@@ -24,7 +24,7 @@ export default function App() {
         <Route path="*" element={<NoMatch />} /> */}
 
       </Routes>
-    </FilesProvider>
+    </StateProvider>
   );
 }
 

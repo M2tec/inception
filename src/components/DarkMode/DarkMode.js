@@ -2,11 +2,11 @@ import React from "react";
 import { ReactComponent as Sun } from "./Sun.svg";
 import { ReactComponent as Moon } from "./Moon.svg";
 import "./DarkMode.css";
-import { useFiles, useFilesDispatch } from '../../AppContext.js';
+import { useAppState, useStateDispatch } from '../../AppContext.js';
 
 const DarkMode = () => {
-    const dispatch = useFilesDispatch();
-    let {theme} = useFiles;
+    const dispatch = useStateDispatch();
+    let {theme} = useAppState;
     return (
         <div className='dark_mode'>
             <input

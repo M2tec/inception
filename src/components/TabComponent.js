@@ -1,13 +1,13 @@
 import React from 'react';
 
 import SourceViewer from './SourceViewer';
-import { useFiles, useFilesDispatch } from '../AppContext.js';
+import { useAppState, useStateDispatch } from '../AppContext.js';
 
 import { X } from 'react-bootstrap-icons';
 
 export default function TabComponent(props) {
-    const dispatch = useFilesDispatch();
-    const { files, openFiles, currentFileIndex } = useFiles();
+    const dispatch = useStateDispatch();
+    const { files, openFiles, currentFileIndex } = useAppState();
 
     const GcTab = ({
         id

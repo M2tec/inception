@@ -16,8 +16,10 @@ export default function Home() {
     // const { context, setContext } = React.useContext(AppContext)
     // const [type, setType] = React.useState("source")
 
-    const { files, openFiles } = useAppState();
+    const { theme } = useAppState();
     const dispatch = useStateDispatch();
+
+    document.querySelector("body").setAttribute('data-theme', theme)
 
     // let viewType = context.dataItems[type]
     // const isActiveAGCScript = viewType.active && viewType.active.endsWith('.gcscript');

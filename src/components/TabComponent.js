@@ -45,10 +45,9 @@ export default function TabComponent(props) {
     const GcPane = ({
         id,
     }) => {
-        let currentFile = files.filter((file) => file.id == id);
         return (
             <div className={id === currentFileIndex ? "TabPane  TabPaneActive" : "TabPane"}>
-                <SourceViewer file={currentFile[0]} readOnly={false} />
+                <SourceViewer id={id} readOnly={false} />
             </div>
         )
     };

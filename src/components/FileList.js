@@ -22,7 +22,6 @@ export default function FilesList() {
 
 function File({ file }) {
   const [isEditing, setIsEditing] = useState(false);
-  // const [isSelected, setIsSelected] = useState(0);
 
   let { currentFileIndex } = useAppState();
   const dispatch = useStateDispatch();

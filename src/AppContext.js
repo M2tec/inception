@@ -39,6 +39,8 @@ function stateReducer(state, action) {
         // console.log({oldState:state})
 
         let newState = {}
+
+        // Save file data into the correct data object
         switch (state.menu) {
             case "files": {
                 // console.log("case file")
@@ -56,7 +58,6 @@ function stateReducer(state, action) {
 
         // console.log({newState:newState})
         localStorage.setItem('state', JSON.stringify(newState))
-        return newState
     }
 
     switch (action.type) {
@@ -68,6 +69,8 @@ function stateReducer(state, action) {
             newData.items = files 
     
             let fileList = []
+
+            // Swap the desired data into the files object of rendering
             switch (action.id) {
                 case "files": {
                     console.log("act.files")
@@ -110,15 +113,19 @@ function stateReducer(state, action) {
             document.querySelector("body").setAttribute('data-theme', theme)
 
             let newState = { ...state, theme };
-            return saveState(newState);;
+            saveState(newState)                        
+            return newState
         }
+
         case 'selected': {
             openFiles.indexOf(action.file.id) === -1 ? openFiles.push(action.file.id) : console.log("Item already open");
             currentFileIndex = action.file.id;
 
             let newState = { ...state, openFiles, currentFileIndex };
-            return saveState(newState);;
+            saveState(newState)                        
+            return newState
         }
+
         case 'closed': {
             let newOpenFiles = openFiles
             if (openFiles.length > 1) {
@@ -133,16 +140,10 @@ function stateReducer(state, action) {
             }
 
             let newState = { ...state, openFiles: newOpenFiles, currentFileIndex };
-                        
-            return saveState(newState);;
+            saveState(newState)                        
+            return newState
         }
-        case 'added': {
 
-            return [...files, {
-                id: action.id,
-                name: action.name,
-            }];
-        }
         case 'changed': {
             console.log("Changed")
             // console.log({action:action})
@@ -162,8 +163,23 @@ function stateReducer(state, action) {
 
             let newState = { ...state, files: newFiles };
             // console.log({newState:newState})
-            return saveState(newState);;        
+            saveState(newState)                        
+            return newState       
         }
+
+        case 'changed-data': {
+            console.log("Changed data")
+            console.log({action:action})
+            console.log({files:files})    
+
+            let newState = { ...state };
+            console.log({newState:newState})
+            saveState(newState)                        
+            // return newState       
+        }
+
+
+
         case 'duplicate': {
             let ids = files.map((file) => file.id);
             var largest = Math.max.apply(0, ids);
@@ -177,10 +193,11 @@ function stateReducer(state, action) {
             let newFiles = [...files, new_file]
 
             let newState = { ...state, files: newFiles };
-            return saveState(newState);;
+            saveState(newState)                        
+            return newState
         }
-        case 'deleted': {
 
+        case 'deleted': {
             let newOpenFiles = openFiles
             newOpenFiles = openFiles.filter((fileIndex) => fileIndex !== action.id)
             
@@ -191,7 +208,8 @@ function stateReducer(state, action) {
             let newFiles = files.filter(t => t.id !== action.id)
 
             let newState = { ...state, files: newFiles, openFiles: newOpenFiles, currentFileIndex }
-            return saveState(newState);;
+            saveState(newState)                        
+            return newState
         }
         default: {
             throw Error('Unknown action: ' + action.type);

@@ -6,7 +6,10 @@ import { useAppState, useStateDispatch } from '../../AppContext.js';
 
 const DarkMode = () => {
     const dispatch = useStateDispatch();
-    let {theme} = useAppState;
+    let {theme} = useAppState();
+    
+    console.log(theme)
+    console.log(theme !== "dark")
     return (
         <div className='dark_mode'>
             <input
@@ -18,7 +21,7 @@ const DarkMode = () => {
                       type: 'theme',
                       id: 'test'
                       })}}
-                defaultChecked={theme === "dark"}
+                defaultChecked={theme == "dark"}
             />
             <label className='dark_mode_label' htmlFor='darkmode-toggle'>
                 <Sun />

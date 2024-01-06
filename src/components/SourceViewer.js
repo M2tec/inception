@@ -2,13 +2,20 @@ import React from 'react';
 import Editor from "@monaco-editor/react";
 
 import { heliosSyntax } from './HeliosSyntaxMonaco';
-import { useAppState } from '../AppContext.js';
+import { useAppState, useStateDispatch } from '../AppContext.js';
 import useResizeObserver from "use-resize-observer";
 
 const SourceViewer = (props) => {
   const { theme } = useAppState();
 
-  let file = props.file
+  let { files } = useAppState();
+  const dispatch = useStateDispatch();
+
+
+  let fileList = files.filter((file) => file.id == props.id);
+  let file = fileList[0]
+  // console.log(file)
+  // let file = props.file
 
   const [ manualHeight, setManualHeight] = React.useState(1);
   const [ manualWidth, setManualWidth] = React.useState(1);
@@ -37,6 +44,14 @@ const SourceViewer = (props) => {
 
   function handleEditorChange(value, event) {
     // console.log('here is the current model value:', value);
+
+    // dispatch({
+    //   type: 'changed-data',
+    //   file: {
+    //     ...file,
+    //     data: value
+    //   }
+    // });
   }
 
   return (

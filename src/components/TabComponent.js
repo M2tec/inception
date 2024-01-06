@@ -12,8 +12,8 @@ export default function TabComponent(props) {
     const GcTab = ({
         id
     }) => {
-        console.log(id)
-        console.log(files)
+        // console.log(id)
+        // console.log(files)
         let currentFile = files.filter((file) => file.id == id);
         let name = currentFile[0].name
         return (
@@ -56,7 +56,8 @@ export default function TabComponent(props) {
     return (
         <div className="TabContainer">
             <div className='TabBar'>
-
+                {console.log({openfiles:openFiles})}
+                {console.log({files:files})}
                 {openFiles.map((id, index) => {
                     return (
                         <GcTab

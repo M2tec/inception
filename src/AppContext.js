@@ -67,19 +67,33 @@ function stateReducer(state, action) {
             let newData = {}
             newData.items = files 
     
+            let fileList = []
             switch (action.id) {
                 case "files": {
                     console.log("act.files")
-                    openFiles = [0]
-                    currentFileIndex = 0
                     newState = {...state, files: state.sourceData}
+
+                    fileList = newState.files.map((file) => file.id)
+
+                    console.log({fileList:fileList})
+                    let lowestId = Math.min(...fileList)
+                    openFiles = [lowestId]
+                    currentFileIndex = lowestId
+
                     break;
                 }
                 case "returndata": {
-                    console.log("act.returndata")
-                    openFiles = [0]
-                    currentFileIndex = 0
+                    console.log("act.returndata")                
+                    
                     newState = {...state, files: state.returnData}
+
+                    fileList = newState.files.map((file) => file.id)
+                    console.log({fileList:fileList})
+
+                    let lowestId = Math.min(...fileList)
+                    openFiles = [lowestId]
+                    currentFileIndex = lowestId
+
                     break;
                 }
             }
@@ -159,10 +173,9 @@ function stateReducer(state, action) {
         case 'deleted': {
 
             let newOpenFiles = openFiles
-            if (action.id == currentFileIndex) {
-
-                newOpenFiles = openFiles.filter((fileIndex) => fileIndex !== action.id)
-
+            newOpenFiles = openFiles.filter((fileIndex) => fileIndex !== action.id)
+            
+            if (action.id == currentFileIndex) {            
                 currentFileIndex = newOpenFiles[0]
             }
 

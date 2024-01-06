@@ -148,10 +148,6 @@ ul {
   opacity: 0;
 }
 
-.file-item-selected:hover .file-operation-icon {
-  display: none !important;
-}
-
 .file-item:hover .file-operation-icon {
   /* display: flex; */
   opacity: 1;

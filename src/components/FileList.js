@@ -9,15 +9,7 @@ import {
 } from 'react-bootstrap-icons';
 
 export default function FilesList() {
-
-
-  let { menu, files, returnData } = useAppState();
-
-  if (menu !== "files") {
-    files = returnData
-  }
-
-  // console.log(files)
+  let { files } = useAppState();
 
   return (
     <ul>
@@ -38,6 +30,7 @@ function File({ file }) {
   // console.log(file)
   let fileContent;
   if (isEditing) {
+    
     fileContent = (
 
       <div className='file-item-child'>
@@ -45,6 +38,7 @@ function File({ file }) {
 
           value={file.name}
           onChange={e => {
+            console.log({e:e.target.value})
             dispatch({
               type: 'changed',
               file: {

@@ -56,8 +56,8 @@ export default function TabComponent(props) {
     return (
         <div className="TabContainer">
             <div className='TabBar'>
-                {console.log({openfiles:openFiles})}
-                {console.log({files:files})}
+                {/* {console.log({openfiles:openFiles})}
+                {console.log({files:files})} */}
                 {openFiles.map((id, index) => {
                     return (
                         <GcTab

@@ -113,7 +113,7 @@ function stateReducer(state, action) {
             return saveState(newState);;
         }
         case 'selected': {
-            openFiles.indexOf(action.file.id) === -1 ? openFiles.push(action.file.id) : console.log("This item already exists");
+            openFiles.indexOf(action.file.id) === -1 ? openFiles.push(action.file.id) : console.log("Item already open");
             currentFileIndex = action.file.id;
 
             let newState = { ...state, openFiles, currentFileIndex };
@@ -144,15 +144,24 @@ function stateReducer(state, action) {
             }];
         }
         case 'changed': {
+            console.log("Changed")
+            // console.log({action:action})
+            // console.log({files:files})    
+
             let newFiles = files.map(f => {
                 if (f.id === action.file.id) {
+                    // console.log({f1:f})
                     return action.file;
                 } else {
+                    // console.log({f2:f})
                     return f;
                 }
             });
+            // console.log({newFiles:newFiles})
+
 
             let newState = { ...state, files: newFiles };
+            // console.log({newState:newState})
             return saveState(newState);;        
         }
         case 'duplicate': {

@@ -138,18 +138,24 @@ ul {
 }
 
 
-.trash-icon {
-  display: none;
+.file-icon {
+  display: flex;
 }
 
-.file-item-selected:hover .trash-icon {
+.file-operation-icon {
+  transition: opacity 200ms; 
+  /* display: none; */
+  opacity: 0;
+}
+
+.file-item-selected:hover .file-operation-icon {
   display: none !important;
 }
 
-
-.file-item:hover .trash-icon {
-  display: block;
-  color: rgb(127, 127, 127)
+.file-item:hover .file-operation-icon {
+  /* display: flex; */
+  opacity: 1;
+  color: var(--text_color);
 }
 
 
@@ -162,6 +168,7 @@ ul {
   height: 1.5rem;
   gap: 1ch;
   padding-left: 1ch;
+  color: var(--text_color)
 }
 
 .file-icon {

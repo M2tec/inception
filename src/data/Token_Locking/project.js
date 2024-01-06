@@ -236,7 +236,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
                 },
                 {
                     id: 1,
-                    name: "data.json",
+                    name: "data2.json",
                     type: "json",
                     data: `
 {

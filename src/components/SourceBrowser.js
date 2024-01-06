@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAppState, useStateDispatch } from '../AppContext.js';
 import {
     ChevronDown,
     FiletypeJson,
@@ -6,7 +7,6 @@ import {
     PlusSquare
 } from 'react-bootstrap-icons';
 
-import { AppContext } from '../AppContext';
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import FilesList from "./FileList";
@@ -14,6 +14,8 @@ import FilesList from "./FileList";
 export default function SourceBrowser(props) {
     const [addFile, setAddFile] = React.useState(false);
     const [fileName, setFileName] = React.useState("");
+
+    let { menu } = useAppState();
 
     function handleCreateFile(e, fileName) {
         console.log(e)
@@ -35,11 +37,9 @@ export default function SourceBrowser(props) {
         <div className="source-browser">
 
             <div className="folder-item">
-                <ChevronDown className="file-expander" /> <span className="file-name">{props.type}</span>
+                <ChevronDown/> <span className="file-name">{menu == "files" ? "source" : "returndata" }</span>
             </div>
-            
                 <FilesList />
-
             {addFile ?
                 <Form>
                     <Form.Control

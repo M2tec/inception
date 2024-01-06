@@ -10,7 +10,7 @@ import {
 
 export default function FilesList() {
 
-  
+
   let { menu, files, returnData } = useAppState();
 
   if (menu !== "files") {
@@ -61,7 +61,9 @@ function File({ file }) {
     fileContent = (
       <div className='file-item-child'>
         <span className='file-item-text'>{file.name}</span>
-        <Pencil size={12} className='file-item-child' onClick={() => setIsEditing(true)} />
+
+        <Pencil size={12} className='file-item-child file-operation-icon' onClick={() => setIsEditing(true)} />
+
       </div>
     );
   }
@@ -86,24 +88,25 @@ function File({ file }) {
           }}>
           {fileContent}</span>
 
-        <Stickies
-          onClick={(e) => {
-            dispatch({
-              type: 'duplicate',
-              file: file
-            });
-          }}
-          size={12} />
+          <Stickies
+          className='file-operation-icon'
+            onClick={(e) => {
+              dispatch({
+                type: 'duplicate',
+                file: file
+              });
+            }}
+            size={12} />
 
-        <Trash
-          onClick={() => {
-            dispatch({
-              type: 'deleted',
-              id: file.id
-            });
-          }}
-          size={12} />
-
+          <Trash
+          className='file-operation-icon'
+            onClick={() => {
+              dispatch({
+                type: 'deleted',
+                id: file.id
+              });
+            }}
+            size={12} />
       </label>
     </li>
   );

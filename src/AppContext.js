@@ -63,24 +63,22 @@ function stateReducer(state, action) {
         case 'menu-change': {
             console.log(action.id)
 
-            let newState = {}
-
-            if (action.id == state.menu) {
-                openFiles = [0]
-                currentFileIndex = [0]
-            }
-    
+            let newState = {}   
             let newData = {}
             newData.items = files 
     
             switch (action.id) {
                 case "files": {
                     console.log("act.files")
+                    openFiles = [0]
+                    currentFileIndex = 0
                     newState = {...state, files: state.sourceData}
                     break;
                 }
                 case "returndata": {
                     console.log("act.returndata")
+                    openFiles = [0]
+                    currentFileIndex = 0
                     newState = {...state, files: state.returnData}
                     break;
                 }

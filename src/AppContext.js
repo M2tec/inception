@@ -18,7 +18,6 @@ export function StateProvider({ children }) {
             </FilesDispatchContext.Provider>
         </FilesContext.Provider>
     )
-
 }
 
 export function useAppState() {
@@ -187,8 +186,6 @@ function stateReducer(state, action) {
             saveState(newState)        
             return {...state}       
         }
-
-
 
         case 'duplicate': {
             let ids = files.map((file) => file.id);

@@ -10,7 +10,7 @@ const SourceViewer = (props) => {
 
   const element = React.useRef(null);
   const [width, setWidth] = React.useState(0);
-  const [height, setHeight] = React.useState(0);
+  // const [height, setHeight] = React.useState(0);
 
   const [bodyHeight, setBodyHeight] = React.useState(0);
 
@@ -18,25 +18,25 @@ const SourceViewer = (props) => {
   const dispatch = useStateDispatch();
 
   const options = {
-    autoIndent: 'full',
-    contextmenu: true,
-    fontFamily: 'monospace',
-    fontSize: 20,
-    lineHeight: 24,
-    hideCursorInOverviewRuler: true,
-    matchBrackets: 'always',
-    minimap: {
-      enabled: true,
-    },
-    scrollbar: {
-      horizontalSliderSize: 4,
-      verticalSliderSize: 18,
-    },
-    selectOnLineNumbers: true,
-    roundedSelection: false,
-    readOnly: false,
-    cursorStyle: 'line',
-    automaticLayout: true,
+    // autoIndent: 'full',
+    // contextmenu: true,
+    // fontFamily: 'monospace',
+    // fontSize: 11,
+    // lineHeight: 24,
+    // hideCursorInOverviewRuler: true,
+    // matchBrackets: 'always',
+    // minimap: {
+    //   enabled: true,
+    // },
+    // scrollbar: {
+    //   horizontalSliderSize: 4,
+    //   verticalSliderSize: 18,
+    // },
+    // selectOnLineNumbers: true,
+    // roundedSelection: false,
+    // readOnly: false,
+    // cursorStyle: 'line',
+    // automaticLayout: true,
   };
   
   let fileList = files.filter((file) => file.id == props.id);
@@ -47,16 +47,13 @@ const SourceViewer = (props) => {
   // Get the full body height and subtract het fixed elements 
   var ro = new ResizeObserver(entries => {
     for (let entry of entries) {
-      const cr = entry.contentRect;
-  
-      console.log('Element:', entry.target);
-      console.log(`Element size: ${cr.width}px x ${cr.height}px`);
-      console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
+      const cr = entry.contentRect; 
+      // console.log('Element:', entry.target);
+      // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
+      // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
       setBodyHeight(cr.height -95)
     }
   });
-  
-  // Observe one or multiple elements
   ro.observe(document.body);
 
   const observer = React.useMemo(
@@ -64,7 +61,7 @@ const SourceViewer = (props) => {
       new ResizeObserver((entries) => {
         // console.log(entries[0].target.getBoundingClientRect().width - 1)
         setWidth(entries[0].target.getBoundingClientRect().width - 1);
-        setHeight(entries[0].target.getBoundingClientRect().height - 30);
+        // setHeight(entries[0].target.getBoundingClientRect().height - 30);
       }),
     []
   );
@@ -93,13 +90,13 @@ const SourceViewer = (props) => {
   function handleEditorChange(value, event) {
     // console.log('here is the current model value:', value);
 
-    // dispatch({
-    //   type: 'changed-data',
-    //   file: {
-    //     ...file,
-    //     data: value
-    //   }
-    // });
+    dispatch({
+      type: 'changed-data',
+      file: {
+        ...file,
+        data: value
+      }
+    });
   }
 
   return (

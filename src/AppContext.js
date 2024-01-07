@@ -172,10 +172,20 @@ function stateReducer(state, action) {
             console.log({action:action})
             console.log({files:files})    
 
-            let newState = { ...state };
+            let newFiles = files.map(f => {
+                if (f.id === action.file.id) {
+                    // console.log({f1:f})
+                    return action.file;
+                } else {
+                    // console.log({f2:f})
+                    return f;
+                }
+            });
+
+            let newState = { ...state, files:newFiles };
             console.log({newState:newState})
-            saveState(newState)                        
-            // return newState       
+            saveState(newState)        
+            return {...state}       
         }
 
 

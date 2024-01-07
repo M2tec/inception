@@ -12,7 +12,7 @@ export default function FilesList() {
   let { files } = useAppState();
 
   return (
-    <ul>
+    <ul className='file-list'>
       {files.map(item => (
         <File key={item.id} file={item} />
       ))}
@@ -63,7 +63,7 @@ function File({ file }) {
 
   return (
 
-    <li key={file.id}>
+    <li className="file-list-element" key={file.id}>
 
       <label
         className={

@@ -7,9 +7,7 @@ import { useAppState, useStateDispatch } from '../../AppContext.js';
 const DarkMode = () => {
     const dispatch = useStateDispatch();
     let {theme} = useAppState();
-    
-    console.log(theme)
-    console.log(theme !== "dark")
+
     return (
         <div className='dark_mode'>
             <input

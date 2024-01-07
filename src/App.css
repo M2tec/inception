@@ -4,7 +4,7 @@ body,
 #app,
 #app>div {
   height: 100%;
-  overflow:hidden;
+  /* overflow:hidden; */
 }
 
 ul {
@@ -32,6 +32,8 @@ ul {
 .DataView {
   height: 100%;
   width: 100%;
+  display: flex;
+
 }
 
 .GcSideBar {
@@ -44,6 +46,7 @@ ul {
   color:var(--text_color);
   background-color: var(--body_background-editor);
   height: 100%;
+  width: 500px; 
 }
 
 .PanelGroup {
@@ -51,7 +54,6 @@ ul {
 }
 
 .TabPane {
-  display: none;
   height: 100%;
 }
 
@@ -62,12 +64,13 @@ ul {
 .TabBar {
   display: flex;
   flex-direction: row;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .TabContainer {
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 
 .TabItem {
@@ -92,10 +95,6 @@ ul {
 .TabContent {
   height: 100%;
   background-color: red;
-}
-
-.TabPane {
-  height: 100%;
 }
 
 .tab-content {
@@ -148,15 +147,27 @@ ul {
   opacity: 0;
 }
 
+.no-overflow {
+  width: 50px;
+  overflow:visible
+}
+
 .file-item:hover .file-operation-icon {
   /* display: flex; */
   opacity: 1;
   color: var(--text_color);
 }
 
+.file-list {
+  width: 200px;
+}
+
+.file-list-element {
+  width: 200px;
+}
 
 .folder-item {
-  width: 600px;
+  width: 300px;
   box-sizing: border-box;
   line-height: 1.5rem;
   display: flex;
@@ -176,6 +187,10 @@ ul {
   width: 1ch;
   height: 1ch;
   color: white;
+}
+
+.navbar {
+  height: 60px;
 }
 
 .panel {

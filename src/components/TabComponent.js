@@ -1,8 +1,6 @@
 import React from 'react';
-
 import SourceViewer from './SourceViewer';
 import { useAppState, useStateDispatch } from '../AppContext.js';
-
 import { X } from 'react-bootstrap-icons';
 
 export default function TabComponent(props) {
@@ -42,16 +40,6 @@ export default function TabComponent(props) {
         )
     };
 
-    const GcPane = ({
-        id,
-    }) => {
-        return (
-            <div className={id === currentFileIndex ? "TabPane  TabPaneActive" : "TabPane"}>
-                <SourceViewer id={id} readOnly={false} />
-            </div>
-        )
-    };
-
     return (
         <div className="TabContainer">
             <div className='TabBar'>
@@ -68,16 +56,11 @@ export default function TabComponent(props) {
                 })}
              </div>
 
-                {openFiles.map((id, index) => {
-                    return (
-                        <GcPane
-                            index={index}
-                            key={index}
-                            id={id}
-                        />
-                    );
-                })}
-            
+            <div className={currentFileIndex ? "TabPane  TabPaneActive" : "TabPane"}>
+                {/* {console.log(currentFileIndex)} */}
+                <SourceViewer id={currentFileIndex} readOnly={false} />
+            </div>
+
         </div>
     );
 };

@@ -8,6 +8,7 @@ import { useAppState, useStateDispatch } from '../AppContext.js';
 const SourceViewer = (props) => {
   const { theme } = useAppState();
 
+
   const element = React.useRef(null);
   const [width, setWidth] = React.useState(0);
   // const [height, setHeight] = React.useState(0);
@@ -39,9 +40,20 @@ const SourceViewer = (props) => {
     // automaticLayout: true,
   };
   
-  let fileList = files.filter((file) => file.id == props.id);
-  let file = fileList[0]
-  console.log({viewerFile:file})
+  let [viewFile, setViewFile] = React.useState({})
+
+  React.useEffect(() => {
+    let fileList = files.filter((file) => file.id == props.id);
+    let file = fileList[0]
+
+    console.log(props.id)
+    console.log(file.data)
+    console.log({viewerFiles:files})
+
+    setViewFile({...file})
+  }, [props])
+
+ 
 
   // Hack to get correct height for editor
   // For some reason the obeserver does not return the correct element heigth
@@ -91,21 +103,22 @@ const SourceViewer = (props) => {
   function handleEditorChange(value, event) {
     // console.log('here is the current model value:', value);
 
-    dispatch({
-      type: 'changed-data',
-      file: {
-        ...file,
-        data: value
-      }
-    });
+    // dispatch({
+    //   type: 'changed-data',
+    //   file: {
+    //     ...viewFile,
+    //     data: value
+    //   }
+    // });
   }
 
   return (
      <div className='DataView' ref={sizeRef}>
+      {console.log("e " + viewFile.data)}
       <Editor
        theme={theme === "light" ? "light" : "vs-dark"}
-       language={file.type}
-       value={file.data}
+       language={viewFile.type}
+       value={viewFile.data}
        height={bodyHeight} 
        width={width}
        options={options}

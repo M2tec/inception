@@ -154,24 +154,26 @@ function stateReducer(state, action) {
             console.log("selected")
             console.log({selState:state})
             console.log({selectedFiles:files})
+            state.returnData.forEach((element) => console.log("i " + element.id + " " + element.data))
             // console.log("s1: " + sourceData[0].data)
             // console.log({sourceData:sourceData})
             // console.log({returnData:returnData})
             
-
             openFiles.indexOf(action.file.id) === -1 ? openFiles.push(action.file.id) : console.log("Item already open");
             let newFileIndex = action.file.id;
 
-            console.log(menu)
-            let newState = {...state, openFiles, currentFileIndex:newFileIndex}
-            // if ( menu == 'files') {
-            //     newState = { ...state, openFiles, currentFileIndex:newFileIndex };
-            // } else {
-            //     newState = { ...state, openFiles, currentFileIndex:newFileIndex };
-            // }
-            
-            let returnState = saveStateFilesAndData(newState)                        
-            return returnState
+            // console.log(menu)
+            // let newState = {...state, openFiles, currentFileIndex:newFileIndex}
+            let newState = {...state}
+            if ( menu == 'files') {
+                newState = { ...state, files: sourceData, openFiles, currentFileIndex:newFileIndex };
+            } else {
+                newState = { ...state, files: returnData, openFiles, currentFileIndex:newFileIndex };
+            }
+            newState.files.forEach((element) => console.log("f " + element.id + " " + element.data))
+            newState.returnData.forEach((element) => console.log("r " + element.id + " " + element.data))
+            // let returnState = saveStateFilesAndData(newState)                        
+            return newState
         }
 
         case 'closed': {
@@ -266,23 +268,31 @@ function stateReducer(state, action) {
             // saveState(newState)  
             localStorage.setItem('state', JSON.stringify(newState))
 
-            return {...newState}       
+            return {...state}       
         }
 
         case 'duplicate': {
             console.log("duplicate")
             console.log({dupState:state})
+
+            state.returnData.forEach((element) => console.log(element.id + " " + element.data))
+
             let ids = files.map((file) => file.id);
             var largest = Math.max.apply(0, ids);
 
-            let duplicate_file_array = files.filter((file) => file.id == action.file.id)
+            // let duplicate_file_array = files.filter((file) => file.id == action.file.id)
 
-            let duplicate_file = duplicate_file_array[0]
-            let new_file_name_split = action.file.name.split(".", 2)
-            let new_file_name = new_file_name_split[0] + "-1." + new_file_name_split[1]
+            // let duplicateFile = duplicate_file_array[0]
 
-            let newFile = { ...duplicate_file, id: largest + 1, name: new_file_name }
+            // New file name
+            let newFileNameSplit = action.file.name.split(".", 2)
+            let newFileName = newFileNameSplit[0] + "-1." + newFileNameSplit[1]
+
+            let dupFile = action.file
+            let newFile = { ...dupFile, id: largest + 1, name: newFileName }
             let newFiles = [...files, newFile]
+
+            console.log({dupNewfiles:newFiles})
 
             let newState = { };
             if ( menu == 'files') {

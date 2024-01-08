@@ -41,6 +41,7 @@ const SourceViewer = (props) => {
   
   let fileList = files.filter((file) => file.id == props.id);
   let file = fileList[0]
+  console.log({viewerFile:file})
 
   // Hack to get correct height for editor
   // For some reason the obeserver does not return the correct element heigth

@@ -136,6 +136,9 @@ ul {
   background-color: var(--body_background);
 }
 
+.trash-selected {
+  display: none;
+}
 
 .file-icon {
   display: flex;

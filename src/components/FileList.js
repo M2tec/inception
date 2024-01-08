@@ -39,7 +39,7 @@ function File({ file }) {
           onChange={e => {
             console.log({e:e.target.value})
             dispatch({
-              type: 'changed',
+              type: 'renamed',
               file: {
                 ...file,
                 name: e.target.value
@@ -92,7 +92,10 @@ function File({ file }) {
             size={12} />
 
           <Trash
-          className='file-operation-icon'
+          className={
+            currentFileIndex == file.id ?
+            'file-operation-icon trash-selected' : 'file-operation-icon'
+          }
             onClick={() => {
               dispatch({
                 type: 'deleted',

@@ -14,8 +14,7 @@ const gc = window.gc;
 export default function SideView(props) {
   const dispatch = useStateDispatch();
   let { files, currentFileIndex } = useAppState();
-  // console.log(files)
-
+  console.log({SideviewFiles:files})
 
   let fileList = files.filter((file) => file.id == currentFileIndex)
   let file = fileList[0]

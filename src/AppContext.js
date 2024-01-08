@@ -210,11 +210,15 @@ function stateReducer(state, action) {
             });
             // console.log({newFiles:newFiles})
 
-
-            let newState = { ...state, files: newFiles };
+            let newState = { };
+            if ( menu == 'files') {
+                newState = { ...state, files: newFiles, sourceData: newFiles, };
+            } else {
+                newState = { ...state, files: newFiles, returnData: newFiles, };
+            }
             
-            let returnState = saveStateFilesAndData(newState)                        
-            return returnState    
+            // let returnState = saveStateFilesAndData(newState)                        
+            return newState
         }
 
         case 'changed-data': {
@@ -282,15 +286,16 @@ function stateReducer(state, action) {
 
             let newState = { };
             if ( menu == 'files') {
-                newState = { ...state, files: newFiles };
+                newState = { ...state, files: newFiles, sourceData: newFiles, };
             } else {
-                newState = { ...state, files: newFiles };
+                newState = { ...state, files: newFiles, returnData: newFiles, };
             }
 
             console.log({dupNewState:newState})
-            
-            let returnState = saveStateFilesAndData(newState)                        
-            return returnState
+            localStorage.setItem('state', JSON.stringify(newState))
+            // let returnState = saveStateFilesAndData(newState)                        
+            // return returnState
+            return newState
         }
 
         case 'deleted': {
@@ -304,13 +309,28 @@ function stateReducer(state, action) {
             }
 
             let newFiles = files.filter(t => t.id !== action.id)
+            console.log({delNewFiles:newFiles})
 
-            
-            let newState = { ...state, files: newFiles, openFiles: newOpenFiles, currentFileIndex }
-            
-            let returnState = saveStateFilesAndData(newState)   
-            console.log({delReturnState:returnState})                     
-            return returnState
+            let newState = {}
+            // Save file data into the correct data object
+            switch (state.menu) {
+                case "files": {
+                    // console.log("case file")
+                    newState = { ...state, files: newFiles, sourceData: newFiles, openFiles: newOpenFiles, currentFileIndex }
+                    break;
+                }
+                case "returndata": {
+                    // console.log("case return")
+                    newState = { ...state, files: newFiles, returnData: newFiles, openFiles: newOpenFiles, currentFileIndex }
+                    break;
+                }
+                default:
+                    console.log('not a file menu')
+            }
+
+            localStorage.setItem('state', JSON.stringify(newState))
+                
+            return newState
         }
         default: {
             throw Error('Unknown action: ' + action.type);

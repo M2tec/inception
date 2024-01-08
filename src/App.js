@@ -7,7 +7,7 @@ import NoMatch from './components/NoMatch';
 import { StateProvider } from './AppContext';
 
 // import TestPopup from './components/TestPopup';
-// import ConnectPopup from './components/ConnectPopup';
+import ConnectPopup from './components/ConnectPopup';
 
 export default function App() {
   // Update the theme only if the mode changes
@@ -16,9 +16,9 @@ export default function App() {
       <Routes>
         <Route index element={<Home />} />
         
-        {/* <Route path="connect" element={<ConnectPopup />}>
+        <Route path="connect" element={<ConnectPopup />}>
           <Route path=":returnData" element={<ConnectPopup />} />
-        </Route> */}
+        </Route>
 
         {/* <Route path="testpopup" element={<TestPopup />} />
         <Route path="*" element={<NoMatch />} /> */}

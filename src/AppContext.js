@@ -30,7 +30,7 @@ export function useStateDispatch() {
 
 function stateReducer(state, action) {
 
-    let { menu, files, openFiles, currentFileIndex, theme } = state;
+    let { menu, files, sourceData, returnData, openFiles, currentFileIndex, theme } = state;
     // console.log({ files: files })
     // console.log({ action: action })
 
@@ -60,6 +60,8 @@ function stateReducer(state, action) {
     }
 
     switch (action.type) {
+
+
         case 'menu-change': {
             console.log(action.id)
 
@@ -117,10 +119,25 @@ function stateReducer(state, action) {
         }
 
         case 'selected': {
+            console.log("selected")
+            // console.log({files:files})
+            console.log("x: " + sourceData[0].data)
+            // console.log({sourceData:sourceData})
+            // console.log({returnData:returnData})
+            
+
             openFiles.indexOf(action.file.id) === -1 ? openFiles.push(action.file.id) : console.log("Item already open");
             currentFileIndex = action.file.id;
 
-            let newState = { ...state, openFiles, currentFileIndex };
+            console.log(menu)
+            let newState ={...state}
+            if ( menu == 'files') {
+                newState = { ...state, openFiles, files:sourceData, currentFileIndex };
+            } else {
+                newState = { ...state, openFiles, files:returnData, currentFileIndex };
+            }
+
+            
             saveState(newState)                        
             return newState
         }
@@ -145,8 +162,10 @@ function stateReducer(state, action) {
 
         case 'changed': {
             console.log("Changed")
-            // console.log({action:action})
-            // console.log({files:files})    
+            console.log({action:action})
+            // console.log({files:files})
+            // console.log({sourceData:sourceData})
+            // console.log({returnData:returnData})
 
             let newFiles = files.map(f => {
                 if (f.id === action.file.id) {
@@ -169,7 +188,12 @@ function stateReducer(state, action) {
         case 'changed-data': {
             console.log("Changed data")
             console.log({action:action})
-            console.log({files:files})    
+
+            console.log(action.file.data)
+            console.log(files[0].data)
+            // console.log({files:files})
+            console.log(sourceData[0].data)
+            //console.log({sourceData:sourceData})
 
             let newFiles = files.map(f => {
                 if (f.id === action.file.id) {
@@ -181,10 +205,10 @@ function stateReducer(state, action) {
                 }
             });
 
-            let newState = { ...state, files:newFiles };
-            console.log({newState:newState})
+            let newState = { ...state, sourceData:newFiles };
+            // console.log({newState:newState})
             saveState(newState)        
-            return {...state}       
+            return {...newState}       
         }
 
         case 'duplicate': {

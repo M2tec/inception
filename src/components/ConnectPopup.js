@@ -1,5 +1,4 @@
 import React from 'react';
-import { AppContext } from '../AppContext';
 import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { XCircle } from 'react-bootstrap-icons';
@@ -11,51 +10,24 @@ const gc = window.gc;
 
 export default function ConnectPopup() {
     let count = 1
-    const { context, setContext } = React.useContext(AppContext)
+    // const { context, setContext } = React.useContext(AppContext)
 
     document.querySelector("body").setAttribute('data-theme', 'dark')
 
     const [resultObj, setResultObj] = React.useState({});
     let { returnData } = useParams();
 
-    // console.log("Return data: " + returnData);
+    console.log("Return data: " + returnData);
 
     React.useEffect(() => {
+        console.log("returndata")
 
         if (returnData !== undefined) {
+            console.log("receive")
             // Receiving data 
             async function decodeActionUrl(returnData) {
-                const resultObj = await gc.encodings.msg.decoder(returnData);
-                setResultObj(resultObj)
-                localStorage.setItem("gc_return_data", JSON.stringify(resultObj))
-
-
-                setContext(oldContext => {
-
-                    let newContext = { ...oldContext }
-
-                    let sessionID = localStorage.getItem("SessionID")
-                    if (sessionID == 1) {
-                        moment.locale('en');
-                        let fileName = "returndata-" + moment().format('y-M-D_h-m') + ".json"
-
-
-                        // console.log("save item")
-                        let newItem = {
-                            name: fileName,
-                            type: "json",
-                            data: JSON.stringify(resultObj, null, 4)
-                        }
-
-                        newContext.dataItems.returndata.items.unshift(newItem)
-                        localStorage.setItem('tempContext', JSON.stringify(newContext));
-                    }
-                    localStorage.setItem("SessionID", 0)
-
-                    // console.log(newContext)
-
-                    return newContext
-                })
+                const resultObject = await gc.encodings.msg.decoder(returnData);
+                setResultObj(resultObject)
             }
 
             if (returnData !== undefined) {
@@ -64,6 +36,7 @@ export default function ConnectPopup() {
 
 
         } else {
+            console.log("send")
             // Sending data 
             let gc_script = localStorage.getItem("gc_script")
 
@@ -85,6 +58,36 @@ export default function ConnectPopup() {
             }
         }
     }, [returnData])
+
+
+    React.useEffect(() => {
+        console.log("resultObj")
+
+        if (resultObj !== undefined) {
+            console.log({ resultObj: resultObj })
+            localStorage.setItem("gc_return_data", JSON.stringify(resultObj))
+
+            let sessionID = localStorage.getItem("SessionID")
+            if (sessionID == 1) {
+                moment.locale('en');
+                let fileName = "returndata-" + moment().format('y-M-D_h-m') + ".json"
+
+                // console.log("save item")
+                let newItem = {
+                    name: fileName,
+                    type: "json",
+                    data: JSON.stringify(resultObj, null, 4)
+                }
+
+                localStorage.setItem("gc_return_data", JSON.stringify(resultObj))
+            }
+            localStorage.setItem("SessionID", 0)
+
+
+        }
+
+    }, [resultObj])
+
 
     return (
         <>

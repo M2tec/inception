@@ -80,7 +80,9 @@ const SourceViewer = (props) => {
   );
 
   const sizeRef = React.useCallback(
+    
     (node) => {
+      if (node !== null) {
       if (element !== null) {
         element.current = node;
         observer.observe(node);
@@ -88,7 +90,7 @@ const SourceViewer = (props) => {
         observer.unobserve(element.current);
         element.current = null;
       }
-    },
+    }},
     [observer]
   );
 
@@ -118,11 +120,11 @@ const SourceViewer = (props) => {
       <Editor
        theme={theme === "light" ? "light" : "vs-dark"}
        language={viewFile.type}
-       value={viewFile.data}
+       path={viewFile.name}
+       defaultValue={viewFile.data}
        height={bodyHeight} 
        width={width}
        options={options}
-      //  options={{readOnly: false}}
        onChange={handleEditorChange}
        onMount={handleEditorDidMount}
      /> 

@@ -24,6 +24,21 @@ export default function SideView(props) {
   // let viewType = context.dataItems[type]
   const isActiveAGCScript = file.name.endsWith('.gcscript');
 
+  window.addEventListener("storage", () => {
+    // When local storage changes, dump the list to
+    // the console.
+    const data = (window.localStorage.getItem("DataIsHere"))
+    console.log(data);
+    if (data !== '') {
+        dispatch({
+            type: 'menu-change',
+            id: "returndata"
+        });
+        window.localStorage.setItem("DataIsHere", "")
+    }
+  })
+
+
   function handleClickRun(e) {
 
     console.log("Deploy");
@@ -57,6 +72,7 @@ export default function SideView(props) {
   }
 
   return (<div>
+
     <Button
       onClick={(e) => {
         dispatch({

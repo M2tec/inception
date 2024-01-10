@@ -28,13 +28,12 @@ export default function SideView(props) {
     // When local storage changes, dump the list to
     // the console.
     const data = (window.localStorage.getItem("DataIsHere"))
-    console.log(data);
+    console.log("Eventlistener: " + data);
     if (data !== '') {
-        dispatch({
-            type: 'menu-change',
-            id: "returndata"
-        });
-        window.localStorage.setItem("DataIsHere", "")
+      dispatch({
+        type: 'load-from-storage',
+      });
+      window.localStorage.setItem("DataIsHere", "")
     }
   })
 

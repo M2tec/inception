@@ -152,9 +152,9 @@ function stateReducer(state, action) {
 
         case 'selected': {
             console.log("selected")
-            console.log({selState:state})
-            console.log({selectedFiles:files})
-            state.returnData.forEach((element) => console.log("i " + element.id + " " + element.data))
+            // console.log({selState:state})
+            // console.log({selectedFiles:files})
+            // state.returnData.forEach((element) => console.log("i " + element.id + " " + element.data))
             // console.log("s1: " + sourceData[0].data)
             // console.log({sourceData:sourceData})
             // console.log({returnData:returnData})
@@ -170,8 +170,8 @@ function stateReducer(state, action) {
             } else {
                 newState = { ...state, files: returnData, openFiles, currentFileIndex:newFileIndex };
             }
-            newState.files.forEach((element) => console.log("f " + element.id + " " + element.data))
-            newState.returnData.forEach((element) => console.log("r " + element.id + " " + element.data))
+            // newState.files.forEach((element) => console.log("f " + element.id + " " + element.data))
+            // newState.returnData.forEach((element) => console.log("r " + element.id + " " + element.data))
             // let returnState = saveStateFilesAndData(newState)                        
             return newState
         }
@@ -273,7 +273,7 @@ function stateReducer(state, action) {
 
         case 'duplicate': {
             console.log("duplicate")
-            console.log({dupState:state})
+            // console.log({dupState:state})
 
             state.returnData.forEach((element) => console.log(element.id + " " + element.data))
 
@@ -292,7 +292,7 @@ function stateReducer(state, action) {
             let newFile = { ...dupFile, id: largest + 1, name: newFileName }
             let newFiles = [...files, newFile]
 
-            console.log({dupNewfiles:newFiles})
+            // console.log({dupNewfiles:newFiles})
 
             let newState = { };
             if ( menu == 'files') {
@@ -301,7 +301,7 @@ function stateReducer(state, action) {
                 newState = { ...state, files: newFiles, returnData: newFiles, };
             }
 
-            console.log({dupNewState:newState})
+            // console.log({dupNewState:newState})
             localStorage.setItem('state', JSON.stringify(newState))
             // let returnState = saveStateFilesAndData(newState)                        
             // return returnState
@@ -362,7 +362,7 @@ if (storageState == null) {
         files: project.dataItems.sourcedata.items,
         openFiles: [0],
         currentFileIndex: 0,
-        theme: "light"
+        theme: "dark"
     }
 } else {
     initialState = {...storageState,

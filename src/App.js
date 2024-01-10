@@ -7,7 +7,7 @@ import NoMatch from './components/NoMatch';
 import { StateProvider } from './AppContext';
 
 // import TestPopup from './components/TestPopup';
-import ConnectPopup from './components/ConnectPopup';
+import {ReceivePopup} from './components/GameChangerAPI';
 
 export default function App() {
   // Update the theme only if the mode changes
@@ -16,8 +16,12 @@ export default function App() {
       <Routes>
         <Route index element={<Home />} />
         
-        <Route path="connect" element={<ConnectPopup />}>
-          <Route path=":returnData" element={<ConnectPopup />} />
+        {/* <Route path="connect" element={<ConnectPopup />}>
+          <Route path=":gcScript" element={<ConnectPopup />} />
+        </Route> */}
+
+        <Route path="receive" element={<ReceivePopup />}>
+          <Route path=":returnData" element={<ReceivePopup />} />
         </Route>
 
         {/* <Route path="testpopup" element={<TestPopup />} />

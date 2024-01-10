@@ -46,9 +46,9 @@ const SourceViewer = (props) => {
     let fileList = files.filter((file) => file.id == props.id);
     let file = fileList[0]
 
-    console.log(props.id)
-    console.log(file.data)
-    console.log({viewerFiles:files})
+    // console.log(props.id)
+    // console.log(file.data)
+    // console.log({viewerFiles:files})
 
     setViewFile({...file})
   }, [props])
@@ -105,18 +105,18 @@ const SourceViewer = (props) => {
   function handleEditorChange(value, event) {
     // console.log('here is the current model value:', value);
 
-    // dispatch({
-    //   type: 'changed-data',
-    //   file: {
-    //     ...viewFile,
-    //     data: value
-    //   }
-    // });
+    dispatch({
+      type: 'changed-data',
+      file: {
+        ...viewFile,
+        data: value
+      }
+    });
   }
 
   return (
      <div className='DataView' ref={sizeRef}>
-      {console.log("e " + viewFile.data)}
+      {/* {console.log("e " + viewFile.data)} */}
       <Editor
        theme={theme === "light" ? "light" : "vs-dark"}
        language={viewFile.type}

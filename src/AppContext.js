@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useReducer } from "react";
 import project from "./data/Token_Locking/project.js";
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 // const AppContext = React.createContext(null);
 
@@ -342,6 +343,36 @@ function stateReducer(state, action) {
                 
             return newState
         }
+
+        case 'receive-data': {
+            console.log("act.recieve-data")
+            console.log({action:action})
+            
+            let newReturnData = state.returnData
+
+            let ids = newReturnData.map((file) => file.id);
+            var largest = Math.max.apply(0, ids);
+
+            moment.locale('en');
+            let fileName = "data-" + moment().format('y-M-D_h-m') + ".json"
+
+            // console.log("save item")
+            let newItem = {
+                id: largest + 1,
+                name: fileName,
+                type: "json",
+                data: JSON.stringify(action.returnData, null, 4)
+            }
+            
+            newReturnData = [...returnData, newItem]
+            console.log(newReturnData)
+            let newState = {...state, menu:"returnData", files:returnData, returnData:newReturnData}
+
+            localStorage.setItem('state', JSON.stringify(newState))
+
+            return newState
+        }
+
         default: {
             throw Error('Unknown action: ' + action.type);
         }

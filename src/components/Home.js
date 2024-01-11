@@ -22,12 +22,12 @@ export default function Home() {
             <div className="View">
                 <SideMenu />
 
-                <PanelGroup autoSaveId="example" direction="horizontal">
-                    <Panel defaultSizePercentage={25}>
+                <PanelGroup direction="horizontal">
+                    <Panel defaultSizePercentage={35}>
                         <SourceBrowser />
                     </Panel>
                     <PanelResizeHandle style={{ width: "8px" }}/>
-                    <Panel defaultSizePercentage={75}>
+                    <Panel>
                         <TabComponent />
                     </Panel>
                 </PanelGroup>

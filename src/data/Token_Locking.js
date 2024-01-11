@@ -1,7 +1,7 @@
 const project = {
     name: "Token_Locking",
     type: "folder",
-    theme: 'light',
+    theme: 'dark',
     dataItems:{ 
         sourcedata: {
             items: [

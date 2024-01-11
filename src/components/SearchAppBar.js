@@ -7,47 +7,75 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-// import { AppContext } from '../AppContext';
+import { useAppState, useStateDispatch } from '../AppContext.js';
 
 export default function SearchAppBar() {
-  // const { context, setContext } = React.useContext(AppContext)
+  let { name, projectList } = useAppState();
+  const dispatch = useStateDispatch();
+
+  const [query, setQuery] = React.useState("");
+
+  const getFilteredItem = (query, items) => {
+    if (!query) {
+      return items;
+    }
+    return items.filter((song) => song.name.includes(query));
+  }
+
+  function SearchList() {
+
+    let queryList = projectList.items.filter((item) => item.includes(name));
+    console.log({ queryList: queryList })
+
+    return (
+      <ul className='dropdown-content'>
+        {queryList.map(item => (
+
+          <SearchItem key={item} project={item} />
+        ))}
+      </ul>
+    );
+  }
+
+  function SearchItem({ project }) {
+    return (
+      <li>
+        <a class="dropdown-item" href="#">{project}</a>
+      </li>
+    );
+  }
 
   return (
     <div>
-      <Navbar>
-        <DropdownButton className='ms-3 me-3'
-            as={ButtonGroup}
-            key='Primary'
-            id={`dropdown-variants-primary`}
-            variant='secondary'
-            title={<List size="20px" />}
-          >
-            <Dropdown.Item eventKey="1">Local files</Dropdown.Item>
-            <Dropdown.Item eventKey="2">Deploy</Dropdown.Item>
-            <Dropdown.Item eventKey="2">Create private testnet</Dropdown.Item>
-            <Dropdown.Item eventKey="3" active>
-              Run
-            </Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item eventKey="4">About</Dropdown.Item>
-          </DropdownButton>
-        <Navbar.Brand className='nav-brand' href="#home">Inception</Navbar.Brand>
+      <div className='navbar'>
+        <div className='title'>Inception</div>
+        <div className='search-widget'>
+        <DropdownButton
+          variant="outline-secondary"
+          title="Local"
+          id="input-group-dropdown-1"
+        >
+          <Dropdown.Item href="#">Cloud</Dropdown.Item>
+          <Dropdown.Item href="#">Local</Dropdown.Item>
+        </DropdownButton>
+        <div className='search-dropdown'>
 
-        <InputGroup className="ms-5 me-5">
-          <InputGroup.Text id="basic-addon3">
-            Local
-          </InputGroup.Text>
-          <Form.Control id="basic-url"
-                    aria-label="Small"
-                    aria-describedby="inputGroup-sizing-sm" 
-                    // placeholder={context.name}
-                    />
-        </InputGroup>
+          <input className='search-input'
+            onChange={(e) => {
+              dispatch({
+                type: 'edit-project-name',
+                value: e.target.value
+              });
+            }}
+            value={name}
+            placeholder='Search...'>
 
-        <div className='me-3'>
-        <DarkMode/>
+          </input>
+          <SearchList />
         </div>
-      </Navbar>
+        </div>
+        <DarkMode />
+      </div>
     </div>
   );
 }

@@ -17,6 +17,12 @@ ul {
   background-color: var(--body_background);
 }
 
+.title {
+  color: rgb(232, 232, 232);
+  font-weight:500; 
+  font-size: larger;
+}
+
 .Home {
   height: 100%;
   display: flex;
@@ -315,9 +321,8 @@ div.noMargin {
   margin-left: 1px;
   height: 38px;
   outline: none;
-  border-radius: 0px 6px 6px 0px; 
+  border-radius: 6px;
   border: 1px solid rgb(86, 86, 86);
-  border-left: 0px;
   width: 100%;
   background-color: var(--body_background-secondary);
   color: var(--text_color);
@@ -335,18 +340,17 @@ div.noMargin {
   display: flex;
   margin-left: 50px;
   margin-right: 50px;
+  max-width: 400px;
 }
 
-.title {
-  color: rgb(232, 232, 232);
-  font-weight:500; 
-  font-size: larger;
-}
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
   margin-top: 10px;
-  display: block;
+  padding: 5px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   position: absolute;
   background-color: #f6f6f6;
   min-width: 230px;
@@ -355,10 +359,3 @@ div.noMargin {
   z-index: 1;
 }
 
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}

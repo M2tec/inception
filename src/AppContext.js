@@ -360,6 +360,12 @@ function stateReducer(state, action) {
             console.log({action:action})
             return {...state, name: action.value}
         }
+
+        case 'change-project':{
+            console.log("change-project")
+            console.log({action:action})
+            return {...state, name: action.value}
+        }
         default: {
         throw Error('Unknown action: ' + action.type);
     }

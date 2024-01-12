@@ -13,35 +13,35 @@ export default function SearchAppBar() {
   let { name, projectList } = useAppState();
   const dispatch = useStateDispatch();
 
-  const [query, setQuery] = React.useState("");
-
-  const getFilteredItem = (query, items) => {
-    if (!query) {
-      return items;
-    }
-    return items.filter((song) => song.name.includes(query));
-  }
-
   function SearchList() {
 
     let queryList = projectList.items.filter((item) => item.includes(name));
     console.log({ queryList: queryList })
 
-    return (
-      <ul className='dropdown-content'>
+    return (<>
+    {console.log({queryList:queryList})}
+      {queryList.length > 1 ?
+      <div className='dropdown-content'>
         {queryList.map(item => (
 
           <SearchItem key={item} project={item} />
         ))}
-      </ul>
+      </div>:
+      <div></div>}
+      </>
     );
   }
 
   function SearchItem({ project }) {
     return (
-      <li>
-        <a class="dropdown-item" href="#">{project}</a>
-      </li>
+      <div
+        onClick={() => {
+          dispatch({
+            type: 'change-project',
+            value: project
+          });
+        }}
+        className="dropdown-item" href="#">{project}</div>
     );
   }
 
@@ -50,29 +50,21 @@ export default function SearchAppBar() {
       <div className='navbar'>
         <div className='title'>Inception</div>
         <div className='search-widget'>
-        <DropdownButton
-          variant="outline-secondary"
-          title="Local"
-          id="input-group-dropdown-1"
-        >
-          <Dropdown.Item href="#">Cloud</Dropdown.Item>
-          <Dropdown.Item href="#">Local</Dropdown.Item>
-        </DropdownButton>
-        <div className='search-dropdown'>
+          <div className='search-dropdown'>
 
-          <input className='search-input'
-            onChange={(e) => {
-              dispatch({
-                type: 'edit-project-name',
-                value: e.target.value
-              });
-            }}
-            value={name}
-            placeholder='Search...'>
+            <input className='search-input'
+              onChange={(e) => {
+                dispatch({
+                  type: 'edit-project-name',
+                  value: e.target.value
+                });
+              }}
+              value={name}
+              placeholder='Search...'>
 
-          </input>
-          <SearchList />
-        </div>
+            </input>
+            <SearchList />
+          </div>
         </div>
         <DarkMode />
       </div>

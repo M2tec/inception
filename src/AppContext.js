@@ -48,7 +48,6 @@ function stateReducer(state, action) {
 
     switch (action.type) {
 
-
         case 'menu-change': {
             console.log('menu-change')
             console.log(action.id)
@@ -284,7 +283,7 @@ if (appData == null) {
 
     localStorage.setItem('app-data', JSON.stringify(projects))
     localStorage.setItem('data_Token_Locking', JSON.stringify(Token_Locking))
-    // localStorage.setItem('data_DAO_Demo', JSON.stringify(DAO_Demo))
+    localStorage.setItem('data_DAO_Demo', JSON.stringify(DAO_Demo))
 } 
 
 let project = Token_Locking;

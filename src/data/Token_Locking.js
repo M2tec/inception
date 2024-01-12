@@ -26,95 +26,41 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
             id: 1,
             name: "datum.json",
             type: "json",
-            data: `
-{
-"type": "plutusData",
-"data": {
-"fromJSON": {
-    "schema": 1,
-    "obj": {
-        "int": 42
-        }
+            data: `{
+    "type": "plutusData",
+    "data": {
+    "fromJSON": {
+        "schema": 1,
+        "obj": {
+            "int": 42
+            }
+    }
+    }
 }
-}
-}`
+`
         },
         {
             id: 2,
             name: "redeemer.json",
             type: "json",
-            data: `
-{
-"type": "plutusData",
-"data": {
-"fromJSON": {
-    "schema": 1,
-    "obj": {
-        "int": 42
+            data: `{
+    "type": "plutusData",
+    "data": {
+    "fromJSON": {
+        "schema": 1,
+        "obj": {
+            "int": 42
+            }
         }
-}
-}
+    }
 }            
-    `,
-            returnData: [       
-                 {
-                id: 6,
-                name: "data.json",
-                type: "json",
-                data: `
-    {
-        "exports": {
-            "Lock_Demo": {
-            "lockUTXO": 0,
-            "lock": [
-                {
-                "policyId": "ada",
-                "assetName": "ada",
-                "quantity": "5000000"
-                }
-            ],
-            "smartContract": "56550100002225333573466e1cdd68011bad0031498581",
-            "smartContractHash": "c203151a6a8a55baef2e3d302690858a42c55ebdb7d140eade17a530",
-            "smartContractAddress": "addr_test1zrpqx9g6d299twh09c7nqf5ssk9y9327hkmazs82mct62v9dqwj2u3djrag0mene2cm9elu5mdqmcz9zc2rzgq7c5g6q5xcn4r",
-            "lockTx": "b9cb604d1cead1afdd6c9403cae411234b19efc7cc78c1c060af69746fd223c2"
-            }
-        }
-    }
-    `
-            },
-            {
-                id: 7,
-                name: "data2.json",
-                type: "json",
-                data: `
-    {
-        "exports": {
-            "Lock_Demo": {
-            "lockUTXO": 0,
-            "lock": [
-                {
-                "policyId": "ada",
-                "assetName": "ada",
-                "quantity": "5000000"
-                }
-            ],
-            "smartContract": "56550100002225333573466e1cdd68011bad0031498581",
-            "smartContractHash": "c203151a6a8a55baef2e3d302690858a42c55ebdb7d140eade17a530",
-            "smartContractAddress": "addr_test1zrpqx9g6d299twh09c7nqf5ssk9y9327hkmazs82mct62v9dqwj2u3djrag0mene2cm9elu5mdqmcz9zc2rzgq7c5g6q5xcn4r",
-            "lockTx": "b9cb604d1cead1afdd6c9403cae411234b19efc7cc78c1c060af69746fd223c2"
-            }
-        }
-    }
-    `
-            }
-            ]
+`
         },
         {
             id: 3,
             name: "gc_script_template.gcscript",
             type: "json",
-            data: `
-{
+            data: `{
     "type": "script",
     "title": "Lock script",
     "description": "This contract will lock some tokens",
@@ -228,21 +174,70 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
             id: 5,
             name: "list_keys.gcscript",
             type: "json",
-            data: `
+            data: `{
+    "type": "script",
+    "title": "List keys in workspace",
+    "description": "List and sort all keys in current workspace",
+    "exportAs": "data",
+    "run": {
+        "keys": {
+            "type": "getPublicKeys",
+            "keyPattern": "{artifactName}:{pubKeyHashHex}",
+            "sort": "ascending"
+        }
+    }
+}
+`,
+            returnData: [       
             {
-                "type": "script",
-                "title": "List keys in workspace",
-                "description": "List and sort all keys in current workspace",
-                "exportAs": "data",
-                "run": {
-                    "keys": {
-                        "type": "getPublicKeys",
-                        "keyPattern": "{artifactName}:{pubKeyHashHex}",
-                        "sort": "ascending"
-                    }
-                }
-            }
+            id: 6,
+            name: "data.json",
+            type: "json",
+            data: `{
+    "exports": {
+        "Lock_Demo": {
+        "lockUTXO": 0,
+        "lock": [
+        {
+            "policyId": "ada",
+            "assetName": "ada",
+            "quantity": "5000000"
+        }
+        ],
+            "smartContract": "56550100002225333573466e1cdd68011bad0031498581",
+            "smartContractHash": "c203151a6a8a55baef2e3d302690858a42c55ebdb7d140eade17a530",
+            "smartContractAddress": "addr_test1zrpqx9g6d299twh09c7nqf5ssk9y9327hkmazs82mct62v9dqwj2u3djrag0mene2cm9elu5mdqmcz9zc2rzgq7c5g6q5xcn4r",
+            "lockTx": "b9cb604d1cead1afdd6c9403cae411234b19efc7cc78c1c060af69746fd223c2"
+        }
+    }
+}
 `
+            },
+            {
+            id: 7,
+            name: "data2.json",
+            type: "json",
+            data: `{
+    "exports": {
+        "Lock_Demo": {
+        "lockUTXO": 0,
+        "lock": [
+        {
+            "policyId": "ada",
+            "assetName": "ada",
+            "quantity": "5000000"
+        }
+        ],
+            "smartContract": "56550100002225333573466e1cdd68011bad0031498581",
+            "smartContractHash": "c203151a6a8a55baef2e3d302690858a42c55ebdb7d140eade17a530",
+            "smartContractAddress": "addr_test1zrpqx9g6d299twh09c7nqf5ssk9y9327hkmazs82mct62v9dqwj2u3djrag0mene2cm9elu5mdqmcz9zc2rzgq7c5g6q5xcn4r",
+            "lockTx": "b9cb604d1cead1afdd6c9403cae411234b19efc7cc78c1c060af69746fd223c2"
+        }
+    }
+}
+`
+            }
+]
         }
 ]};
 

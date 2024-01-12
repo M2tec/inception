@@ -16,14 +16,18 @@ export default function SideView(props) {
   let { files, currentFileIndex } = useAppState();
   const dispatch = useStateDispatch();
 
+  console.log({currentFileIndex:currentFileIndex})
+  console.log({files:files})
   // console.log({SideviewFiles:files})
 
-  let fileList = files.filter((file) => file.id == currentFileIndex)
+  let fileList = files.filter((file) => file.id === currentFileIndex)
   let file = fileList[0]
-  console.log({file:file})
+  // console.log({file:file})
 
-  // let viewType = context.dataItems[type]
-  const isActiveAGCScript = file.name.endsWith('.gcscript');
+  let isActiveAGCScript = false;
+  if (file !== undefined) {
+    isActiveAGCScript = file.name.endsWith('.gcscript');
+  }
 
   window.addEventListener("storage", () => {
     // When local storage changes, dump the list to

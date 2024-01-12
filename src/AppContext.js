@@ -69,13 +69,18 @@ function stateReducer(state, action) {
         case 'selected': {
             console.log("selected")
             // console.log({selState:state})
+            console.log({action:action})
+            
+            let newFileIndex = 0
 
+ 
             openFiles.indexOf(action.file.id) === -1 ? openFiles.push(action.file.id) : console.log("Item already open");
-            let newFileIndex = action.file.id;
+            newFileIndex = action.file.id;
+
 
             let newState = { ...state, openFiles, currentFileIndex: newFileIndex };
-            
-            // newState.files.forEach((element) => console.log("f " + element.id + " " + element.data))                
+            // newState.files.forEach((element) => console.log("f " + element.id + " " + element.data))           
+            saveState(newState)     
             return newState
         }
 
@@ -92,7 +97,6 @@ function stateReducer(state, action) {
             }
 
             let newState = { ...state, openFiles: newOpenFiles, currentFileIndex };
-
             saveState(newState)
             return newState
         }
@@ -111,24 +115,13 @@ function stateReducer(state, action) {
                 }
             });
 
-            let newState = {};
-            if (menu === 'files') {
-                newState = { ...state, files: newFiles };
-            } else {
-                newState = { ...state, files: newFiles };
-            }
-
+            let newState = { ...state, files: newFiles };
             saveState(newState)
             return newState
         }
 
         case 'changed-data': {
             console.log("Changed data")
-            console.log({ action: action })
-
-            console.log(action.file.data)
-            console.log("f1: " + files[0].data)
-            console.log({ files: files })
 
             let newFiles = files.map(f => {
                 if (f.id === action.file.id) {
@@ -139,9 +132,7 @@ function stateReducer(state, action) {
             });
 
             let newState = { ...state, files: newFiles }
- 
             saveState(newState)
-
             return { ...newState }
         }
 

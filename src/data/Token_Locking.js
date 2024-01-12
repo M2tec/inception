@@ -6,6 +6,7 @@ const project = {
         {
             id: 0,
             name: "contract.hl",
+            parentId: -1,
             type: "helios",
             data: `
 spending MagicNumber
@@ -23,8 +24,9 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 }`
         },
         {
-            id: 1,
+            id: 8,
             name: "datum.json",
+            parentId: -1,
             type: "json",
             data: `{
     "type": "plutusData",
@@ -40,8 +42,9 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 `
         },
         {
-            id: 2,
+            id: 9,
             name: "redeemer.json",
+            parentId: -1,
             type: "json",
             data: `{
     "type": "plutusData",
@@ -59,6 +62,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
         {
             id: 3,
             name: "gc_script_template.gcscript",
+            parentId: -1,
             type: "json",
             data: `{
     "type": "script",
@@ -173,6 +177,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
         {
             id: 5,
             name: "list_keys.gcscript",
+            parentId: -1,
             type: "json",
             data: `{
     "type": "script",
@@ -187,11 +192,11 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
         }
     }
 }
-`,
-            returnData: [       
-            {
+`},
+{
             id: 6,
             name: "data.json",
+            parentId: 5,
             type: "json",
             data: `{
     "exports": {
@@ -213,9 +218,10 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 }
 `
             },
-            {
+{
             id: 7,
             name: "data2.json",
+            parentId: 5,
             type: "json",
             data: `{
     "exports": {
@@ -239,7 +245,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
             }
 ]
         }
-]};
+;
 
 export default project;
 

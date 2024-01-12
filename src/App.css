@@ -121,6 +121,10 @@ ul {
   white-space: pre;
 }
 
+.file-return-data-item {
+  padding-left: 2rem;
+}
+
 .file-item-child {
   box-sizing: border-box;
   display: flex;

@@ -6,17 +6,16 @@ import { X } from 'react-bootstrap-icons';
 export default function TabComponent(props) {
     const dispatch = useStateDispatch();
     const { files, openFiles, currentFileIndex } = useAppState();
-
+    
     const GcTab = ({
         id
     }) => {
         // console.log(id)
         // console.log(files)
-        let currentFile = files.filter((file) => file.id == id);
+        let currentFile = files.filter((file) => file.id === id);
         let name = currentFile[0].name
         return (
             <div className={id === currentFileIndex ? "TabItem TabItemActive" : "TabItem"}>
-
                 <span
                     onClick={(e) => {
                         dispatch({

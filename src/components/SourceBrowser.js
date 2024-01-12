@@ -8,7 +8,7 @@ import FilesList from "./FileList";
 
 export default function SourceBrowser(props) {
 
-    let { menu } = useAppState();
+    let { name } = useAppState();
     return (
 
         <div className="source-browser">
@@ -16,7 +16,7 @@ export default function SourceBrowser(props) {
             <div className="folder-item">
                 <ChevronDown />
                 <span className="file-name">
-                    {menu == "files" ? "source" : "returndata"}
+                    {name}
                 </span>
             </div>
             <FilesList />

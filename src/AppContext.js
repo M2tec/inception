@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
-import project from "./data/Token_Locking.js";
+import Token_Locking from "./data/Token_Locking.js";
+import DAO_Demo from "./data/DAO_Demo.js";
 import projects from "./data/project-list.js";
 
 import moment from 'moment';
@@ -114,6 +115,10 @@ function stateReducer(state, action) {
                     currentFileIndex = lowestId
 
                     break;
+                }
+                default: {
+                    console.log("default")
+                    newState = {...state};
                 }
             }
             // saveState(newState)
@@ -258,7 +263,7 @@ function stateReducer(state, action) {
             // console.log({dupNewfiles:newFiles})
 
             let newState = {};
-            if (menu == 'files') {
+            if (menu === 'files') {
                 newState = { ...state, files: newFiles, sourceData: newFiles, };
             } else {
                 newState = { ...state, files: newFiles, returnData: newFiles, };
@@ -276,7 +281,7 @@ function stateReducer(state, action) {
             console.log({ newOpenFiles: newOpenFiles })
             newOpenFiles = openFiles.filter((fileIndex) => fileIndex !== action.id)
 
-            if (action.id == currentFileIndex) {
+            if (action.id === currentFileIndex) {
                 currentFileIndex = newOpenFiles[0]
             }
 
@@ -312,7 +317,7 @@ function stateReducer(state, action) {
             let newReturnData = state.returnData
 
             let ids = newReturnData.map((file) => file.id);
-            var largest = Math.max.apply(0, ids);
+            let largest = Math.max.apply(0, ids);
 
             moment.locale('en');
             let fileName = "data-" + moment().format('y-M-D_h-m') + ".json"
@@ -342,7 +347,7 @@ function stateReducer(state, action) {
             console.log({ Load: storageState })
 
             let ids = storageState.returnData.map((file) => file.id);
-            var largest = Math.max.apply(0, ids);
+            let largest = Math.max.apply(0, ids);
 
             let newState = {
                 currentFileIndex: largest,
@@ -364,7 +369,21 @@ function stateReducer(state, action) {
         case 'change-project':{
             console.log("change-project")
             console.log({action:action})
-            return {...state, name: action.value}
+
+            let projectName = action.value;
+
+            let projectData = JSON.parse(localStorage.getItem('data_' + projectName))
+
+            console.log({projectData:projectData})
+
+            return {...state, 
+                    name: projectName, 
+                    currentFileIndex: 0,
+                    openFiles: [0],
+                    files: projectData.dataItems.sourcedata.items,
+                    sourceData: projectData.dataItems.sourcedata.items,
+                    returnData: projectData.dataItems.returndata.items
+                    }
         }
         default: {
         throw Error('Unknown action: ' + action.type);
@@ -377,8 +396,13 @@ let projectList = JSON.parse(localStorage.getItem('project-list'))
 if (projectList == null) {
     console.log({projects:projects})
     projectList = projects
+
     localStorage.setItem('project-list', JSON.stringify(projects))
+    localStorage.setItem('data_Token_Locking', JSON.stringify(Token_Locking))
+    localStorage.setItem('data_DAO_Demo', JSON.stringify(DAO_Demo))
 } 
+
+let project = Token_Locking;
 
 console.log({projectList:projectList})
 
@@ -393,11 +417,11 @@ if (storageState == null) {
     initialState = {
         name: project.name,
         menu: "files",
+        currentFileIndex: 0,
+        openFiles: [0],
+        files: project.dataItems.sourcedata.items,
         sourceData: project.dataItems.sourcedata.items,
         returnData: project.dataItems.returndata.items,
-        files: project.dataItems.sourcedata.items,
-        openFiles: [0],
-        currentFileIndex: 0,
         theme: "dark",
         projectList: projectList
     }
@@ -405,9 +429,9 @@ if (storageState == null) {
     initialState = {
         ...storageState,
         menu: "files",
-        files: storageState.sourceData,
-        openFiles: [0],
         currentFileIndex: 0,
+        openFiles: [0],
+        files: storageState.sourceData,
         theme: storageState.theme,
         projectList: storageState.projectList
     };

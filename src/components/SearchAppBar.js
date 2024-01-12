@@ -1,12 +1,5 @@
 import * as React from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import { List } from 'react-bootstrap-icons';
 import DarkMode from './DarkMode/DarkMode'
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import { useAppState, useStateDispatch } from '../AppContext.js';
 
 export default function SearchAppBar() {
@@ -23,7 +16,6 @@ export default function SearchAppBar() {
       {queryList.length > 1 ?
       <div className='dropdown-content'>
         {queryList.map(item => (
-
           <SearchItem key={item} project={item} />
         ))}
       </div>:

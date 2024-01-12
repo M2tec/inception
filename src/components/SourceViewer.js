@@ -3,15 +3,14 @@ import Editor from "@monaco-editor/react";
 
 import { heliosSyntax } from './HeliosSyntaxMonaco';
 import { useAppState, useStateDispatch } from '../AppContext.js';
-// import useResizeObserver from "use-resize-observer";
 
 const SourceViewer = (props) => {
   const { theme } = useAppState();
 
-
   const element = React.useRef(null);
   const [width, setWidth] = React.useState(0);
   // const [height, setHeight] = React.useState(0);
+  const monacoRef = React.useRef(null);
 
   const [bodyHeight, setBodyHeight] = React.useState(0);
 
@@ -52,8 +51,6 @@ const SourceViewer = (props) => {
 
     setViewFile({...file})
   }, [props])
-
- 
 
   // Hack to get correct height for editor
   // For some reason the obeserver does not return the correct element heigth
@@ -99,11 +96,13 @@ const SourceViewer = (props) => {
     // you can store it in `useRef` for further usage
     monaco.languages.register({ id: 'helios' })
     monaco.languages.setMonarchTokensProvider('helios', heliosSyntax)
-    // editorRef.current = editor;
+    monacoRef.current = monaco;
   }
 
   function handleEditorChange(value, event) {
     // console.log('here is the current model value:', value);
+    // monacoRef.current.editor.getModels().forEach(model => console.log(model));
+    // console.log(monacoRef);
 
     dispatch({
       type: 'changed-data',

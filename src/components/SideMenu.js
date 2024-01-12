@@ -20,6 +20,7 @@ export default function SideView(props) {
 
   let fileList = files.filter((file) => file.id == currentFileIndex)
   let file = fileList[0]
+  console.log({file:file})
 
   // let viewType = context.dataItems[type]
   const isActiveAGCScript = file.name.endsWith('.gcscript');
@@ -73,12 +74,12 @@ export default function SideView(props) {
   return (<div>
 
     <Button
-      onClick={(e) => {
-        dispatch({
-          type: 'menu-change',
-          id: "files"
-        });
-      }}
+      // onClick={(e) => {
+      //   dispatch({
+      //     type: 'menu-change',
+      //     id: "files"
+      //   });
+      // }}
       variant="primary">
       <Files size={"20px"} />
     </Button>
@@ -88,18 +89,6 @@ export default function SideView(props) {
       disabled={!isActiveAGCScript}
       variant="primary">
       <PlayFill size={"20px"} />
-    </Button>
-
-    <Button
-      onClick={(e) => {
-        dispatch({
-          type: 'menu-change',
-          id: "returndata"
-        });
-      }}
-
-      variant="primary">
-      <ArrowReturnLeft size={"20px"} />
     </Button>
 
     <Button

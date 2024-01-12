@@ -9,10 +9,10 @@ export default function SearchAppBar() {
   function SearchList() {
 
     let queryList = projectList.items.filter((item) => item.includes(name));
-    console.log({ queryList: queryList })
+    // console.log({ queryList: queryList })
 
     return (<>
-    {console.log({queryList:queryList})}
+    {/* {console.log({queryList:queryList})} */}
       {queryList.length > 1 ?
       <div className='dropdown-content'>
         {queryList.map(item => (

@@ -33,41 +33,12 @@ export function useStateDispatch() {
 
 function stateReducer(state, action) {
 
-    let { menu, files, sourceData, returnData, openFiles, currentFileIndex, theme } = state;
+    let { menu, files, openFiles, currentFileIndex, theme } = state;
     // console.log({ files: files })
     // console.log({ action: action })
 
-    function saveStateFilesAndData(saveState) {
-        console.log("save State and Data")
-
-        console.log({ saveState: saveState })
-        saveState.returnData.forEach((element) => console.log(element.id + " " + element.data))
-
-        let newState = { ...saveState }
-
-        // Save file data into the correct data object
-        switch (saveState.menu) {
-            case "files": {
-                // console.log("case file")
-                newState = { ...saveState, files: sourceData }
-                break;
-            }
-            case "returndata": {
-                // console.log("case return")
-                newState = { ...saveState, files: returnData }
-                break;
-            }
-            default:
-                console.log('not a file menu')
-        }
-
-        // console.log({newState:newState})
-        saveState(newState)
-        return newState
-    }
-
     function saveState(state) {
-        localStorage.setItem(state.name + '-state', JSON.stringify(state))
+        localStorage.setItem("data_" + state.name, JSON.stringify(state))
     }
 
     function LoadState(state) {
@@ -79,56 +50,14 @@ function stateReducer(state, action) {
 
 
         case 'menu-change': {
+            console.log('menu-change')
             console.log(action.id)
 
-            let newState = {}
-            let newData = {}
-            newData.items = files
-
-            let fileList = []
-
-            // Swap the desired data into the files object of rendering
-            switch (action.id) {
-                case "files": {
-                    console.log("act.files")
-                    newState = { ...state, files: state.sourceData }
-
-                    fileList = newState.files.map((file) => file.id)
-
-                    console.log({ fileList: fileList })
-                    let lowestId = Math.min(...fileList)
-                    openFiles = [lowestId]
-                    currentFileIndex = lowestId
-
-                    break;
-                }
-                case "returndata": {
-                    console.log("act.returndata")
-
-                    newState = { ...state, files: state.returnData }
-
-                    fileList = newState.files.map((file) => file.id)
-                    console.log({ fileList: fileList })
-
-                    let lowestId = Math.min(...fileList)
-                    openFiles = [lowestId]
-                    currentFileIndex = lowestId
-
-                    break;
-                }
-                default: {
-                    console.log("default")
-                    newState = {...state};
-                }
-            }
-            // saveState(newState)
-
-            newState = { ...newState, menu: action.id, currentFileIndex, openFiles };
-            console.log(newState)
-            return newState;
+            return {...state};
         }
 
         case 'theme': {
+            console.log('theme')
             theme === "dark" ? theme = "light" : theme = "dark"
 
             document.querySelector("body").setAttribute('data-theme', theme)
@@ -145,14 +74,9 @@ function stateReducer(state, action) {
             openFiles.indexOf(action.file.id) === -1 ? openFiles.push(action.file.id) : console.log("Item already open");
             let newFileIndex = action.file.id;
 
-            let newState = { ...state }
-            if (menu === 'files') {
-                newState = { ...state, files: sourceData, openFiles, currentFileIndex: newFileIndex };
-            } else {
-                newState = { ...state, files: returnData, openFiles, currentFileIndex: newFileIndex };
-            }
-            // newState.files.forEach((element) => console.log("f " + element.id + " " + element.data))
-            // newState.returnData.forEach((element) => console.log("r " + element.id + " " + element.data))                      
+            let newState = { ...state, openFiles, currentFileIndex: newFileIndex };
+            
+            // newState.files.forEach((element) => console.log("f " + element.id + " " + element.data))                
             return newState
         }
 
@@ -170,8 +94,8 @@ function stateReducer(state, action) {
 
             let newState = { ...state, openFiles: newOpenFiles, currentFileIndex };
 
-            let returnState = saveStateFilesAndData(newState)
-            return returnState
+            saveState(newState)
+            return newState
         }
 
         case 'renamed': {
@@ -179,7 +103,6 @@ function stateReducer(state, action) {
             console.log({ action: action })
             // console.log({files:files})
             // console.log({sourceData:sourceData})
-            // console.log({returnData:returnData})
 
             let newFiles = files.map(f => {
                 if (f.id === action.file.id) {
@@ -191,11 +114,12 @@ function stateReducer(state, action) {
 
             let newState = {};
             if (menu === 'files') {
-                newState = { ...state, files: newFiles, sourceData: newFiles, };
+                newState = { ...state, files: newFiles };
             } else {
-                newState = { ...state, files: newFiles, returnData: newFiles, };
+                newState = { ...state, files: newFiles };
             }
 
+            saveState(newState)
             return newState
         }
 
@@ -206,9 +130,6 @@ function stateReducer(state, action) {
             console.log(action.file.data)
             console.log("f1: " + files[0].data)
             console.log({ files: files })
-            // console.log("d1: " + returnData[0].data)
-            // console.log("d2: " + returnData[1].data)
-            //console.log({sourceData:sourceData})
 
             let newFiles = files.map(f => {
                 if (f.id === action.file.id) {
@@ -218,37 +139,18 @@ function stateReducer(state, action) {
                 }
             });
 
-
-            let newState = {}
-
-            // Save file data into the correct data object
-            switch (state.menu) {
-                case "files": {
-                    // console.log("case file")
-                    newState = { ...state, sourceData: newFiles }
-                    break;
-                }
-                case "returndata": {
-                    // console.log("case return")
-                    newState = { ...state, returnData: newFiles }
-                    break;
-                }
-                default:
-                    console.log('not a file menu')
-            }
-
-            // let newState = { ...state, sourceData:newFiles };
-            // console.log({newState:newState})
+            let newState = { ...state, files: newFiles }
+ 
             saveState(newState)
 
-            return { ...state }
+            return { ...newState }
         }
 
         case 'duplicate': {
             console.log("duplicate")
             // console.log({dupState:state})
 
-            state.returnData.forEach((element) => console.log(element.id + " " + element.data))
+            state.files.forEach((element) => console.log(element.id + " " + element.data))
 
             let ids = files.map((file) => file.id);
             var largest = Math.max.apply(0, ids);
@@ -262,12 +164,8 @@ function stateReducer(state, action) {
             let newFiles = [...files, newFile]
             // console.log({dupNewfiles:newFiles})
 
-            let newState = {};
-            if (menu === 'files') {
-                newState = { ...state, files: newFiles, sourceData: newFiles, };
-            } else {
-                newState = { ...state, files: newFiles, returnData: newFiles, };
-            }
+            let newState = { ...state, files: newFiles };
+            
             saveState(newState)
             // console.log({dupNewState:newState})
 
@@ -290,21 +188,9 @@ function stateReducer(state, action) {
 
             let newState = {}
             // Save file data into the correct data object
-            switch (state.menu) {
-                case "files": {
-                    console.log("case file")
-                    newState = { ...state, files: newFiles, sourceData: newFiles, openFiles: newOpenFiles, currentFileIndex }
-                    break;
-                }
-                case "returndata": {
-                    console.log("case return")
-                    newState = { ...state, files: newFiles, returnData: newFiles, openFiles: newOpenFiles, currentFileIndex }
-                    break;
-                }
-                default:
-                    console.log('not a file menu')
-            }
-
+            console.log("case file")
+            newState = { ...state, files: newFiles, openFiles: newOpenFiles, currentFileIndex }
+   
             saveState(newState)
             console.log({delNewState:newState})
             return newState
@@ -314,29 +200,30 @@ function stateReducer(state, action) {
             console.log("act.recieve-data")
             console.log({ action: action })
 
-            let newReturnData = state.returnData
+            // let newReturnData = state.returnData
 
-            let ids = newReturnData.map((file) => file.id);
-            let largest = Math.max.apply(0, ids);
+            // let ids = newReturnData.map((file) => file.id);
+            // let largest = Math.max.apply(0, ids);
 
-            moment.locale('en');
-            let fileName = "data-" + moment().format('y-M-D_h-m') + ".json"
+            // moment.locale('en');
+            // let fileName = "data-" + moment().format('y-M-D_h-m') + ".json"
 
-            // console.log("save item")
-            let newItem = {
-                id: largest + 1,
-                name: fileName,
-                type: "json",
-                data: JSON.stringify(action.returnData, null, 4)
-            }
+            // // console.log("save item")
+            // let newItem = {
+            //     id: largest + 1,
+            //     name: fileName,
+            //     type: "json",
+            //     data: JSON.stringify(action.returnData, null, 4)
+            // }
 
-            newReturnData = [...returnData, newItem]
-            console.log(newReturnData)
-            let newState = { ...state, menu: "returndata", files: newReturnData, returnData: newReturnData }
+            // newReturnData = [...returnData, newItem]
+            // console.log(newReturnData)
+            // let newState = { ...state, files: newReturnData  }
 
-            saveState(newState)
+            // saveState(newState)
 
-            return newState
+            // return newState
+            return {...state}
         }
 
         case 'load-from-storage': {
@@ -346,7 +233,7 @@ function stateReducer(state, action) {
 
             console.log({ Load: storageState })
 
-            let ids = storageState.returnData.map((file) => file.id);
+            let ids = storageState.files.map((file) => file.id);
             let largest = Math.max.apply(0, ids);
 
             let newState = {
@@ -380,9 +267,7 @@ function stateReducer(state, action) {
                     name: projectName, 
                     currentFileIndex: 0,
                     openFiles: [0],
-                    files: projectData.dataItems.sourcedata.items,
-                    sourceData: projectData.dataItems.sourcedata.items,
-                    returnData: projectData.dataItems.returndata.items
+                    files: projectData.files,
                     }
         }
         default: {
@@ -391,50 +276,45 @@ function stateReducer(state, action) {
 }
 }
 
-let projectList = JSON.parse(localStorage.getItem('project-list'))
+let appData = JSON.parse(localStorage.getItem('app-data'))
 
-if (projectList == null) {
+if (appData == null) {
     console.log({projects:projects})
-    projectList = projects
+    appData = projects
 
-    localStorage.setItem('project-list', JSON.stringify(projects))
+    localStorage.setItem('app-data', JSON.stringify(projects))
     localStorage.setItem('data_Token_Locking', JSON.stringify(Token_Locking))
-    localStorage.setItem('data_DAO_Demo', JSON.stringify(DAO_Demo))
+    // localStorage.setItem('data_DAO_Demo', JSON.stringify(DAO_Demo))
 } 
 
 let project = Token_Locking;
 
-console.log({projectList:projectList})
+console.log({projectList:appData})
 
-let stateFile = projectList.items[projectList.currentProject] + "-state"
+let stateFile = "data_" + appData.items[appData.currentProject]
 let storageState = JSON.parse(localStorage.getItem(stateFile))
 console.log({ LoadFromStorage: storageState })
 
 let initialState = {}
 
 if (storageState == null) {
-
+    console.log("New from default data")
     initialState = {
         name: project.name,
-        menu: "files",
         currentFileIndex: 0,
         openFiles: [0],
-        files: project.dataItems.sourcedata.items,
-        sourceData: project.dataItems.sourcedata.items,
-        returnData: project.dataItems.returndata.items,
+        files: project.files,
         theme: "dark",
-        projectList: projectList
+        projectList: projects.items
     }
 } else {
+    console.log("Load from storage")
     initialState = {
         ...storageState,
-        menu: "files",
         currentFileIndex: 0,
         openFiles: [0],
-        files: storageState.sourceData,
-        theme: storageState.theme,
-        projectList: storageState.projectList
+        projectList: appData
     };
 }
 
-console.log(initialState)
+console.log({INIT:initialState})

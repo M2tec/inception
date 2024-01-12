@@ -2,9 +2,7 @@ const project = {
     name: "Token_Locking",
     type: "folder",
     theme: 'dark',
-    dataItems:{ 
-        sourcedata: {
-            items: [
+    files: [
         {
             id: 0,
             name: "contract.hl",
@@ -57,7 +55,59 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 }
 }
 }            
+    `,
+            returnData: [       
+                 {
+                id: 6,
+                name: "data.json",
+                type: "json",
+                data: `
+    {
+        "exports": {
+            "Lock_Demo": {
+            "lockUTXO": 0,
+            "lock": [
+                {
+                "policyId": "ada",
+                "assetName": "ada",
+                "quantity": "5000000"
+                }
+            ],
+            "smartContract": "56550100002225333573466e1cdd68011bad0031498581",
+            "smartContractHash": "c203151a6a8a55baef2e3d302690858a42c55ebdb7d140eade17a530",
+            "smartContractAddress": "addr_test1zrpqx9g6d299twh09c7nqf5ssk9y9327hkmazs82mct62v9dqwj2u3djrag0mene2cm9elu5mdqmcz9zc2rzgq7c5g6q5xcn4r",
+            "lockTx": "b9cb604d1cead1afdd6c9403cae411234b19efc7cc78c1c060af69746fd223c2"
+            }
+        }
+    }
     `
+            },
+            {
+                id: 7,
+                name: "data2.json",
+                type: "json",
+                data: `
+    {
+        "exports": {
+            "Lock_Demo": {
+            "lockUTXO": 0,
+            "lock": [
+                {
+                "policyId": "ada",
+                "assetName": "ada",
+                "quantity": "5000000"
+                }
+            ],
+            "smartContract": "56550100002225333573466e1cdd68011bad0031498581",
+            "smartContractHash": "c203151a6a8a55baef2e3d302690858a42c55ebdb7d140eade17a530",
+            "smartContractAddress": "addr_test1zrpqx9g6d299twh09c7nqf5ssk9y9327hkmazs82mct62v9dqwj2u3djrag0mene2cm9elu5mdqmcz9zc2rzgq7c5g6q5xcn4r",
+            "lockTx": "b9cb604d1cead1afdd6c9403cae411234b19efc7cc78c1c060af69746fd223c2"
+            }
+        }
+    }
+    `
+            }
+            ]
         },
         {
             id: 3,
@@ -175,18 +225,6 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 `
         },
         {
-            id: 4,
-            name: "gc_test_template.gcscript",
-            type: "json",
-            data: `
-{
-    "datum": "--datum.json--",                
-    "heliosCode": "{hexToStr('--contract.hl--')}",
-    "redeemer": "--redeemer.json--"               
-}
-`
-        },
-        {
             id: 5,
             name: "list_keys.gcscript",
             type: "json",
@@ -206,62 +244,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
             }
 `
         }
-            ]},
-        returndata: {
-            items: [
-                {
-                    id: 0,
-                    name: "data.json",
-                    type: "json",
-                    data: `
-{
-    "exports": {
-        "Lock_Demo": {
-        "lockUTXO": 0,
-        "lock": [
-            {
-            "policyId": "ada",
-            "assetName": "ada",
-            "quantity": "5000000"
-            }
-        ],
-        "smartContract": "56550100002225333573466e1cdd68011bad0031498581",
-        "smartContractHash": "c203151a6a8a55baef2e3d302690858a42c55ebdb7d140eade17a530",
-        "smartContractAddress": "addr_test1zrpqx9g6d299twh09c7nqf5ssk9y9327hkmazs82mct62v9dqwj2u3djrag0mene2cm9elu5mdqmcz9zc2rzgq7c5g6q5xcn4r",
-        "lockTx": "b9cb604d1cead1afdd6c9403cae411234b19efc7cc78c1c060af69746fd223c2"
-        }
-    }
-}
-`
-                },
-                {
-                    id: 1,
-                    name: "data2.json",
-                    type: "json",
-                    data: `
-{
-    "exports": {
-        "Lock_Demo": {
-        "lockUTXO": 0,
-        "lock": [
-            {
-            "policyId": "ada",
-            "assetName": "ada",
-            "quantity": "5000000"
-            }
-        ],
-        "smartContract": "56550100002225333573466e1cdd68011bad0031498581",
-        "smartContractHash": "c203151a6a8a55baef2e3d302690858a42c55ebdb7d140eade17a530",
-        "smartContractAddress": "addr_test1zrpqx9g6d299twh09c7nqf5ssk9y9327hkmazs82mct62v9dqwj2u3djrag0mene2cm9elu5mdqmcz9zc2rzgq7c5g6q5xcn4r",
-        "lockTx": "b9cb604d1cead1afdd6c9403cae411234b19efc7cc78c1c060af69746fd223c2"
-        }
-    }
-}
-`
-                }
-            ] } 
-    }
-};
+]};
 
 export default project;
 

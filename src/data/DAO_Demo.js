@@ -5,6 +5,7 @@ const project = {
   files: [
     {
       id: 0,
+      parentId: -1,
       name: "DAO_Demo.gcscript",
       type: "json",
       data: `

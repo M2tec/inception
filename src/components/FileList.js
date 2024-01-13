@@ -17,18 +17,18 @@ export default function FilesList() {
   let currentFileList = files.filter((file) => file.id === currentFileIndex)
   let currentFile = currentFileList[0]
 
-  console.log({currentFile:currentFile})
+  // console.log({currentFile:currentFile})
   let expandIndex = 0;
   if (currentFile.parentId === -1) {
-    console.log("parent")
+    // console.log("parent")
     expandIndex = currentFileIndex;
   } else {
     expandIndex = currentFile.parentId;
   }
-  console.log({expandIndex:expandIndex})
+  // console.log({expandIndex:expandIndex})
   
   let fileChildren = files.filter((file) => file.parentId === expandIndex )
-  console.log({fileChildren})
+  // console.log({fileChildren})
 
   // {console.log(file.returnData)}
   let returnDataFileAmount = 0;
@@ -41,23 +41,30 @@ export default function FilesList() {
 
   return (
     <ul className='file-list'>
-      {filesToplevel.map(item => (<>
+      {filesToplevel.map(item => (
+      <span key={item.id}>
 
-        <File key={item.id} file={item} />
-          {item.id === expandIndex ? <>
+      <File key={item.id} file={item} />
 
-          {fileChildren.length > 0 ? <>
-            {fileChildren.map(returnItem => 
-              <div className='file-return-data-item'>
-                
-                <File key={returnItem.id} file={returnItem} />
-              </div>
-                 )}
-            </>
-            : null}</>
-            :
-            null}
+      {item.id === expandIndex ? 
+        <>
+        
+        {fileChildren.length > 0 ? 
+          <>
+          {fileChildren.map(returnItem => 
+            <div key={returnItem.id} className='file-return-data-item'>
+            <File key={returnItem.id} file={returnItem} />
+            </div>
+              )}
+          </>
+          : null}
+
         </>
+      
+      : null}
+
+      </span>
+      
       ))}
     </ul>
   );
@@ -107,7 +114,6 @@ function File({ file, dots }) {
   }
 
   return (
-
     <li className="file-list-element" key={file.id}>
 
       <label

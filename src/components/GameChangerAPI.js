@@ -62,7 +62,7 @@ export function ReceivePopup() {
             returnData: resultObj
         })
 
-        window.close();
+        // window.close();
     }
 
     return (

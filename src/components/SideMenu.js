@@ -16,8 +16,8 @@ export default function SideView(props) {
   let { files, currentFileIndex } = useAppState();
   const dispatch = useStateDispatch();
 
-  console.log({currentFileIndex:currentFileIndex})
-  console.log({files:files})
+  // console.log({currentFileIndex:currentFileIndex})
+  // console.log({files:files})
   // console.log({SideviewFiles:files})
 
   let fileList = files.filter((file) => file.id === currentFileIndex)
@@ -29,9 +29,9 @@ export default function SideView(props) {
     isActiveAGCScript = file.name.endsWith('.gcscript');
   }
 
+  // Detect when data is returned to master app 
+  // by listening for localstorage event. 
   window.addEventListener("storage", () => {
-    // When local storage changes, dump the list to
-    // the console.
     const data = (window.localStorage.getItem("DataIsHere"))
     console.log("Eventlistener: " + data);
     if (data !== '') {
@@ -67,9 +67,6 @@ export default function SideView(props) {
       }
     });
 
-    // console.log(gc_compile);
-    // let gc_script = JSON.parse(gc_compile);
-
     GcConnect(gc_compile);
 
     return false;
@@ -78,12 +75,6 @@ export default function SideView(props) {
   return (<div>
 
     <Button
-      // onClick={(e) => {
-      //   dispatch({
-      //     type: 'menu-change',
-      //     id: "files"
-      //   });
-      // }}
       variant="primary">
       <Files size={"20px"} />
     </Button>

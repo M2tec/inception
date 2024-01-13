@@ -42,7 +42,7 @@ function stateReducer(state, action) {
     }
 
     function LoadState(state) {
-        let newState = JSON.parse(localStorage.getItem(state.name + '-state'))
+        let newState = JSON.parse(localStorage.getItem("data_" + state.name))
         return newState
     }
 
@@ -190,30 +190,30 @@ function stateReducer(state, action) {
             console.log("act.recieve-data")
             console.log({ action: action })
 
-            // let newReturnData = state.returnData
+            let ids = state.files.map((file) => file.id);
+            let largest = Math.max.apply(0, ids);
 
-            // let ids = newReturnData.map((file) => file.id);
-            // let largest = Math.max.apply(0, ids);
+            moment.locale('en');
+            let fileName = "data-" + moment().format('y-M-D_h-m') + ".json"
 
-            // moment.locale('en');
-            // let fileName = "data-" + moment().format('y-M-D_h-m') + ".json"
+            // console.log("save item")
+            let newItem = {
+                id: largest + 1,
+                parentId: state.currentFileIndex,
+                name: fileName,
+                type: "json",
+                data: JSON.stringify(action.returnData, null, 4)
+            }
 
-            // // console.log("save item")
-            // let newItem = {
-            //     id: largest + 1,
-            //     name: fileName,
-            //     type: "json",
-            //     data: JSON.stringify(action.returnData, null, 4)
-            // }
+            let newFiles = state.files
+            newFiles = [...newFiles, newItem]
+            
+            let newState = { ...state, files: newFiles }
 
-            // newReturnData = [...returnData, newItem]
-            // console.log(newReturnData)
-            // let newState = { ...state, files: newReturnData  }
+            console.log({receiveNewState:newState})
 
-            // saveState(newState)
-
-            // return newState
-            return {...state}
+            saveState(newState)
+            return {...newState}
         }
 
         case 'load-from-storage': {
@@ -223,18 +223,18 @@ function stateReducer(state, action) {
 
             console.log({ Load: storageState })
 
-            let ids = storageState.files.map((file) => file.id);
-            let largest = Math.max.apply(0, ids);
+            // let ids = storageState.files.map((file) => file.id);
+            // let largest = Math.max.apply(0, ids);
 
-            let newState = {
-                currentFileIndex: largest,
-                openFiles: largest,
-                ...storageState,
-            };
+            // let newState = {
+            //     currentFileIndex: largest,
+            //     openFiles: largest,
+            //     ...storageState,
+            // };
         
 
-            console.log({ Load: newState })
-            return newState;
+            console.log({ Load: storageState })
+            return storageState;
         }
 
         case 'edit-project-name':{
@@ -301,8 +301,8 @@ if (storageState == null) {
     console.log("Load from storage")
     initialState = {
         ...storageState,
-        currentFileIndex: 0,
-        openFiles: [0],
+        // currentFileIndex: 0,
+        // openFiles: [0],
         projectList: appData
     };
 }

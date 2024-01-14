@@ -33,16 +33,44 @@ export function useStateDispatch() {
 
 function stateReducer(state, action) {
 
-    let { menu, files, openFiles, currentFileIndex, theme } = state;
+    let { files, openFiles, currentFileIndex, theme } = state;
     // console.log({ files: files })
     // console.log({ action: action })
 
     function saveState(state) {
-        localStorage.setItem("data_" + state.name, JSON.stringify(state))
+        
+        let projectData = { name: state.name,
+                            type: state.type,
+                            theme: state.theme,
+                            currentFileIndex: state.currentFileIndex,
+                            openFiles: state.openFiles,
+                            files: state.files
+                        }
+
+        localStorage.setItem("data_" + state.name, JSON.stringify(projectData))
+
+        let appData = {
+            currentProjectIndex: state.currentProjectIndex,
+            projects: state.projects
+        }
+
+        localStorage.setItem("app-data", JSON.stringify(appData))
+
     }
 
     function LoadState(state) {
-        let newState = JSON.parse(localStorage.getItem("data_" + state.name))
+        let appData = JSON.parse(localStorage.getItem("app-data"))
+        
+        let currentProjectIndex = appData.currentProjectIndex
+        let currentProject = appData[currentProjectIndex]
+
+        let loadState = JSON.parse(localStorage.getItem("data_" + currentProject))
+
+        let newState = {
+            ...loadState,
+            ...appData
+        };
+
         return newState
     }
 
@@ -222,18 +250,6 @@ function stateReducer(state, action) {
             let storageState = LoadState(state)
 
             console.log({ Load: storageState })
-
-            // let ids = storageState.files.map((file) => file.id);
-            // let largest = Math.max.apply(0, ids);
-
-            // let newState = {
-            //     currentFileIndex: largest,
-            //     openFiles: largest,
-            //     ...storageState,
-            // };
-        
-
-            console.log({ Load: storageState })
             return storageState;
         }
 
@@ -243,7 +259,34 @@ function stateReducer(state, action) {
             return {...state, name: action.value}
         }
 
-        case 'change-project':{
+        case 'duplicate-project':{
+            console.log("duplicate-project")
+            console.log({state:state})
+
+            // console.log(state.currentProjectIndex)
+            let currentProject = state.projects[state.currentProjectIndex]
+            console.log({currentProject:currentProject})
+
+            let newProject = currentProject + "-1"
+            
+            let newProjects = state.projects
+            console.log({newProjects:newProjects})
+
+            newProjects = [...newProjects, newProject]
+            console.log({newProjects:newProjects})
+
+            let newState = {...state, 
+                            name: newProject,
+                            projects: newProjects,
+                            currentProjectIndex: newProjects.length - 1
+                            }
+
+            console.log({newState:newState})
+            saveState(newState)
+            return newState
+        }
+
+        case 'set-project':{
             console.log("change-project")
             console.log({action:action})
 
@@ -281,7 +324,7 @@ let project = Token_Locking;
 
 console.log({projectList:appData})
 
-let stateFile = "data_" + appData.items[appData.currentProject]
+let stateFile = "data_" + appData.projects[appData.currentProjectIndex]
 let storageState = JSON.parse(localStorage.getItem(stateFile))
 console.log({ LoadFromStorage: storageState })
 
@@ -290,20 +333,14 @@ let initialState = {}
 if (storageState == null) {
     console.log("New from default data")
     initialState = {
-        name: project.name,
-        currentFileIndex: 0,
-        openFiles: [0],
-        files: project.files,
-        theme: "dark",
-        projectList: projects.items
+        ...project,
+        ...projects
     }
 } else {
     console.log("Load from storage")
     initialState = {
         ...storageState,
-        // currentFileIndex: 0,
-        // openFiles: [0],
-        projectList: appData
+        ...appData
     };
 }
 

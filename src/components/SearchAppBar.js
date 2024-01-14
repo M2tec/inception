@@ -3,23 +3,32 @@ import DarkMode from './DarkMode/DarkMode'
 import { useAppState, useStateDispatch } from '../AppContext.js';
 
 export default function SearchAppBar() {
-  let { name, projectList } = useAppState();
+  let { projects } = useAppState();
   const dispatch = useStateDispatch();
 
-  function SearchList() {
+  let [searchText, setSearchText] = React.useState("")
+  let [showQuery, setShowQuery] = React.useState(false)
 
-    let queryList = projectList.items.filter((item) => item.includes(name));
-    // console.log({ queryList: queryList })
+
+ 
+  const delay = async (ms) => {
+    return new Promise((resolve) => 
+        setTimeout(resolve, ms));
+  };
+
+  function SearchList() {
+    
+    let queryList = projects.filter((item) => item.includes(searchText));
 
     return (<>
-    {/* {console.log({queryList:queryList})} */}
-      {queryList.length > 1 ?
+      {showQuery === true ?
       <div className='dropdown-content'>
         {queryList.map(item => (
           <SearchItem key={item} project={item} />
         ))}
-      </div>:
-      <div></div>}
+      </div>
+      :
+      null}
       </>
     );
   }
@@ -29,13 +38,26 @@ export default function SearchAppBar() {
       <div
         onClick={() => {
           dispatch({
-            type: 'change-project',
+            type: 'set-project',
             value: project
           });
         }}
         className="dropdown-item" href="#">{project}</div>
     );
   }
+
+  function handleChange(value) {
+    setSearchText(value)
+  }
+
+  function handleFocus() {
+    setShowQuery(true)
+  }
+
+  const handleBlur = async () => {
+    await delay(500);
+    setShowQuery(false)
+};
 
   return (
     <div>
@@ -45,13 +67,10 @@ export default function SearchAppBar() {
           <div className='search-dropdown'>
 
             <input className='search-input'
-              onChange={(e) => {
-                dispatch({
-                  type: 'edit-project-name',
-                  value: e.target.value
-                });
-              }}
-              value={name}
+              onFocus={(e) => handleFocus()}
+              onBlur={(e) => handleBlur()}
+              onChange={(e) => handleChange(e.target.value)}
+              value={searchText}
               placeholder='Search...'>
 
             </input>

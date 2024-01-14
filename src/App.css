@@ -156,7 +156,6 @@ ul {
 
 .file-operation-icon {
   transition: opacity 200ms; 
-  /* display: none; */
   opacity: 0;
 }
 
@@ -166,7 +165,6 @@ ul {
 }
 
 .file-item:hover .file-operation-icon {
-  /* display: flex; */
   opacity: 1;
   color: var(--text_color);
 }
@@ -177,6 +175,29 @@ ul {
 
 .file-list-element {
   width: 200px;
+}
+
+.project-item {
+  width: 300px;
+  box-sizing: border-box;
+  line-height: 1.5rem;
+  display: flex;
+  align-items: center;
+  height: 1.5rem;
+  gap: 1ch;
+  padding-left: 1ch;
+  color: var(--text_color)
+}
+
+.project-icon {
+  transition: opacity 200ms; 
+  opacity: 0;
+  color: var(--text_color);
+}
+
+.project-item:hover .project-icon {
+  opacity: 1;
+  color: var(--text_color);
 }
 
 .folder-item {

@@ -5,8 +5,6 @@ import projects from "./data/project-list.js";
 
 import moment from 'moment';
 
-// const AppContext = React.createContext(null);
-
 const FilesContext = createContext(null);
 const FilesDispatchContext = createContext(null);
 
@@ -53,7 +51,7 @@ function stateReducer(state, action) {
             currentProjectIndex: state.currentProjectIndex,
             projects: state.projects
         }
-
+        console.log({appData:appData})
         localStorage.setItem("app-data", JSON.stringify(appData))
 
     }
@@ -253,10 +251,20 @@ function stateReducer(state, action) {
             return storageState;
         }
 
-        case 'edit-project-name':{
+        case 'rename-project':{
             console.log("edit-project-name")
             console.log({action:action})
-            return {...state, name: action.value}
+
+            let newProjects = state.projects
+            newProjects[state.currentProjectIndex] = action.name
+
+            let newState = {...state, 
+                            name: action.name,
+                            projects: newProjects
+                            }
+
+            saveState(newState)
+            return newState
         }
 
         case 'duplicate-project':{

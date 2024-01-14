@@ -18,6 +18,10 @@ export default function SourceBrowser(props) {
 
     const [projectName, setProjectName] = React.useState(name)
 
+    React.useEffect(() => {
+        setProjectName(name)
+    }, [name] )
+
     let projectItem;
 
     function handleSave(){
@@ -51,7 +55,7 @@ export default function SourceBrowser(props) {
                     type: 'duplicate-project',
                     // file: file
                 });
-                setProjectName(name)
+                
                 
             }}
             size={12} />

@@ -10,7 +10,6 @@ import {
 
 export default function FilesList() {
   let { files, currentFileIndex } = useAppState();
-  const dispatch = useStateDispatch();
 
   let filesToplevel = files.filter((file) => file.parentId === -1)
 

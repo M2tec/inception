@@ -19,7 +19,7 @@ const DarkMode = () => {
                       type: 'theme',
                       id: 'test'
                       })}}
-                defaultChecked={theme == "dark"}
+                defaultChecked={theme === "dark"}
             />
             <label className='dark_mode_label' htmlFor='darkmode-toggle'>
                 <Sun />

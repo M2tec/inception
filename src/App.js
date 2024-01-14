@@ -24,8 +24,8 @@ export default function App() {
           <Route path=":returnData" element={<ReceivePopup />} />
         </Route>
 
-        {/* <Route path="testpopup" element={<TestPopup />} />
-        <Route path="*" element={<NoMatch />} /> */}
+        {/* <Route path="testpopup" element={<TestPopup />} />*/}
+        <Route path="*" element={<NoMatch />} /> 
 
       </Routes>
     </StateProvider>

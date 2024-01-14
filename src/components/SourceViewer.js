@@ -42,7 +42,7 @@ const SourceViewer = (props) => {
   let [viewFile, setViewFile] = React.useState({})
 
   React.useEffect(() => {
-    let fileList = files.filter((file) => file.id == props.id);
+    let fileList = files.filter((file) => file.id === props.id);
     let file = fileList[0]
 
     // console.log(props.id)
@@ -50,7 +50,7 @@ const SourceViewer = (props) => {
     // console.log({viewerFiles:files})
 
     setViewFile({...file})
-  }, [props])
+  }, [props,files])
 
   // Hack to get correct height for editor
   // For some reason the obeserver does not return the correct element heigth

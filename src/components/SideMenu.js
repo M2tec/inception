@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Button from 'react-bootstrap/Button';
 import { useAppState, useStateDispatch } from '../AppContext.js';
 import { GcConnect } from "./GameChangerAPI.js";
@@ -7,7 +7,6 @@ import {
   Files,
   PlayFill,
   CloudUploadFill,
-  ArrowReturnLeft,
 } from 'react-bootstrap-icons';
 
 const gc = window.gc;
@@ -16,13 +15,8 @@ export default function SideView(props) {
   let { files, currentFileIndex } = useAppState();
   const dispatch = useStateDispatch();
 
-  // console.log({currentFileIndex:currentFileIndex})
-  // console.log({files:files})
-  // console.log({SideviewFiles:files})
-
   let fileList = files.filter((file) => file.id === currentFileIndex)
   let file = fileList[0]
-  // console.log({file:file})
 
   let isActiveAGCScript = false;
   if (file !== undefined) {

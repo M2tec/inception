@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useAppState, useStateDispatch } from '../AppContext.js';
 import {
   FiletypeJson,
+  BlockquoteLeft,
+  FileEarmarkCode,
   Trash,
   Pencil,
   Save,
@@ -25,8 +27,8 @@ export default function FilesList() {
     expandIndex = currentFile.parentId;
   }
   // console.log({expandIndex:expandIndex})
-  
-  let fileChildren = files.filter((file) => file.parentId === expandIndex )
+
+  let fileChildren = files.filter((file) => file.parentId === expandIndex)
   // console.log({fileChildren})
 
   // {console.log(file.returnData)}
@@ -41,29 +43,29 @@ export default function FilesList() {
   return (
     <ul className='file-list'>
       {filesToplevel.map(item => (
-      <span key={item.id}>
+        <span key={item.id}>
 
-      <File key={item.id} file={item} />
+          <File key={item.id} file={item} />
 
-      {item.id === expandIndex ? 
-        <>
-        
-        {fileChildren.length > 0 ? 
-          <>
-          {fileChildren.map(returnItem => 
-            <div key={returnItem.id} className='file-return-data-item'>
-            <File key={returnItem.id} file={returnItem} />
-            </div>
-              )}
-          </>
-          : null}
+          {item.id === expandIndex ?
+            <>
 
-        </>
-      
-      : null}
+              {fileChildren.length > 0 ?
+                <>
+                  {fileChildren.map(returnItem =>
+                    <div key={returnItem.id} className='file-return-data-item'>
+                      <File key={returnItem.id} file={returnItem} />
+                    </div>
+                  )}
+                </>
+                : null}
 
-      </span>
-      
+            </>
+
+            : null}
+
+        </span>
+
       ))}
     </ul>
   );
@@ -78,14 +80,14 @@ function File({ file, dots }) {
   let fileContent;
 
   if (isEditing) {
-    
+
     fileContent = (
 
       <div className='file-item-child'>
         <input
           value={file.name}
           onChange={e => {
-            console.log({e:e.target.value})
+            console.log({ e: e.target.value })
             dispatch({
               type: 'renamed',
               file: {
@@ -104,13 +106,15 @@ function File({ file, dots }) {
       <div className='file-item-child'>
 
         <span className='file-item-text'>{file.name}</span>
-      
+
         <Pencil size={12} className='file-item-child file-operation-icon' onClick={() => setIsEditing(true)} />
 
       </div>
-      
-      </>);
+
+    </>);
   }
+
+
 
   return (
     <li className="file-list-element" key={file.id}>
@@ -120,7 +124,8 @@ function File({ file, dots }) {
           currentFileIndex === file.id ? 'file-item file-item-selected' : 'file-item'
         }>
 
-        <FiletypeJson size={"15px"} className="file-icon" />
+        <FileTypeIcon name={file.name} />
+
 
         <span
           onClick={(e) => {
@@ -131,29 +136,53 @@ function File({ file, dots }) {
           }}>
           {fileContent}</span>
 
-          <Stickies
+        <Stickies
           className='file-operation-icon'
-            onClick={(e) => {
-              dispatch({
-                type: 'duplicate',
-                file: file
-              });
-            }}
-            size={12} />
+          onClick={(e) => {
+            dispatch({
+              type: 'duplicate',
+              file: file
+            });
+          }}
+          size={12} />
 
-          <Trash
+        <Trash
           className={
             currentFileIndex === file.id ?
-            'file-operation-icon trash-selected' : 'file-operation-icon'
+              'file-operation-icon trash-selected' : 'file-operation-icon'
           }
-            onClick={() => {
-              dispatch({
-                type: 'deleted',
-                id: file.id
-              });
-            }}
-            size={12} />
+          onClick={() => {
+            dispatch({
+              type: 'deleted',
+              id: file.id
+            });
+          }}
+          size={12} />
       </label>
     </li>
   );
+}
+
+function FileTypeIcon({ name }) {
+  let fileIcon;
+
+  let [extension] = name.split(".").slice(-1)
+  console.log(extension)
+
+  switch (extension) {
+    case 'json':
+      fileIcon = (<FiletypeJson size={"15px"} className="file-icon" />);
+      break;
+    case 'hl':
+        fileIcon = (<FileEarmarkCode size={"15px"} className="file-icon" />);
+        break;      
+    case 'gcscript':
+          fileIcon = (<BlockquoteLeft size={"15px"} className="file-icon" />);
+          break;          
+    default:
+      fileIcon = (<BlockquoteLeft size={"15px"} className="file-icon" />);
+  }
+
+  return (<>{fileIcon}</>)
+
 }

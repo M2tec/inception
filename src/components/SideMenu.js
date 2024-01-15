@@ -15,6 +15,7 @@ export default function SideView(props) {
   let { files, currentFileIndex } = useAppState();
   const dispatch = useStateDispatch();
 
+  console.log({files:files})
   let fileList = files.filter((file) => file.id === currentFileIndex)
   let file = fileList[0]
 

@@ -58,11 +58,13 @@ function stateReducer(state, action) {
 
     function LoadState(state) {
         let appData = JSON.parse(localStorage.getItem("app-data"))
-        
-        let currentProjectIndex = appData.currentProjectIndex
-        let currentProject = appData[currentProjectIndex]
+        console.log({appData:appData})
+
+        let currentProject = appData.projects[appData.currentProjectIndex]
+        console.log({currentProject:currentProject})
 
         let loadState = JSON.parse(localStorage.getItem("data_" + currentProject))
+        console.log("data_" + currentProject)
 
         let newState = {
             ...loadState,

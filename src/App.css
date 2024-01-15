@@ -384,3 +384,14 @@ div.noMargin {
   z-index: 1;
 }
 
+.advertisement {
+  display: flex;
+  justify-content: center;
+}
+
+.advertisement-close {
+  margin: 5px;
+  color: white;
+  height: 30px;
+  
+}

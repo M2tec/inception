@@ -5,7 +5,8 @@ import { heliosSyntax } from './HeliosSyntaxMonaco';
 import { useAppState, useStateDispatch } from '../AppContext.js';
 
 const SourceViewer = (props) => {
-  const { theme } = useAppState();
+  const { theme, advertisement } = useAppState();
+  console.log(theme)
 
   const element = React.useRef(null);
   const [width, setWidth] = React.useState(0);
@@ -61,7 +62,12 @@ const SourceViewer = (props) => {
       // console.log('Element:', entry.target);
       // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
       // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
-      setBodyHeight(cr.height -95)
+      console.log(advertisement)
+      if (advertisement === true) {
+        setBodyHeight(cr.height -95 -110)
+      } else {
+        setBodyHeight(cr.height -95)
+      }
     }
   });
   ro.observe(document.body);

@@ -317,6 +317,13 @@ function stateReducer(state, action) {
                     }
         }
 
+        case 'ad-visibility':{
+            console.log("ad-visibility")
+            console.log({action:action})
+
+            return {...state, advertisement: !state.advertisement}
+        }
+
         case 'download-project':{
             console.log("download-project")
             console.log({action:action})
@@ -372,13 +379,15 @@ if (storageState == null) {
     console.log("New from default data")
     initialState = {
         ...project,
-        ...projects
+        ...projects,
+        advertisement: true
     }
 } else {
     console.log("Load from storage")
     initialState = {
         ...storageState,
-        ...appData
+        ...appData,
+        advertisement: true
     };
 }
 

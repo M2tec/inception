@@ -6,7 +6,7 @@ import { X } from 'react-bootstrap-icons';
 export default function TabComponent(props) {
     const dispatch = useStateDispatch();
     const { files, openFiles, currentFileIndex } = useAppState();
-    
+
     const GcTab = ({
         id
     }) => {
@@ -31,7 +31,7 @@ export default function TabComponent(props) {
                     onClick={(e) => {
                         dispatch({
                             type: 'closed',
-                            id:id
+                            id: id
                         });
                     }}
                     size={"20px"} />
@@ -53,7 +53,7 @@ export default function TabComponent(props) {
                         />
                     );
                 })}
-             </div>
+            </div>
 
             <div className={currentFileIndex ? "TabPane  TabPaneActive" : "TabPane"}>
                 {/* {console.log(currentFileIndex)} */}

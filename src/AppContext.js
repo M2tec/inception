@@ -299,6 +299,22 @@ function stateReducer(state, action) {
             return newState
         }
 
+        case 'delete-project':{
+            console.log("delete-project")
+            console.log({state:state})
+
+            let newProjects = state.projects.filter((project) => project !== action.name)
+            console.log({newProjects:newProjects})
+
+            let newState = {...state,
+                            projects: newProjects
+                            }
+
+            console.log({newState:newState})
+            saveState(newState)
+            return newState
+        }
+
         case 'set-project':{
             console.log("change-project")
             console.log({action:action})

@@ -395,3 +395,9 @@ div.noMargin {
   height: 30px;
   
 }
+
+.project-search-item {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+}

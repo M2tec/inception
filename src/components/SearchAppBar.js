@@ -2,34 +2,50 @@ import * as React from 'react';
 import DarkMode from './DarkMode/DarkMode'
 import { useAppState, useStateDispatch } from '../AppContext.js';
 
+import {
+  Trash,
+} from 'react-bootstrap-icons';
+
 export default function SearchAppBar() {
-  let { projects } = useAppState();
+  let { currentProjectIndex, projects } = useAppState();
   const dispatch = useStateDispatch();
 
   let [searchText, setSearchText] = React.useState("")
   let [showQuery, setShowQuery] = React.useState(false)
 
+  
 
- 
   const delay = async (ms) => {
-    return new Promise((resolve) => 
-        setTimeout(resolve, ms));
+    return new Promise((resolve) =>
+      setTimeout(resolve, ms));
   };
 
   function SearchList() {
-    
-    let queryList = projects.filter((item) => item.includes(searchText));
+    let currentProject = projects[currentProjectIndex]
+
+    let inactiveProjects = projects.filter((item) => item !== currentProject);
+    let queryList = inactiveProjects.filter((item) => item.includes(searchText));
 
     return (<>
       {showQuery === true ?
-      <div className='dropdown-content'>
-        {queryList.map(item => (
-          <SearchItem key={item} project={item} />
-        ))}
-      </div>
-      :
-      null}
-      </>
+        <div className='dropdown-content'>
+          {queryList.map(item => (
+          <div key={item} className='project-search-item'>
+            <SearchItem key={item} project={item} />
+            <Trash
+            onClick={() => {
+              dispatch({
+                type: 'delete-project',
+                name: item
+              });
+            }}
+            size={12} />
+            </div>
+          ))}
+        </div>
+        :
+        null}
+    </>
     );
   }
 
@@ -42,7 +58,10 @@ export default function SearchAppBar() {
             value: project
           });
         }}
-        className="dropdown-item" href="#">{project}</div>
+        className="dropdown-item" href="#">{project}
+
+
+      </div>
     );
   }
 
@@ -57,7 +76,7 @@ export default function SearchAppBar() {
   const handleBlur = async () => {
     await delay(500);
     setShowQuery(false)
-};
+  };
 
   return (
     <div>

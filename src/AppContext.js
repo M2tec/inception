@@ -71,6 +71,7 @@ function stateReducer(state, action) {
             ...appData
         };
 
+        
         return newState
     }
 

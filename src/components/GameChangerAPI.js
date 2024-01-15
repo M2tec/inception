@@ -62,13 +62,13 @@ export function ReceivePopup() {
             returnData: resultObj
         })
 
-        // window.close();
+        window.close();
     }
 
     return (
         <>
-            {/* {window.resizeTo(875, 755)} */}
-            {window.resizeTo(1200, 755)}
+            {window.resizeTo(875, 755)}
+            {/* {window.resizeTo(1200, 755)} */}
             {document.querySelector("body").setAttribute('data-theme', 'dark')}
             <div className='fontwhite p-4'>
                 <div className='p-4 square border-1 border-danger rounded'>

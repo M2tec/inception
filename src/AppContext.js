@@ -2,8 +2,10 @@ import React, { createContext, useContext, useReducer } from "react";
 import Token_Locking from "./data/Token_Locking.js";
 import DAO_Demo from "./data/DAO_Demo.js";
 import projects from "./data/project-list.js";
-
+import JSZip from "jszip";
 import moment from 'moment';
+import { saveAs } from 'file-saver';
+
 
 const FilesContext = createContext(null);
 const FilesDispatchContext = createContext(null);
@@ -314,9 +316,34 @@ function stateReducer(state, action) {
                     files: projectData.files,
                     }
         }
+
+        case 'download-project':{
+            console.log("download-project")
+            console.log({action:action})
+
+            const zip = new JSZip();
+
+            let currentProject = state.projects[state.currentProjectIndex]
+            console.log({currentProject:currentProject})
+
+            let dataFiles = state.files;
+            console.log({dataFiles:dataFiles})
+
+            for (let file = 0; file < dataFiles.length; file++) {
+                // Zip file with the file name.
+                zip.file(dataFiles[file].name, dataFiles[file].data);
+            } 
+            zip.generateAsync({type: "blob"}).then(content => {
+                  saveAs(content, currentProject + ".zip");
+                });
+
+            console.log({state:state})
+
+            return state
+        }
         default: {
         throw Error('Unknown action: ' + action.type);
-    }
+        }
 }
 }
 

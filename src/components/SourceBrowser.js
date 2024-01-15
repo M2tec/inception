@@ -12,7 +12,7 @@ import FilesList from "./FileList";
 export default function SourceBrowser(props) {
 
     let { name } = useAppState();
-    console.log({name:name})
+    // console.log({name:name})
     const dispatch = useStateDispatch();
     const [isEditing, setIsEditing] = React.useState(false);
 

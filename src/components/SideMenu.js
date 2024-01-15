@@ -7,6 +7,7 @@ import {
   Files,
   PlayFill,
   CloudUploadFill,
+  Download
 } from 'react-bootstrap-icons';
 
 const gc = window.gc;
@@ -84,6 +85,16 @@ export default function SideView(props) {
     <Button
       variant="primary">
       <CloudUploadFill size={"20px"} />
+    </Button>
+
+    <Button
+    onClick={() => {
+      dispatch({
+        type: 'download-project',
+      });
+    }}
+      variant="primary">
+      <Download size={"20px"} />
     </Button>
   </div>
 

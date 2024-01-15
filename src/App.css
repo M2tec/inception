@@ -152,6 +152,7 @@ ul {
 
 .file-icon {
   display: flex;
+  height: 20px;
 }
 
 .file-operation-icon {

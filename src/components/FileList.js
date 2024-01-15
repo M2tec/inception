@@ -167,7 +167,6 @@ function FileTypeIcon({ name }) {
   let fileIcon;
 
   let [extension] = name.split(".").slice(-1)
-  console.log(extension)
 
   switch (extension) {
     case 'json':

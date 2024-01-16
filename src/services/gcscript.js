@@ -1,3 +1,5 @@
+export const dataEncoders=['string','json','base64','hex'];
+
 export const isArray=(maybeArray)=>Array.isArray(maybeArray);
 
 //Based on GC function: 
@@ -88,52 +90,102 @@ export const gcScriptWalker=async ({code, onNode, maxLevel,maxChildren})=>{
     });
     return processedNode;
 }
-
-export const getFileAs=async (fileStr,as)=>{
+export const getResource=async (fileURI,options)=>{
     const Buffer = window.gc.utils.Buffer;
-    if(as==="string")
-        return Promise.resolve(fileStr)
-    if(as==="json")
-        return Promise.resolve(JSON.parse(fileStr))
-    if(as==="hex")
-        return Promise.resolve(Buffer.from(fileStr).toString("hex"))
-    if(as==="base64")
-        return Promise.resolve(Buffer.from(fileStr).toString("base64"))
-    throw new Error('Missing valid output encoding on "as" property');
+    const {files}=options||{};
+    const file=[...(files||[])].find(file=>`ide://${file?.name||""}`===fileURI);
+    if(file?.data!==undefined)
+        return Promise.resolve(Buffer.from(file.data||""));
+    else 
+        throw new Error(`Resource '${fileURI}' not found`);
 }
+export const getBufferAs=async (fileBuff,as)=>{
+    if(as==="string")
+        return Promise.resolve(fileBuff.toString('utf8'))
+    if(as==="json")
+        return Promise.resolve(JSON.parse(fileBuff.toString('utf8')))
+    if(as==="hex")
+        return Promise.resolve(fileBuff.toString('hex'))
+    if(as==="base64")
+        return Promise.resolve(fileBuff.toString('base64'))
+    throw new Error(`Unknown encoding provided '${as||""}'. (must be one of '${dataEncoders.join(', ')}') `);
+}
+
+export const path2Str=(path)=>[...(path||[])].join('/');
 
 const macroHandlers={
     "$importAsScript":async({node,path,key,index,context})=>{
-        const {type,args,argsByKey,from}=node||{};
+        const {type,args,argsByKey,from,...props}=node||{};
         const {files}=context||{};
-        const newNode={...node};
-        throw new Error("Not implemented yet")
+        const kvFrom     =toKVList(from);
+        const kvArgsByKey=toKVList(argsByKey);
+
+        if(!kvFrom?.length>0)
+            throw new Error(`At least one valid resource URI must be provided in 'from' list/map in '${type}'`);
+        if(argsByKey!==undefined && !kvArgsByKey?.length>0)
+            throw new Error(`At least one argument must be provided in 'argsByKey' list/map in '${type}' `);
+        if(args && kvArgsByKey.length>0)
+            throw new Error(`Only one argument passing method must be used. You provided 'args' and 'argsByKey' in '${type}' `);
+
+        const fromKeysDict={};
+        for (let index = 0; index < kvFrom.length; index++) {
+            const [key,fileUri] = kvFrom[index];
+            const fileBuff  =await getResource(fileUri,{files});
+            const solvedData=await getBufferAs(fileBuff,"json");
+            //TODO: consider cleanning imported scripts to remove root-only script properties like returnURLPattern to avoid errors
+            //      reasons not to do so could be to let devs use this to restrict code destination/reusability
+            //      probably a flag for enabling this would be wise
+            kvFrom[index]=[key,solvedData];
+            fromKeysDict[key]=fileUri;
+        }            
+        for (let index = 0; index < kvArgsByKey.length; index++) {
+            const [key,arg] = kvFrom[index];
+            if(!fromKeysDict[key])
+                throw new Error(`Argument provided in 'argsByKey' for an unknown resource key '${key}' in '${type}'`)
+        }
+        
+        const solvedFrom=isArray(from)
+            ?kvList2Array(kvFrom)
+            :kvList2Object(kvFrom);    
+                
+        const newNode={
+            ...props, // allow to pass props directly into transpiled type
+            type:"script",
+            run:solvedFrom,
+        };
+
+        if(args)
+            newNode.args=args;
+        if(argsByKey)
+            newNode.argsByKey=argsByKey;
+
+        return Promise.resolve(newNode);
     },
     "$importAsData":async({node,path,key,index,context})=>{
-        const {type,toType,as,from}=node||{};
+        const {type,as,from,...props}=node||{};
         const {files}=context||{};
-        if(toType==="data"){
-            const kvFrom=toKVList(from);
-            for (let index = 0; index < kvFrom.length; index++) {
-                const [key,fileUri] = kvFrom[index];
-                const file=files.find(file=>`ide://${file?.name||""}`===fileUri);
-                const data=file?.data;
-                const solvedData=await getFileAs(data,as);
-                kvFrom[index]=[key,solvedData];
-            }           
-            const solvedFrom=isArray(from)
-                ?kvList2Array(kvFrom)
-                :kvList2Object(kvFrom);
-            return Promise.resolve({
-                type:toType,
-                value:solvedFrom,
-            });
-        }else
-        if(toType==="macro"){
-            throw new Error("Not implemented yet")
-        }
+        const kvFrom=toKVList(from);
 
-        throw new Error('Missing a valid "toType" property')
+        if(!dataEncoders.includes(as))
+            throw new Error(`Missing encoder in 'as' value in '${type}' (must be one of '${dataEncoders.join(', ')}')`);
+        if(!kvFrom?.length>0)
+            throw new Error(`At least one valid resource URI must be provided in 'from' list/map in '${type}'`);
+
+        for (let index = 0; index < kvFrom.length; index++) {
+            const [key,fileUri] = kvFrom[index];
+            const fileBuff  =await getResource(fileUri,{files});
+            const solvedData=await getBufferAs(fileBuff,as);
+            kvFrom[index]=[key,solvedData];
+        }           
+        const solvedFrom=isArray(from)
+            ?kvList2Array(kvFrom)
+            :kvList2Object(kvFrom);            
+        return Promise.resolve({
+            ...props, // allow to pass props directly into transpiled type. Currently this case would trigger wallet-side validation errors
+            type:"data",
+            value:solvedFrom,
+        });
+
     },
 };
 
@@ -141,8 +193,9 @@ export const transpile = async ({
     mainFileName, //main gcscript file
     files,
 })=>{
-    const mainFile=files.find(file=>file?.name===mainFileName);
-    const code=JSON.parse(mainFile?.data||{});
+    const fileUri   =`ide://${mainFileName||""}`
+    const fileBuff  =await getResource(fileUri,{files});
+    const code      =await getBufferAs(fileBuff,'json');
     const transpiled=await gcScriptWalker({
         code,
         onNode:async({node,path,key,index})=>{
@@ -150,8 +203,13 @@ export const transpile = async ({
             const {type}=node||{};
             const context={files,mainFileName};
             //console.log(`${pathStr} = `,{node,context});
-            if(macroHandlers[type])
-                return await macroHandlers[type]({node,path,key,index,context});
+            if(macroHandlers[type]){
+                try{
+                    return await macroHandlers[type]({node,path,key,index,context});
+                }catch(err){
+                    throw new Error(`MacroError: ${err?.message||"unknown"} [${path2Str(path)}]`)
+                }
+            }
             return Promise.resolve(node);
         }
     });

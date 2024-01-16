@@ -9,6 +9,7 @@ import {
   CloudUploadFill,
   Download
 } from 'react-bootstrap-icons';
+import { transpile } from "../services/gcscript.js";
 
 const gc = window.gc;
 
@@ -39,7 +40,7 @@ export default function SideView(props) {
   })
 
 
-  function handleClickRun(e) {
+  async function handleClickRun(e) {
 
     console.log("Deploy");
     let gc_compile = file.data
@@ -63,8 +64,12 @@ export default function SideView(props) {
       }
     });
 
-    GcConnect(gc_compile);
-
+    const transpiled=await transpile({
+      mainFileName:file.name,
+      files,
+    });
+    console.log({transpiled});
+    //GcConnect(transpiled);
     return false;
   }
 

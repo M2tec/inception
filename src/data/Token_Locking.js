@@ -78,7 +78,31 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
         "dependencies": {
             "type": "script",
             "run": {
-                "datum": "--datum.json--",                
+                "datumJson":{
+                    "type":"$importAsData",
+                    "toType":"data",
+                    "as":"json",
+                    "from":{
+                        "datum":"ide://datum.json"
+                    }
+                }, 
+                "datum":{
+                    "type": "plutusData",
+                    "data": {
+                        "fromJSON": {
+                            "schema": 1,
+                            "obj": "get('cache.dependencies.datumJson.datum')"
+                        }
+                    }
+                },
+                "helios":{
+                    "type":"$importAsData",
+                    "toType":"data",
+                    "as":"hex",
+                    "from":{
+                        "contract":"ide://contract.hl"
+                    }
+                },
                 "lock": {
                     "type": "data",
                     "value": [
@@ -96,7 +120,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
                 "contract": {
                     "type": "plutusScript",
                     "script": {
-                      "heliosCode": "{hexToStr('--contract.hl--')}",
+                      "heliosCode": "{hexToStr(get('cache.dependencies.helios.contract'))}",
                       "version": "0.15.2"
                     }
                   },                
@@ -244,7 +268,18 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
     }
 }
 `
-            }
+            } 
+
+
+            
+
+
+
+
+
+
+
+
 ]
         }
 ;

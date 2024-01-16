@@ -100,13 +100,14 @@ const SourceViewer = (props) => {
     // you can store it in `useRef` for further usage
     monaco.languages.register({ id: 'helios' })
     monaco.languages.setMonarchTokensProvider('helios', heliosSyntax)
+
+    monaco.languages.register({ id: 'gamechanger' })
+    monaco.languages.setMonarchTokensProvider('helios', heliosSyntax)
+
     monacoRef.current = monaco;
   }
 
   function handleEditorChange(value, event) {
-    // console.log('here is the current model value:', value);
-    // monacoRef.current.editor.getModels().forEach(model => console.log(model));
-    // console.log(monacoRef);
 
     dispatch({
       type: 'changed-data',

@@ -403,7 +403,7 @@ if (storageState == null) {
     initialState = {
         ...storageState,
         ...appData,
-        advertisement: true
+        // advertisement: true
     };
 }
 

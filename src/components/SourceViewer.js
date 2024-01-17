@@ -6,6 +6,7 @@ import { useAppState, useStateDispatch } from '../AppContext.js';
 
 const SourceViewer = (props) => {
   const { theme, advertisement } = useAppState();
+  console.log(theme)
 
   const element = React.useRef(null);
   const [width, setWidth] = React.useState(0);
@@ -45,11 +46,16 @@ const SourceViewer = (props) => {
     let fileList = files.filter((file) => file.id === props.id);
     let file = fileList[0]
 
+    let fileType = file.type
+    if (fileType === 'code') {
+      fileType = 'json'
+    }
+
     // console.log(props.id)
     // console.log(file.data)
     // console.log({viewerFiles:files})
 
-    setViewFile({...file})
+    setViewFile({...file, type:fileType})
   }, [props,files])
 
   // Hack to get correct height for editor
@@ -61,6 +67,7 @@ const SourceViewer = (props) => {
       // console.log('Element:', entry.target);
       // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
       // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
+      console.log(advertisement)
       if (advertisement === true) {
         setBodyHeight(cr.height -95 -110)
       } else {

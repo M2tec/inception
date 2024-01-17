@@ -25,9 +25,7 @@ export default function Home() {
             <SearchAppBar />
             <div className="View">
                 <SideMenu />
-
                 <PanelGroup direction="horizontal">
-
                     <Panel defaultSizePercentage={35}>
                         <SourceBrowser />
                     </Panel>
@@ -46,7 +44,6 @@ export default function Home() {
 function Advertisement() {
     const { advertisement } = useAppState();
     const dispatch = useStateDispatch();
-
 
     function handleClose () {
         dispatch({

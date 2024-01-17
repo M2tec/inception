@@ -78,7 +78,53 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
         "dependencies": {
             "type": "script",
             "run": {
-                "datum": "--datum.json--",                
+                "datumJson":{
+                    "type":"$importAsData",
+                    "as":"json",
+                    "from":{
+                        "datum":"ide://datum.json"
+                    }
+                }, 
+                "datum":{
+                    "type": "plutusData",
+                    "data": {
+                        "fromJSON": {
+                            "schema": 1,
+                            "obj": "get('cache.dependencies.datumJson.datum')"
+                        }
+                    }
+                },
+                "helios":{
+                    "type":"$importAsData",
+                    "as":"hex",
+                    "from":{
+                        "contract":"ide://contract.hl"
+                    }
+                },
+                "imports":{
+                    "type":"$importAsScript",
+                    "argsByKey":{
+                        "listKeys":5,
+                        "erroneous":"foobar"
+                    },
+                    "from":{
+                        "listKeys":"ide://list_keys.gcscript",
+                        "erroneous":"ide://data.json"
+                    }
+                }, 
+                "moreImports":{
+                    "type":"$importAsScript",
+                    "title":"Wrapper script",
+                    "description":"this wrapper embedds external gcscripts",
+                    "args":{
+                        "foo":true,
+                        "bar":"baz"
+                    },
+                    "from":{
+                        "one":"ide://list_keys.gcscript",
+                        "two":"ide://data.json"
+                    }
+                }, 
                 "lock": {
                     "type": "data",
                     "value": [
@@ -96,7 +142,7 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
                 "contract": {
                     "type": "plutusScript",
                     "script": {
-                      "heliosCode": "{hexToStr('--contract.hl--')}",
+                      "heliosCode": "{hexToStr(get('cache.dependencies.helios.contract'))}",
                       "version": "0.15.2"
                     }
                   },                
@@ -244,7 +290,18 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
     }
 }
 `
-            }
+            } 
+
+
+            
+
+
+
+
+
+
+
+
 ]
         }
 ;

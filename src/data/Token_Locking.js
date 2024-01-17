@@ -80,7 +80,6 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
             "run": {
                 "datumJson":{
                     "type":"$importAsData",
-                    "toType":"data",
                     "as":"json",
                     "from":{
                         "datum":"ide://datum.json"
@@ -97,12 +96,35 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
                 },
                 "helios":{
                     "type":"$importAsData",
-                    "toType":"data",
                     "as":"hex",
                     "from":{
                         "contract":"ide://contract.hl"
                     }
                 },
+                "imports":{
+                    "type":"$importAsScript",
+                    "argsByKey":{
+                        "listKeys":5,
+                        "erroneous":"foobar"
+                    },
+                    "from":{
+                        "listKeys":"ide://list_keys.gcscript",
+                        "erroneous":"ide://data.json"
+                    }
+                }, 
+                "moreImports":{
+                    "type":"$importAsScript",
+                    "title":"Wrapper script",
+                    "description":"this wrapper embedds external gcscripts",
+                    "args":{
+                        "foo":true,
+                        "bar":"baz"
+                    },
+                    "from":{
+                        "one":"ide://list_keys.gcscript",
+                        "two":"ide://data.json"
+                    }
+                }, 
                 "lock": {
                     "type": "data",
                     "value": [

@@ -67,7 +67,8 @@ export default function SideView(props) {
       mainFileName:file.name,
       files,
     });
-    console.log({transpiled});
+    //console.log({transpiled});
+    console.log({transpiled:JSON.stringify(transpiled,null,2)});
     //GcConnect(transpiled);
     return false;
   }

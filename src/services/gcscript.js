@@ -45,7 +45,7 @@ export const gcScriptWalker=async ({code, onNode, maxLevel,maxChildren})=>{
     const isParentNode  =(node)=>node?.type==="script" && node?.run!==undefined;
     const getChildren   =(node)=>node?.run;
     const walker=async ({node,key,index,path})=>{      
-        //console.log({node,key,index,path});  
+        // console.log({node,key,index,path});  
         const solvedNode=await onNode({
             node,
             index,
@@ -59,7 +59,7 @@ export const gcScriptWalker=async ({code, onNode, maxLevel,maxChildren})=>{
             const kvMap=toKVList(children);
             const solvedKvMap=[];
             for (let childIndex = 0; childIndex < kvMap.length; childIndex++) {
-                //console.log({children,kvMap,solvedKvMap,childIndex});
+                // console.log({children,kvMap,solvedKvMap,childIndex});
                 const [childKey,childNode] = kvMap[childIndex];
                 const solvedChild = await walker({
                     node:childNode,

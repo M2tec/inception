@@ -17,7 +17,7 @@ export default function SideView(props) {
   let { files, currentFileIndex } = useAppState();
   const dispatch = useStateDispatch();
 
-  console.log({files:files})
+  // console.log({files:files})
   let fileList = files.filter((file) => file.id === currentFileIndex)
   let file = fileList[0]
 
@@ -38,7 +38,6 @@ export default function SideView(props) {
       window.localStorage.setItem("DataIsHere", "")
     }
   })
-
 
   async function handleClickRun(e) {
 

@@ -5,7 +5,7 @@ import projects from "./data/project-list.js";
 import JSZip from "jszip";
 import moment from 'moment';
 import { saveAs } from 'file-saver';
-
+import { transpile } from "./services/gcscript.js";
 
 const FilesContext = createContext(null);
 const FilesDispatchContext = createContext(null);
@@ -37,15 +37,19 @@ function stateReducer(state, action) {
     // console.log({ files: files })
     // console.log({ action: action })
 
+    let ids = files.map((file) => file.id);
+    var largest = Math.max.apply(0, ids);
+
     function saveState(state) {
-        
-        let projectData = { name: state.name,
-                            type: state.type,
-                            theme: state.theme,
-                            currentFileIndex: state.currentFileIndex,
-                            openFiles: state.openFiles,
-                            files: state.files
-                        }
+
+        let projectData = {
+            name: state.name,
+            type: state.type,
+            theme: state.theme,
+            currentFileIndex: state.currentFileIndex,
+            openFiles: state.openFiles,
+            files: state.files
+        }
 
         localStorage.setItem("data_" + state.name, JSON.stringify(projectData))
 
@@ -53,17 +57,17 @@ function stateReducer(state, action) {
             currentProjectIndex: state.currentProjectIndex,
             projects: state.projects
         }
-        console.log({appData:appData})
+        // console.log({appData:appData})
         localStorage.setItem("app-data", JSON.stringify(appData))
 
     }
 
     function LoadState(state) {
         let appData = JSON.parse(localStorage.getItem("app-data"))
-        console.log({appData:appData})
+        console.log({ appData: appData })
 
         let currentProject = appData.projects[appData.currentProjectIndex]
-        console.log({currentProject:currentProject})
+        console.log({ currentProject: currentProject })
 
         let loadState = JSON.parse(localStorage.getItem("data_" + currentProject))
         console.log("data_" + currentProject)
@@ -73,9 +77,11 @@ function stateReducer(state, action) {
             ...appData
         };
 
-        
+
         return newState
     }
+
+
 
     switch (action.type) {
 
@@ -83,7 +89,7 @@ function stateReducer(state, action) {
             console.log('menu-change')
             console.log(action.id)
 
-            return {...state};
+            return { ...state };
         }
 
         case 'theme': {
@@ -100,19 +106,20 @@ function stateReducer(state, action) {
         case 'selected': {
             console.log("selected")
             // console.log({selState:state})
-            console.log({action:action})
-            
+            console.log({ action: action })
+            console.log(action.file.id)
+
             let newFileIndex = 0
 
- 
             openFiles.indexOf(action.file.id) === -1 ? openFiles.push(action.file.id) : console.log("Item already open");
             newFileIndex = action.file.id;
-
+            console.log({newFileIndex})
 
             let newState = { ...state, openFiles, currentFileIndex: newFileIndex };
-            // newState.files.forEach((element) => console.log("f " + element.id + " " + element.data))           
-            saveState(newState)     
+            console.log({ newState: newState })
+            saveState(newState)
             return newState
+ 
         }
 
         case 'closed': {
@@ -173,8 +180,8 @@ function stateReducer(state, action) {
 
             state.files.forEach((element) => console.log(element.id + " " + element.data))
 
-            let ids = files.map((file) => file.id);
-            var largest = Math.max.apply(0, ids);
+            // let ids = files.map((file) => file.id);
+            // var largest = Math.max.apply(0, ids);
 
             // New file name
             let newFileNameSplit = action.file.name.split(".", 2)
@@ -186,16 +193,60 @@ function stateReducer(state, action) {
             // console.log({dupNewfiles:newFiles})
 
             let newState = { ...state, files: newFiles };
-            
+
             saveState(newState)
             // console.log({dupNewState:newState})
 
             return newState
         }
 
+        case 'add-code': {
+            console.log("add-code")
+            console.log({action:action})
+
+            moment.locale('en');
+    
+            let newName = "code-" + moment().format('y-M-D_h-m-s-SSS') + ".code";
+            let newCodeFile =
+            {
+              id: largest + 1,
+              name: newName,
+              parentId: action.data.file.id,
+              type: "code",
+              data: JSON.stringify(action.data.code, null, 2)
+            }
+    
+            // console.log({newCodeFile:newCodeFile})
+
+            let newFiles = state.files.filter((file) => {
+                // console.log(file.name + " " + file.parentId + " " +  action.data.file.id)
+
+                if (file.type !== "code")// && ) 
+                {
+                    // console.log("true")
+                    return true 
+                } else {
+                    if (file.parentId === action.data.file.id){
+                        // console.log("false")
+                        return false
+                    } else {
+                        // console.log("true")
+                        return true
+                    }
+                }
+            })
+            newFiles = [...newFiles, newCodeFile]
+
+            let newState = { ...state, files: newFiles };
+            console.log({newState:newState})
+            saveState(newState)
+            return newState
+        }
+
+
         case 'deleted': {
             console.log("delete")
-            console.log({delState:state})
+            console.log({ delState: state })
             let newOpenFiles = openFiles
             console.log({ newOpenFiles: newOpenFiles })
             newOpenFiles = openFiles.filter((fileIndex) => fileIndex !== action.id)
@@ -211,9 +262,9 @@ function stateReducer(state, action) {
             // Save file data into the correct data object
             console.log("case file")
             newState = { ...state, files: newFiles, openFiles: newOpenFiles, currentFileIndex }
-   
+
             saveState(newState)
-            console.log({delNewState:newState})
+            console.log({ delNewState: newState })
             return newState
         }
 
@@ -238,13 +289,13 @@ function stateReducer(state, action) {
 
             let newFiles = state.files
             newFiles = [...newFiles, newItem]
-            
+
             let newState = { ...state, files: newFiles }
 
-            console.log({receiveNewState:newState})
+            console.log({ receiveNewState: newState })
 
             saveState(newState)
-            return {...newState}
+            return { ...newState }
         }
 
         case 'load-from-storage': {
@@ -256,118 +307,121 @@ function stateReducer(state, action) {
             return storageState;
         }
 
-        case 'rename-project':{
+        case 'rename-project': {
             console.log("edit-project-name")
-            console.log({action:action})
+            console.log({ action: action })
 
             let newProjects = state.projects
             newProjects[state.currentProjectIndex] = action.name
 
-            let newState = {...state, 
-                            name: action.name,
-                            projects: newProjects
-                            }
+            let newState = {
+                ...state,
+                name: action.name,
+                projects: newProjects
+            }
 
             saveState(newState)
             return newState
         }
 
-        case 'duplicate-project':{
+        case 'duplicate-project': {
             console.log("duplicate-project")
-            console.log({state:state})
+            console.log({ state: state })
 
             // console.log(state.currentProjectIndex)
             let currentProject = state.projects[state.currentProjectIndex]
-            console.log({currentProject:currentProject})
+            console.log({ currentProject: currentProject })
 
             let newProject = currentProject + "-1"
-            
+
             let newProjects = state.projects
-            console.log({newProjects:newProjects})
+            console.log({ newProjects: newProjects })
 
             newProjects = [...newProjects, newProject]
-            console.log({newProjects:newProjects})
+            console.log({ newProjects: newProjects })
 
-            let newState = {...state, 
-                            name: newProject,
-                            projects: newProjects,
-                            currentProjectIndex: newProjects.length - 1
-                            }
+            let newState = {
+                ...state,
+                name: newProject,
+                projects: newProjects,
+                currentProjectIndex: newProjects.length - 1
+            }
 
-            console.log({newState:newState})
+            console.log({ newState: newState })
             saveState(newState)
             return newState
         }
 
-        case 'set-project':{
+        case 'set-project': {
             console.log("change-project")
-            console.log({action:action})
+            console.log({ action: action })
 
             let projectName = action.value;
 
             let projectData = JSON.parse(localStorage.getItem('data_' + projectName))
 
-            console.log({projectData:projectData})
+            console.log({ projectData: projectData })
 
-            return {...state, 
-                    name: projectName, 
-                    currentFileIndex: 0,
-                    openFiles: [0],
-                    files: projectData.files,
-                    }
+            return {
+                ...state,
+                name: projectName,
+                currentFileIndex: 0,
+                openFiles: [0],
+                files: projectData.files,
+            }
         }
 
-        case 'ad-visibility':{
+        case 'ad-visibility': {
             console.log("ad-visibility")
-            console.log({action:action})
+            console.log({ action: action })
 
-            return {...state, advertisement: !state.advertisement}
+            return { ...state, advertisement: !state.advertisement }
         }
 
-        case 'download-project':{
+        case 'download-project': {
             console.log("download-project")
-            console.log({action:action})
+            console.log({ action: action })
 
             const zip = new JSZip();
 
             let currentProject = state.projects[state.currentProjectIndex]
-            console.log({currentProject:currentProject})
+            console.log({ currentProject: currentProject })
 
             let dataFiles = state.files;
-            console.log({dataFiles:dataFiles})
+            console.log({ dataFiles: dataFiles })
 
             for (let file = 0; file < dataFiles.length; file++) {
                 // Zip file with the file name.
                 zip.file(dataFiles[file].name, dataFiles[file].data);
-            } 
-            zip.generateAsync({type: "blob"}).then(content => {
-                  saveAs(content, currentProject + ".zip");
-                });
+            }
+            zip.generateAsync({ type: "blob" }).then(content => {
+                saveAs(content, currentProject + ".zip");
+            });
 
-            console.log({state:state})
+            console.log({ state: state })
 
             return state
         }
         default: {
-        throw Error('Unknown action: ' + action.type);
+            throw Error('Unknown action: ' + action.type);
         }
-}
+    }
 }
 
 let appData = JSON.parse(localStorage.getItem('app-data'))
 
 if (appData == null) {
-    console.log({projects:projects})
+    console.log({ projects: projects })
     appData = projects
 
     localStorage.setItem('app-data', JSON.stringify(projects))
     localStorage.setItem('data_Token_Locking', JSON.stringify(Token_Locking))
     localStorage.setItem('data_DAO_Demo', JSON.stringify(DAO_Demo))
-} 
+}
 
 let project = Token_Locking;
 
-console.log({projectList:appData})
+console.log({ projectList: appData })
 
 let stateFile = "data_" + appData.projects[appData.currentProjectIndex]
 let storageState = JSON.parse(localStorage.getItem(stateFile))
@@ -391,4 +445,4 @@ if (storageState == null) {
     };
 }
 
-console.log({INIT:initialState})
+console.log({ INIT: initialState })

@@ -8,8 +8,6 @@ export default function SearchAppBar() {
 
   let [searchText, setSearchText] = React.useState("")
   let [showQuery, setShowQuery] = React.useState(false)
-
-
  
   const delay = async (ms) => {
     return new Promise((resolve) => 

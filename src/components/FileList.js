@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 import { useAppState, useStateDispatch } from '../AppContext.js';
 import {
   FiletypeJson,
@@ -7,8 +7,11 @@ import {
   Trash,
   Pencil,
   Save,
-  Stickies
+  Stickies,
+  FilePlay
 } from 'react-bootstrap-icons';
+
+import { transpile } from "../services/gcscript.js";
 
 export default function FilesList() {
   let { files, currentFileIndex } = useAppState();
@@ -28,13 +31,19 @@ export default function FilesList() {
   }
   // console.log({expandIndex:expandIndex})
 
-  let fileChildren = files.filter((file) => file.parentId === expandIndex)
+  let returnDataFiles = files.filter((file) => file.parentId === expandIndex && !file.name.includes("code"))
+
+  let [codeFile] = files.filter((file) => file.parentId === expandIndex && file.name.includes("code"))
+  // if (codeFile === undefined) {
+  //   codeFile = ""
+  // }
+  console.log({ codeFile: codeFile })
   // console.log({fileChildren})
 
   // {console.log(file.returnData)}
   let returnDataFileAmount = 0;
-  if (fileChildren.length > 0) {
-    returnDataFileAmount = fileChildren.length
+  if (returnDataFiles.length > 0) {
+    returnDataFileAmount = returnDataFiles.length
     if (returnDataFileAmount > 5) {
       returnDataFileAmount = 5;
     }
@@ -47,12 +56,20 @@ export default function FilesList() {
 
           <File key={item.id} file={item} />
 
+          {/* {item.id === currentFileIndex ? <Transpile key="code" file={item} /> : null} */}
+
           {item.id === expandIndex ?
             <>
+              {/* {console.log({codeFile:codeFile})} */}
+              {codeFile !== undefined ?
+                <div key={codeFile} className='file-return-data-item'>
+                  <File key={codeFile.id} file={codeFile} />
+                </div>
+                : null}
 
-              {fileChildren.length > 0 ?
+              {returnDataFiles.length > 0 ?
                 <>
-                  {fileChildren.map(returnItem =>
+                  {returnDataFiles.map(returnItem =>
                     <div key={returnItem.id} className='file-return-data-item'>
                       <File key={returnItem.id} file={returnItem} />
                     </div>
@@ -72,9 +89,42 @@ export default function FilesList() {
 }
 
 function File({ file, dots }) {
-  const [isEditing, setIsEditing] = useState(false);
-  let { currentFileIndex } = useAppState();
+  const [isEditing, setIsEditing] = React.useState(false);
+  let { files, currentFileIndex } = useAppState();
   const dispatch = useStateDispatch();
+
+  const [code, setCode] = React.useState("")
+
+  React.useEffect(() => {
+
+    if (code !== '') {
+      dispatch({
+        type: 'add-code',
+        data: { file, code }
+      });
+    }
+
+  }, [code])
+
+  React.useEffect(() => {
+    let [extension] = file.name.split(".").slice(-1)
+
+    // console.log(file.name + " " + extension  + " " + file.id + " " + currentFileIndex )
+
+    if (extension === "gcscript" && file.id === currentFileIndex) {
+
+      (async () => {
+        const transpiled = await transpile({
+          mainFileName: file.name,
+          files,
+        });
+
+        // console.log("Transpile: " + file.id)
+        setCode(transpiled);
+
+      })()
+    }
+  }, [file, currentFileIndex])
 
   // console.log(file)
   let fileContent;
@@ -104,17 +154,11 @@ function File({ file, dots }) {
 
     fileContent = (<>
       <div className='file-item-child'>
-
         <span className='file-item-text'>{file.name}</span>
-
         <Pencil size={12} className='file-item-child file-operation-icon' onClick={() => setIsEditing(true)} />
-
       </div>
-
     </>);
   }
-
-
 
   return (
     <li className="file-list-element" key={file.id}>
@@ -173,11 +217,11 @@ function FileTypeIcon({ name }) {
       fileIcon = (<FiletypeJson size={"15px"} className="file-icon" />);
       break;
     case 'hl':
-        fileIcon = (<FileEarmarkCode size={"15px"} className="file-icon" />);
-        break;      
+      fileIcon = (<FileEarmarkCode size={"15px"} className="file-icon" />);
+      break;
     case 'gcscript':
-          fileIcon = (<BlockquoteLeft size={"15px"} className="file-icon" />);
-          break;          
+      fileIcon = (<BlockquoteLeft size={"15px"} className="file-icon" />);
+      break;
     default:
       fileIcon = (<BlockquoteLeft size={"15px"} className="file-icon" />);
   }
@@ -185,3 +229,35 @@ function FileTypeIcon({ name }) {
   return (<>{fileIcon}</>)
 
 }
+
+
+// function Transpile({ file }) {
+//   const dispatch = useStateDispatch();
+//   let { files } = useAppState();
+
+
+
+
+//   return (
+//     <>
+
+
+//       <div className="file-return-data-item" key="code">
+//         <li className='file-list-element'>
+//           <label className='file-item'>
+//             <FilePlay size={"15px"} className="file-icon" />
+//             <span
+//               onClick={(e) => {
+//                 dispatch({
+//                   type: 'selected',
+//                   file: file,
+//                 });
+//               }}>{file.name}</span>
+//           </label>
+//         </li>
+//       </div>
+
+//     </>
+//   );
+
+// }

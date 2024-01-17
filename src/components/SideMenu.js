@@ -23,7 +23,7 @@ export default function SideView(props) {
 
   let isActiveAGCScript = false;
   if (file !== undefined) {
-    isActiveAGCScript = file.name.endsWith('.gcscript');
+    isActiveAGCScript = file.name.endsWith('.code');
   }
 
   // Detect when data is returned to master app 
@@ -42,26 +42,26 @@ export default function SideView(props) {
   async function handleClickRun(e) {
 
     console.log("Deploy");
-    let gc_compile = file.data
+    // let gc_compile = file.data
 
-    files.forEach(item => {
+    // files.forEach(item => {
 
-      if (!item.name.endsWith('.gcscript')) {
+    //   if (!item.name.endsWith('.gcscript')) {
 
-        if (item.name.endsWith('.json')) {
-          let matchToken = '"--' + item.name + '--"'
-          gc_compile = gc_compile.replace(matchToken, item.data)
-        }
+    //     if (item.name.endsWith('.json')) {
+    //       let matchToken = '"--' + item.name + '--"'
+    //       gc_compile = gc_compile.replace(matchToken, item.data)
+    //     }
 
-        if (item.name.endsWith('.hl')) {
-          const Buffer = gc.utils.Buffer;
-          let contractHex = Buffer.from(item.data).toString('hex')
-          let matchToken = '--' + item.name + '--'
+    //     if (item.name.endsWith('.hl')) {
+    //       const Buffer = gc.utils.Buffer;
+    //       let contractHex = Buffer.from(item.data).toString('hex')
+    //       let matchToken = '--' + item.name + '--'
 
-          gc_compile = gc_compile.replace(matchToken, contractHex)
-        }
-      }
-    });
+    //       gc_compile = gc_compile.replace(matchToken, contractHex)
+    //     }
+    //   }
+    // });
 
     const transpiled=await transpile({
       mainFileName:file.name,

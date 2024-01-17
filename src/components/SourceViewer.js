@@ -67,7 +67,7 @@ const SourceViewer = (props) => {
       // console.log('Element:', entry.target);
       // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
       // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
-      console.log(advertisement)
+      // console.log(advertisement)
       if (advertisement === true) {
         setBodyHeight(cr.height -95 -110)
       } else {

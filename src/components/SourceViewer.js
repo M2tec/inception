@@ -2,6 +2,8 @@ import React from 'react';
 import Editor from "@monaco-editor/react";
 
 import { heliosSyntax } from './HeliosSyntaxMonaco';
+import { GameChangerSyntax } from './GameChangerSyntaxMonaco'
+
 import { useAppState, useStateDispatch } from '../AppContext.js';
 
 const SourceViewer = (props) => {
@@ -108,7 +110,7 @@ const SourceViewer = (props) => {
     monaco.languages.setMonarchTokensProvider('helios', heliosSyntax)
 
     monaco.languages.register({ id: 'gamechanger' })
-    monaco.languages.setMonarchTokensProvider('helios', heliosSyntax)
+    monaco.languages.setMonarchTokensProvider('gamechanger', GameChangerSyntax)
 
     monacoRef.current = monaco;
   }

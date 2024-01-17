@@ -37,7 +37,7 @@ export default function FilesList() {
   // if (codeFile === undefined) {
   //   codeFile = ""
   // }
-  console.log({ codeFile: codeFile })
+  // console.log({ codeFile: codeFile })
   // console.log({fileChildren})
 
   // {console.log(file.returnData)}

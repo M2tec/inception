@@ -235,10 +235,10 @@ function stateReducer(state, action) {
             newFiles = [...newFiles, newCodeFile]
 
             let allIds = newFiles.map((file) => file.id)
-            console.log(allIds)
+            // console.log(allIds)
 
             let newOpenFiles = state.openFiles.filter((id) => allIds.includes(id) )
-            console.log(newOpenFiles)
+            // console.log(newOpenFiles)
 
 
             let newState = { ...state, files: newFiles, openFiles:newOpenFiles };
@@ -282,10 +282,14 @@ function stateReducer(state, action) {
             moment.locale('en');
             let fileName = "data-" + moment().format('y-M-D_h-m') + ".json"
 
+            let [currentFile] = state.files.filter((file) => file.id === state.currentFileIndex)
+
+            console.log({currentFile})
+
             // console.log("save item")
             let newItem = {
                 id: largest + 1,
-                parentId: state.currentFileIndex,
+                parentId: currentFile.parentId,
                 name: fileName,
                 type: "json",
                 data: JSON.stringify(action.returnData, null, 4)

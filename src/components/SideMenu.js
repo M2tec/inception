@@ -63,13 +63,20 @@ export default function SideView(props) {
     //   }
     // });
 
-    const transpiled=await transpile({
-      mainFileName:file.name,
-      files,
-    });
+    // const transpiled=await transpile({
+    //   mainFileName:file.name,
+    //   files,
+    // });
     //console.log({transpiled});
-    console.log({transpiled:JSON.stringify(transpiled,null,2)});
-    //GcConnect(transpiled);
+    // console.log({transpiled:JSON.stringify(transpiled,null,2)});
+
+    console.log(currentFileIndex)
+    console.log({files})
+
+    let [currentFile] = files.filter((file) => file.id === currentFileIndex)
+    console.log({currentFile})
+    GcConnect(currentFile.data);
+    
     return false;
   }
 

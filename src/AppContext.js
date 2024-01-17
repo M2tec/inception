@@ -180,9 +180,6 @@ function stateReducer(state, action) {
 
             state.files.forEach((element) => console.log(element.id + " " + element.data))
 
-            // let ids = files.map((file) => file.id);
-            // var largest = Math.max.apply(0, ids);
-
             // New file name
             let newFileNameSplit = action.file.name.split(".", 2)
             let newFileName = newFileNameSplit[0] + "-1." + newFileNameSplit[1]
@@ -237,7 +234,14 @@ function stateReducer(state, action) {
             })
             newFiles = [...newFiles, newCodeFile]
 
-            let newState = { ...state, files: newFiles };
+            let allIds = newFiles.map((file) => file.id)
+            console.log(allIds)
+
+            let newOpenFiles = state.openFiles.filter((id) => allIds.includes(id) )
+            console.log(newOpenFiles)
+
+
+            let newState = { ...state, files: newFiles, openFiles:newOpenFiles };
             console.log({newState:newState})
             saveState(newState)
             return newState

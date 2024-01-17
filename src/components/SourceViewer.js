@@ -46,11 +46,16 @@ const SourceViewer = (props) => {
     let fileList = files.filter((file) => file.id === props.id);
     let file = fileList[0]
 
+    let fileType = file.type
+    if (fileType === 'code') {
+      fileType = 'json'
+    }
+
     // console.log(props.id)
     // console.log(file.data)
     // console.log({viewerFiles:files})
 
-    setViewFile({...file})
+    setViewFile({...file, type:fileType})
   }, [props,files])
 
   // Hack to get correct height for editor

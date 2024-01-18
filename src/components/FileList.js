@@ -13,7 +13,6 @@ import {
 
 import toast from 'cogo-toast';
 import { transpile } from "../services/gcscript.js";
-import toast from 'cogo-toast';
 
 export default function FilesList() {
   let { files, currentFileIndex } = useAppState();
@@ -123,14 +122,14 @@ function File({ file, dots }) {
             lastToastCloseFn();
             lastToastCloseFn=undefined;
           }
-          console.log("Filename: " + file.name)
-          let topLevelFiles = files.filter((file) => file.parentId === -1)
-          console.log({files})
-          console.log({topLevelFiles})
+          //console.log("Filename: " + file.name)
+          //let topLevelFiles = files.filter((file) => file.parentId === -1)
+          //console.log({files})
+          //console.log({topLevelFiles})
 
           const transpiled = await transpile({
             fileUri:`ide://${file.name||""}`,
-            topLevelFiles,
+            files,
           });
           // console.log("Transpile: " + file.id)
           setCode(transpiled);

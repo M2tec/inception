@@ -13,6 +13,7 @@ import {
 
 import toast from 'cogo-toast';
 import { transpile } from "../services/gcscript.js";
+import toast from 'cogo-toast';
 
 export default function FilesList() {
   let { files, currentFileIndex } = useAppState();
@@ -109,7 +110,7 @@ function File({ file, dots }) {
 
   React.useEffect(() => {
     let [extension] = file.name.split(".").slice(-1)
-    let lastToastCloseFn;
+    let lastToastCloseFn;   
     // console.log(file.name + " " + extension  + " " + file.id + " " + currentFileIndex )
 
     if (file.name && extension === "gcscript" && file.id === currentFileIndex) {
@@ -159,6 +160,12 @@ function File({ file, dots }) {
         }
 
       })()
+    }
+    return ()=>{
+      if(lastToastCloseFn){
+        lastToastCloseFn();
+        lastToastCloseFn=undefined;
+      }
     }
     return ()=>{
       if(lastToastCloseFn){

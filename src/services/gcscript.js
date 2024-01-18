@@ -42,17 +42,18 @@ export const kvList2Object=(kvMap)=>{
     return Object.fromEntries(kvMap.map(([key,value])=>[key,value]));
 }
 
-export const gcScriptWalker=async ({code, onNode, maxLevel,maxChildren})=>{
-    const rootPath="/";
+export const gcScriptWalker=async ({code, onNode,context, maxLevel,maxChildren})=>{
+    const rootPath="";
     const isParentNode  =(node)=>node?.type==="script" && node?.run!==undefined;
     const getChildren   =(node)=>node?.run;
-    const walker=async ({node,key,index,path})=>{      
+    const walker=async ({node,key,index,path,context})=>{      
         // console.log({node,key,index,path});  
         const solvedNode=await onNode({
             node,
             index,
             key,
             path,
+            context,
         });
 
         if(isParentNode(solvedNode)){
@@ -68,6 +69,7 @@ export const gcScriptWalker=async ({code, onNode, maxLevel,maxChildren})=>{
                     index:childIndex,
                     key:childKey,
                     path:[...path,childKey],
+                    context,
                 });
                 solvedKvMap.push([childKey,solvedChild])
             }
@@ -86,18 +88,19 @@ export const gcScriptWalker=async ({code, onNode, maxLevel,maxChildren})=>{
         node:code,
         key:rootPath,
         index:0,
-        path:[rootPath]
+        path:[rootPath],
+        context,
     });
     return processedNode;
 }
-export const getResource=async (fileURI,options)=>{
+export const getResource=async (fileUri,options)=>{
     const Buffer = window.gc.utils.Buffer;
     const {files}=options||{};
-    const file=[...(files||[])].find(file=>`ide://${file?.name||""}`===fileURI);
+    const file=[...(files||[])].find(file=>`ide://${file?.name||""}`===fileUri);
     if(file?.data!==undefined)
         return Promise.resolve(Buffer.from(file.data||""));
     else 
-        throw new Error(`Resource '${fileURI}' not found`);
+        throw new Error(`Resource '${fileUri}' not found`);
 }
 export const getBufferAs=async (fileBuff,as)=>{
     if(as==="string")
@@ -116,7 +119,7 @@ export const path2Str=(path)=>[...(path||[])].join('/');
 const macroHandlers={
     "$importAsScript":async({node,path,key,index,context})=>{
         const {type,args,argsByKey,from,...props}=node||{};
-        const {files}=context||{};
+        const {files,importTrace}=context||{};
         const kvFrom     =toKVList(from);
         const kvArgsByKey=toKVList(argsByKey);
 
@@ -130,8 +133,22 @@ const macroHandlers={
         const fromKeysDict={};
         for (let index = 0; index < kvFrom.length; index++) {
             const [key,fileUri] = kvFrom[index];
-            const fileBuff  =await getResource(fileUri,{files});
-            const solvedData=await getBufferAs(fileBuff,"json");
+            //const fileBuff  =await getResource(fileUri,{files});
+            //const solvedData=await getBufferAs(fileBuff,"json");
+            const solvedData = await transpile({
+                fileUri,
+                files,
+                importTrace,
+            })
+            .catch((err)=>{
+                throw createError({
+                    type:"TranspilerError",
+                    fileUri,
+                    importTrace,
+                    path,
+                    message:err?.message,
+                });
+            });
             //TODO: consider cleanning imported scripts to remove root-only script properties like returnURLPattern to avoid errors
             //      reasons not to do so could be to let devs use this to restrict code destination/reusability
             //      probably a flag for enabling this would be wise
@@ -139,7 +156,7 @@ const macroHandlers={
             fromKeysDict[key]=fileUri;
         }            
         for (let index = 0; index < kvArgsByKey.length; index++) {
-            const [key,arg] = kvFrom[index];
+            const [key,arg] = kvArgsByKey[index];
             if(!fromKeysDict[key])
                 throw new Error(`Argument provided in 'argsByKey' for an unknown resource key '${key}' in '${type}'`)
         }
@@ -189,29 +206,83 @@ const macroHandlers={
     },
 };
 
-export const transpile = async ({
-    mainFileName, //main gcscript file
-    files,
+//TODO: Ugly monkeypatching, make custom error classes instead
+export const createError=({
+    type,
+    fileUri,
+    importTrace,
+    path,
+    message,
 })=>{
-    const fileUri   =`ide://${mainFileName||""}`
-    const fileBuff  =await getResource(fileUri,{files});
-    const code      =await getBufferAs(fileBuff,'json');
+    const error=new Error(message);
+    error.type=type;
+    error.fileUri=fileUri;
+    error.importTrace=importTrace;
+    error.path=path2Str(path);
+    return error;
+}
+
+export const transpile = async ({
+    fileUri,//main gcscript file
+    files,
+    importTrace,
+})=>{
+    if([...(importTrace||[])].includes(fileUri)){
+        throw createError({
+            type:"TranspilerError",
+            fileUri,
+            importTrace,
+            message:`Circular import of resource '${fileUri}' is not allowed`,
+        });
+        //new Error(`Circular import of resource '${fileUri}' is not allowed`);
+    }
+
+    const fileBuff  =await getResource(fileUri,{files})
+        .catch((err)=>{
+            throw createError({
+                type:"TranspilerError",
+                fileUri,
+                importTrace,
+                message:err?.message,
+            });
+        });
+    const code      =await getBufferAs(fileBuff,'json')
+        .catch((err)=>{
+            throw createError({
+                type:"SyntaxError",
+                fileUri,
+                importTrace,
+                message:err?.message,
+            });
+        });
     const transpiled=await gcScriptWalker({
         code,
-        onNode:async({node,path,key,index})=>{
-            const pathStr=path.join('/');
+        context:{
+            fileUri,
+            files,
+            importTrace:[...(importTrace||[]),fileUri],
+        },
+        onNode:async({node,path,key,index,context})=>{
             const {type}=node||{};
-            const context={files,mainFileName};
             //console.log(`${pathStr} = `,{node,context});
             if(macroHandlers[type]){
                 try{
                     return await macroHandlers[type]({node,path,key,index,context});
                 }catch(err){
-                    throw new Error(`MacroError: ${err?.message||"unknown"} [${path2Str(path)}]`)
+                    if(err?.type)
+                        throw err;
+                    throw createError({
+                        type:"UnknownError",
+                        fileUri,
+                        importTrace,
+                        path,
+                        message:err?.message,
+                    });
+                    //Error(`${err?.message||"unknown"} [${fileUri}->${path2Str(path)}]`)
                 }
             }
             return Promise.resolve(node);
         }
-    });
+    })
     return transpiled;
 }

@@ -26,7 +26,7 @@ export default function SearchAppBar() {
 
     // console.log(Object.keys(localStorage))
 
-    // let inactiveProjects = projects.filter((item) => item !== currentProject);
+    // let inactiveProjects = queryList.filter((item) => item.id !== "data_" + currentProject);
     // let queryList = inactiveProjects.filter((item) => item.includes(searchText));
 
     return (<>

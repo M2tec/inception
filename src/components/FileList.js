@@ -114,6 +114,7 @@ function File({ file, dots }) {
     if (extension === "gcscript" && file.id === currentFileIndex) {
 
       (async () => {
+        try {
         const transpiled = await transpile({
           mainFileName: file.name,
           files,
@@ -121,6 +122,9 @@ function File({ file, dots }) {
 
         // console.log("Transpile: " + file.id)
         setCode(transpiled);
+      } catch (error) {
+        console.error(error)
+      }
 
       })()
     }

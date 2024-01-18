@@ -39,7 +39,7 @@ export default function SearchAppBar() {
                 onClick={() => {
                   dispatch({
                     type: 'delete-project',
-                    name: item
+                    project: item
                   });
                 }}
                 size={12} />

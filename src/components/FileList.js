@@ -222,6 +222,9 @@ function FileTypeIcon({ name }) {
     case 'gcscript':
       fileIcon = (<BlockquoteLeft size={"15px"} className="file-icon" />);
       break;
+    case 'code':
+      fileIcon = (<FilePlay size={"15px"} className="file-icon" />);
+      break;
     default:
       fileIcon = (<BlockquoteLeft size={"15px"} className="file-icon" />);
   }
@@ -231,33 +234,3 @@ function FileTypeIcon({ name }) {
 }
 
 
-// function Transpile({ file }) {
-//   const dispatch = useStateDispatch();
-//   let { files } = useAppState();
-
-
-
-
-//   return (
-//     <>
-
-
-//       <div className="file-return-data-item" key="code">
-//         <li className='file-list-element'>
-//           <label className='file-item'>
-//             <FilePlay size={"15px"} className="file-icon" />
-//             <span
-//               onClick={(e) => {
-//                 dispatch({
-//                   type: 'selected',
-//                   file: file,
-//                 });
-//               }}>{file.name}</span>
-//           </label>
-//         </li>
-//       </div>
-
-//     </>
-//   );
-
-// }

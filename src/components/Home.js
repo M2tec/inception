@@ -26,7 +26,7 @@ export default function Home() {
             <div className="View">
                 <SideMenu />
                 <PanelGroup direction="horizontal">
-                    <Panel defaultSizePercentage={35}>
+                    <Panel defaultSizePercentage={20}>
                         <SourceBrowser />
                     </Panel>
                     <PanelResizeHandle style={{ width: "8px" }} />

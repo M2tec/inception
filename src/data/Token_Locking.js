@@ -291,17 +291,6 @@ func main(datum: Datum, redeemer: Redeemer, _) -> Bool {
 }
 `
             } 
-
-
-            
-
-
-
-
-
-
-
-
 ]
         }
 ;

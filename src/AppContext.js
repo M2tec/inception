@@ -1,11 +1,15 @@
 import React, { createContext, useContext, useReducer } from "react";
-import Token_Locking from "./data/Token_Locking.js";
-import DAO_Demo from "./data/DAO_Demo.js";
-import projects from "./data/project-list.js";
+
+
 import JSZip from "jszip";
 import moment from 'moment';
 import { saveAs } from 'file-saver';
 import { transpile } from "./services/gcscript.js";
+
+// import projects from "./data/project-list.js";
+import DAO_Demo from "./data/DAO_Demo.js";
+import Token_Locking from "./data/Token_Locking.js";
+
 
 const FilesContext = createContext(null);
 const FilesDispatchContext = createContext(null);
@@ -33,14 +37,15 @@ export function useStateDispatch() {
 
 function stateReducer(state, action) {
 
-    let { files, openFiles, currentFileIndex, theme } = state;
+    let { files, openFiles, currentFileIndex, currentProjectIndex, theme } = state;
     // console.log({ files: files })
     // console.log({ action: action })
 
     let ids = files.map((file) => file.id);
-    var largest = Math.max.apply(0, ids);
+    let largest = Math.max.apply(0, ids);
 
     function saveState(state) {
+        console.log("saveState")
 
         let projectData = {
             name: state.name,
@@ -51,11 +56,10 @@ function stateReducer(state, action) {
             files: state.files
         }
 
-        localStorage.setItem("data_" + state.name, JSON.stringify(projectData))
+        localStorage.setItem("data_" + state.currentProjectIndex, JSON.stringify(projectData))
 
         let appData = {
             currentProjectIndex: state.currentProjectIndex,
-            projects: state.projects
         }
         // console.log({appData:appData})
         localStorage.setItem("app-data", JSON.stringify(appData))
@@ -63,14 +67,13 @@ function stateReducer(state, action) {
     }
 
     function LoadState(state) {
+        console.log("loadState")
         let appData = JSON.parse(localStorage.getItem("app-data"))
         console.log({ appData: appData })
-
-        let currentProject = appData.projects[appData.currentProjectIndex]
-        console.log({ currentProject: currentProject })
-
-        let loadState = JSON.parse(localStorage.getItem("data_" + currentProject))
-        console.log("data_" + currentProject)
+        // let currentProject = appData.currentProjectIndex
+        // console.log({ currentProject: currentProject })
+        let loadState = JSON.parse(localStorage.getItem("data_" + appData.currentProjectIndex))
+        console.log("data_" + currentProjectIndex)
 
         let newState = {
             ...loadState,
@@ -247,7 +250,6 @@ function stateReducer(state, action) {
             return newState
         }
 
-
         case 'deleted': {
             console.log("delete")
             console.log({ delState: state })
@@ -316,16 +318,15 @@ function stateReducer(state, action) {
         }
 
         case 'rename-project': {
-            console.log("edit-project-name")
+            console.log("rename-project")
             console.log({ action: action })
 
-            let newProjects = state.projects
-            newProjects[state.currentProjectIndex] = action.name
+            // let newProjects = state.projects
+            // newProjects[state.currentProjectIndex] = action.name
 
             let newState = {
                 ...state,
-                name: action.name,
-                projects: newProjects
+                name: action.name
             }
 
             saveState(newState)
@@ -335,24 +336,23 @@ function stateReducer(state, action) {
         case 'duplicate-project': {
             console.log("duplicate-project")
             console.log({ state: state })
+            console.log({action})
 
-            // console.log(state.currentProjectIndex)
-            let currentProject = state.projects[state.currentProjectIndex]
-            console.log({ currentProject: currentProject })
+            let {currentProjectIndex, ...newProjectData} = state
+            newProjectData = {...newProjectData,
+                name: state.name + "-1",
+            }
 
-            let newProject = currentProject + "-1"
+            console.log({currentProjectIndex})
 
-            let newProjects = state.projects
-            console.log({ newProjects: newProjects })
+            let largest = Math.max.apply(0, action.projects);
+            let newProjectIndex = largest + 1
 
-            newProjects = [...newProjects, newProject]
-            console.log({ newProjects: newProjects })
+            localStorage.setItem("data_" + newProjectIndex , JSON.stringify(newProjectData))                                
 
             let newState = {
-                ...state,
-                name: newProject,
-                projects: newProjects,
-                currentProjectIndex: newProjects.length - 1
+                ...newProjectData,
+                currentProjectIndex: newProjectIndex
             }
 
             console.log({ newState: newState })
@@ -377,22 +377,26 @@ function stateReducer(state, action) {
         }
 
         case 'set-project': {
-            console.log("change-project")
+            console.log("set-project")
             console.log({ action: action })
 
-            let projectName = action.value;
+            let projectName = action.project.data.name;
 
-            let projectData = JSON.parse(localStorage.getItem('data_' + projectName))
+            // let projectData = JSON.parse(localStorage.getItem('data_' + projectName))
+            let projectData = action.project.data
 
             console.log({ projectData: projectData })
 
-            return {
-                ...state,
-                name: projectName,
-                currentFileIndex: 0,
-                openFiles: [0],
-                files: projectData.files,
+            let newProjectIndex = action.project.id
+            newProjectIndex = parseInt(newProjectIndex.split("_")[1])
+            console.log({newProjectIndex})
+
+            let newState = {
+                currentProjectIndex: newProjectIndex,
+                ...projectData
             }
+            saveState(newState)
+            return newState
         }
 
         case 'ad-visibility': {
@@ -435,19 +439,19 @@ function stateReducer(state, action) {
 let appData = JSON.parse(localStorage.getItem('app-data'))
 
 if (appData == null) {
-    console.log({ projects: projects })
-    appData = projects
+    // console.log({ projects: projects })
+    appData = { currentProjectIndex: 0 }
 
-    localStorage.setItem('app-data', JSON.stringify(projects))
-    localStorage.setItem('data_Token_Locking', JSON.stringify(Token_Locking))
-    localStorage.setItem('data_DAO_Demo', JSON.stringify(DAO_Demo))
+    localStorage.setItem('app-data', JSON.stringify(appData))
+    localStorage.setItem('data_0', JSON.stringify(Token_Locking))
+    localStorage.setItem('data_1', JSON.stringify(DAO_Demo))
 }
 
 let project = Token_Locking;
 
 console.log({ projectList: appData })
 
-let stateFile = "data_" + appData.projects[appData.currentProjectIndex]
+let stateFile = "data_" + appData.currentProjectIndex
 let storageState = JSON.parse(localStorage.getItem(stateFile))
 console.log({ LoadFromStorage: storageState })
 
@@ -456,8 +460,8 @@ let initialState = {}
 if (storageState == null) {
     console.log("New from default data")
     initialState = {
-        ...project,
-        ...projects,
+        ...Token_Locking,
+        ...appData,
         advertisement: true
     }
 } else {

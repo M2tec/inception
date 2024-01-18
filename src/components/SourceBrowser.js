@@ -45,6 +45,11 @@ export default function SourceBrowser(props) {
             </>
         );
     } else {
+                   
+        let projectKeys = Object.keys(localStorage).filter((project) => project.includes('data_'))
+        let keyIdArray = projectKeys.map((key) => parseInt(key.split("_")[1]))
+        console.log({keyIdArray})
+
         projectItem = (<>
             {name}
             <Stickies
@@ -53,7 +58,7 @@ export default function SourceBrowser(props) {
 
                 dispatch({
                     type: 'duplicate-project',
-                    // file: file
+                    projects: keyIdArray
                 });
                 
                 

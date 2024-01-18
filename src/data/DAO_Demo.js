@@ -2,6 +2,8 @@ const project = {
   name: "DAO_Demo",
   type: "folder",
   theme: 'dark',
+  currentFileIndex: 0,
+  openFiles: [0],
   files: [
     {
       id: 0,

@@ -12,34 +12,37 @@ export default function SearchAppBar() {
 
   let [searchText, setSearchText] = React.useState("")
   let [showQuery, setShowQuery] = React.useState(false)
+  let [queryList, setQueryList] = React.useState("")
 
 
- 
   const delay = async (ms) => {
     return new Promise((resolve) =>
       setTimeout(resolve, ms));
   };
 
   function SearchList() {
-    let currentProject = projects[currentProjectIndex]
 
-    let inactiveProjects = projects.filter((item) => item !== currentProject);
-    let queryList = inactiveProjects.filter((item) => item.includes(searchText));
+    // let currentProject = projects[currentProjectIndex]
+
+    // console.log(Object.keys(localStorage))
+
+    // let inactiveProjects = projects.filter((item) => item !== currentProject);
+    // let queryList = inactiveProjects.filter((item) => item.includes(searchText));
 
     return (<>
       {showQuery === true ?
         <div className='dropdown-content'>
           {queryList.map(item => (
-          <div key={item} className='project-search-item'>
-            <SearchItem key={item} project={item} />
-            <Trash
-            onClick={() => {
-              dispatch({
-                type: 'delete-project',
-                name: item
-              });
-            }}
-            size={12} />
+            <div key={item.id} className='project-search-item'>
+              <SearchItem key={item.id} project={item} />
+              <Trash
+                onClick={() => {
+                  dispatch({
+                    type: 'delete-project',
+                    name: item
+                  });
+                }}
+                size={12} />
             </div>
           ))}
         </div>
@@ -55,10 +58,10 @@ export default function SearchAppBar() {
         onClick={() => {
           dispatch({
             type: 'set-project',
-            value: project
+            project: project
           });
         }}
-        className="dropdown-item" href="#">{project}
+        className="dropdown-item" href="#">{project.data.name}
 
 
       </div>
@@ -70,6 +73,26 @@ export default function SearchAppBar() {
   }
 
   function handleFocus() {
+
+    let projectKeys = Object.keys(localStorage).filter((project) => project.includes('data_'))
+
+    let projectData = projectKeys.map((key) => (
+                                    {
+                                      id: key,
+                                      data: JSON.parse(localStorage.getItem(key))
+                                    }
+                                    ))
+
+    // let projectNames = projectData.map((data) => data.name)
+    // console.log(projectData)
+
+
+    // let projectNames = projectsStorage.map((project) => project.name)
+
+    console.log(projectData)
+    setQueryList(projectData)
+
+
     setShowQuery(true)
   }
 

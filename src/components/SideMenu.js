@@ -42,34 +42,7 @@ export default function SideView(props) {
   async function handleClickRun(e) {
 
     console.log("Deploy");
-    // let gc_compile = file.data
-
-    // files.forEach(item => {
-
-    //   if (!item.name.endsWith('.gcscript')) {
-
-    //     if (item.name.endsWith('.json')) {
-    //       let matchToken = '"--' + item.name + '--"'
-    //       gc_compile = gc_compile.replace(matchToken, item.data)
-    //     }
-
-    //     if (item.name.endsWith('.hl')) {
-    //       const Buffer = gc.utils.Buffer;
-    //       let contractHex = Buffer.from(item.data).toString('hex')
-    //       let matchToken = '--' + item.name + '--'
-
-    //       gc_compile = gc_compile.replace(matchToken, contractHex)
-    //     }
-    //   }
-    // });
-
-    // const transpiled=await transpile({
-    //   mainFileName:file.name,
-    //   files,
-    // });
-    //console.log({transpiled});
-    // console.log({transpiled:JSON.stringify(transpiled,null,2)});
-
+ 
     console.log(currentFileIndex)
     console.log({files})
 

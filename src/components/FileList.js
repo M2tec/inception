@@ -11,6 +11,7 @@ import {
   FilePlay
 } from 'react-bootstrap-icons';
 
+import toast from 'cogo-toast';
 import { transpile } from "../services/gcscript.js";
 
 export default function FilesList() {
@@ -108,25 +109,57 @@ function File({ file, dots }) {
 
   React.useEffect(() => {
     let [extension] = file.name.split(".").slice(-1)
-
+    let lastToastCloseFn;
     // console.log(file.name + " " + extension  + " " + file.id + " " + currentFileIndex )
 
     if (extension === "gcscript" && file.id === currentFileIndex) {
 
       (async () => {
-        try {
-        const transpiled = await transpile({
-          mainFileName: file.name,
-          files,
-        });
 
-        // console.log("Transpile: " + file.id)
-        setCode(transpiled);
-      } catch (error) {
-        console.error(error)
-      }
+        try{
+          if(lastToastCloseFn){
+            lastToastCloseFn();
+            lastToastCloseFn=undefined;
+          }
+          
+          const transpiled = await transpile({
+            fileUri:`ide://${file.name||""}`,
+            files,
+          });
+          // console.log("Transpile: " + file.id)
+          setCode(transpiled);
+        }catch(err){
+          const {
+            type,
+            fileUri,
+            importTrace,
+            path,
+            message,
+          }=err||{};
+          console.error(`${type||"UnknownError"}:${message||"Unknown error"}`,{            
+            type,
+            fileUri,
+            importTrace,
+            path,
+            message
+          });
+          const { hide } = toast.warn(`${message||"Unknown error"} [${[fileUri,path].join("->")}]`,{  
+            onClick: () => {
+              hide();
+            },
+            hideAfter:10,
+            heading:type||"UnknownError"
+          });
+          lastToastCloseFn=hide;
+        }
 
       })()
+    }
+    return ()=>{
+      if(lastToastCloseFn){
+        lastToastCloseFn();
+        lastToastCloseFn=undefined;
+      }
     }
   }, [file, currentFileIndex])
 

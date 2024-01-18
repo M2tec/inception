@@ -112,19 +112,24 @@ function File({ file, dots }) {
     let lastToastCloseFn;
     // console.log(file.name + " " + extension  + " " + file.id + " " + currentFileIndex )
 
-    if (extension === "gcscript" && file.id === currentFileIndex) {
+    if (file.name && extension === "gcscript" && file.id === currentFileIndex) {
 
       (async () => {
+
 
         try{
           if(lastToastCloseFn){
             lastToastCloseFn();
             lastToastCloseFn=undefined;
           }
-          
+          console.log("Filename: " + file.name)
+          let topLevelFiles = files.filter((file) => file.parentId === -1)
+          console.log({files})
+          console.log({topLevelFiles})
+
           const transpiled = await transpile({
             fileUri:`ide://${file.name||""}`,
-            files,
+            topLevelFiles,
           });
           // console.log("Transpile: " + file.id)
           setCode(transpiled);

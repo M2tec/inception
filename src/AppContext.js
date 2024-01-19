@@ -1,10 +1,8 @@
 import React, { createContext, useContext, useReducer } from "react";
 
-
 import JSZip from "jszip";
 import moment from 'moment';
 import { saveAs } from 'file-saver';
-import { transpile } from "./services/gcscript.js";
 
 // import projects from "./data/project-list.js";
 import DAO_Demo from "./data/DAO_Demo.js";
@@ -37,7 +35,7 @@ export function useStateDispatch() {
 
 function stateReducer(state, action) {
 
-    let { name, files, openFiles, currentFileIndex, currentProjectIndex, theme } = state;
+    let { name, files, openFiles, currentFileIndex, theme } = state;
     // console.log({ files: files })
     // console.log({ action: action })
 
@@ -61,26 +59,24 @@ function stateReducer(state, action) {
         let appData = {
             currentProjectIndex: state.currentProjectIndex,
         }
-        // console.log({appData:appData})
+        
         localStorage.setItem("app-data", JSON.stringify(appData))
-
+        console.log(state)
     }
 
     function LoadState(state) {
         console.log("loadState")
         let appData = JSON.parse(localStorage.getItem("app-data"))
-        console.log({ appData: appData })
-        // let currentProject = appData.currentProjectIndex
-        // console.log({ currentProject: currentProject })
-        let loadState = JSON.parse(localStorage.getItem("data_" + appData.currentProjectIndex))
-        console.log("data_" + currentProjectIndex)
 
+        let loadState = JSON.parse(localStorage.getItem("data_" + appData.currentProjectIndex))
+        // console.log("data_" + currentProjectIndex)
+        
         let newState = {
             ...loadState,
             ...appData
         };
 
-
+        console.log({newState})
         return newState
     }
 
@@ -110,16 +106,15 @@ function stateReducer(state, action) {
             console.log("selected")
             // console.log({selState:state})
             console.log({ action: action })
-            console.log(action.file.id)
+            // console.log(action.file.id)
 
             let newFileIndex = 0
 
             openFiles.indexOf(action.file.id) === -1 ? openFiles.push(action.file.id) : console.log("Item already open");
             newFileIndex = action.file.id;
-            console.log({newFileIndex})
+            // console.log({newFileIndex})
 
             let newState = { ...state, openFiles, currentFileIndex: newFileIndex };
-            console.log({ newState: newState })
             saveState(newState)
             return newState
  
@@ -190,13 +185,9 @@ function stateReducer(state, action) {
             let dupFile = action.file
             let newFile = { ...dupFile, id: largest + 1, name: newFileName }
             let newFiles = [...files, newFile]
-            // console.log({dupNewfiles:newFiles})
 
             let newState = { ...state, files: newFiles };
-
             saveState(newState)
-            // console.log({dupNewState:newState})
-
             return newState
         }
 
@@ -243,18 +234,14 @@ function stateReducer(state, action) {
             let newOpenFiles = state.openFiles.filter((id) => allIds.includes(id) )
             // console.log(newOpenFiles)
 
-
             let newState = { ...state, files: newFiles, openFiles:newOpenFiles };
-            console.log({newState:newState})
             saveState(newState)
             return newState
         }
 
         case 'deleted': {
             console.log("delete")
-            console.log({ delState: state })
             let newOpenFiles = openFiles
-            console.log({ newOpenFiles: newOpenFiles })
             newOpenFiles = openFiles.filter((fileIndex) => fileIndex !== action.id)
 
             if (action.id === currentFileIndex) {
@@ -262,15 +249,14 @@ function stateReducer(state, action) {
             }
 
             let newFiles = files.filter(t => t.id !== action.id)
-            console.log({ delNewFiles: newFiles })
-
-            let newState = {}
-            // Save file data into the correct data object
-            console.log("case file")
-            newState = { ...state, files: newFiles, openFiles: newOpenFiles, currentFileIndex }
+            
+            let newState = { ...state, 
+                                files: newFiles, 
+                                openFiles: newOpenFiles, 
+                                currentFileIndex 
+                           }
 
             saveState(newState)
-            console.log({ delNewState: newState })
             return newState
         }
 
@@ -286,8 +272,6 @@ function stateReducer(state, action) {
 
             let [currentFile] = state.files.filter((file) => file.id === state.currentFileIndex)
 
-            console.log({currentFile})
-
             // console.log("save item")
             let newItem = {
                 id: largest + 1,
@@ -301,19 +285,13 @@ function stateReducer(state, action) {
             newFiles = [...newFiles, newItem]
 
             let newState = { ...state, files: newFiles }
-
-            console.log({ receiveNewState: newState })
-
             saveState(newState)
             return { ...newState }
         }
 
         case 'load-from-storage': {
             console.log('load-from-storage')
-
             let storageState = LoadState(state)
-
-            console.log({ Load: storageState })
             return storageState;
         }
 
@@ -336,7 +314,7 @@ function stateReducer(state, action) {
         case 'duplicate-project': {
             console.log("duplicate-project")
             console.log({ state: state })
-            console.log({action})
+            console.log({ action })
 
             let {currentProjectIndex, ...newProjectData} = state
             newProjectData = {...newProjectData,
@@ -353,27 +331,17 @@ function stateReducer(state, action) {
             let newState = {
                 ...newProjectData,
                 currentProjectIndex: newProjectIndex
-            }
+                            }
 
-            console.log({ newState: newState })
             saveState(newState)
             return newState
         }
 
         case 'delete-project':{
             console.log("delete-project")
-            console.log({state:state})
             console.log({action})
 
             localStorage.removeItem(action.project.id)
-            // let newProjects = state.projects.filter((project) => project !== action.name)
-            // console.log({newProjects:newProjects})
-
-            // let newState = {...state,
-            //                 projects: newProjects
-            //                 }
-
-            // console.log({newState:newState})
             saveState(state)
             return state
         }
@@ -382,16 +350,10 @@ function stateReducer(state, action) {
             console.log("set-project")
             console.log({ action: action })
 
-            let projectName = action.project.data.name;
-
-            // let projectData = JSON.parse(localStorage.getItem('data_' + projectName))
             let projectData = action.project.data
-
-            console.log({ projectData: projectData })
 
             let newProjectIndex = action.project.id
             newProjectIndex = parseInt(newProjectIndex.split("_")[1])
-            console.log({newProjectIndex})
 
             let newState = {
                 currentProjectIndex: newProjectIndex,
@@ -442,8 +404,6 @@ if (appData == null) {
     localStorage.setItem('data_0', JSON.stringify(Token_Locking))
     localStorage.setItem('data_1', JSON.stringify(DAO_Demo))
 }
-
-let project = Token_Locking;
 
 console.log({ projectList: appData })
 

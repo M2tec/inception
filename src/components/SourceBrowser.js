@@ -48,7 +48,6 @@ export default function SourceBrowser(props) {
                    
         let projectKeys = Object.keys(localStorage).filter((project) => project.includes('data_'))
         let keyIdArray = projectKeys.map((key) => parseInt(key.split("_")[1]))
-        console.log({keyIdArray})
 
         projectItem = (<>
             {name}

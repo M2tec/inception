@@ -37,7 +37,7 @@ export function useStateDispatch() {
 
 function stateReducer(state, action) {
 
-    let { files, openFiles, currentFileIndex, currentProjectIndex, theme } = state;
+    let { name, files, openFiles, currentFileIndex, currentProjectIndex, theme } = state;
     // console.log({ files: files })
     // console.log({ action: action })
 
@@ -414,18 +414,12 @@ function stateReducer(state, action) {
 
             const zip = new JSZip();
 
-            let currentProject = state.projects[state.currentProjectIndex]
-            console.log({ currentProject: currentProject })
-
-            let dataFiles = state.files;
-            console.log({ dataFiles: dataFiles })
-
-            for (let file = 0; file < dataFiles.length; file++) {
+            for (let file = 0; file < files.length; file++) {
                 // Zip file with the file name.
-                zip.file(dataFiles[file].name, dataFiles[file].data);
+                zip.file(files[file].name, files[file].data);
             }
             zip.generateAsync({ type: "blob" }).then(content => {
-                saveAs(content, currentProject + ".zip");
+                saveAs(content, name + ".zip");
             });
 
             console.log({ state: state })

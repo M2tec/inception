@@ -105,7 +105,7 @@ function File({ file, dots }) {
       });
     }
 
-  }, [code])
+  }, [code, file, dispatch])
 
   React.useEffect(() => {
     let [extension] = file.name.split(".").slice(-1)
@@ -166,13 +166,7 @@ function File({ file, dots }) {
         lastToastCloseFn=undefined;
       }
     }
-    return ()=>{
-      if(lastToastCloseFn){
-        lastToastCloseFn();
-        lastToastCloseFn=undefined;
-      }
-    }
-  }, [file, currentFileIndex])
+  }, [file, currentFileIndex, files])
 
   // console.log(file)
   let fileContent;

@@ -468,9 +468,15 @@ if (storageState == null) {
     }
 } else {
     console.log("Load from storage")
+
+    let ids = storageState.files.map((file) => file.id);
+    let smallest = Math.min.apply(0, ids);
+
     initialState = {
         ...storageState,
         ...appData,
+        currentFileIndex:smallest,
+        openFiles: [smallest]
         // advertisement: true
     };
 }

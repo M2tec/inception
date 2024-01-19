@@ -123,13 +123,13 @@ function File({ file, dots }) {
             lastToastCloseFn=undefined;
           }
           //console.log("Filename: " + file.name)
-          //let topLevelFiles = files.filter((file) => file.parentId === -1)
+          let topLevelFiles = files.filter((file) => file.parentId === -1)
           //console.log({files})
           //console.log({topLevelFiles})
 
           const transpiled = await transpile({
             fileUri:`ide://${file.name||""}`,
-            files,
+            files:topLevelFiles,
           });
           // console.log("Transpile: " + file.id)
           setCode(transpiled);

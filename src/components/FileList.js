@@ -11,7 +11,7 @@ import {
   FilePlay
 } from 'react-bootstrap-icons';
 
-import toast from 'cogo-toast';
+// import toast from 'cogo-toast';
 import { transpile } from "../services/gcscript.js";
 
 export default function FilesList() {
@@ -35,13 +35,8 @@ export default function FilesList() {
   let returnDataFiles = files.filter((file) => file.parentId === expandIndex && !file.name.includes("code"))
 
   let [codeFile] = files.filter((file) => file.parentId === expandIndex && file.name.includes("code"))
-  // if (codeFile === undefined) {
-  //   codeFile = ""
-  // }
-  // console.log({ codeFile: codeFile })
-  // console.log({fileChildren})
 
-  // {console.log(file.returnData)}
+
   let returnDataFileAmount = 0;
   if (returnDataFiles.length > 0) {
     returnDataFileAmount = returnDataFiles.length
@@ -56,8 +51,6 @@ export default function FilesList() {
         <span key={item.id}>
 
           <File key={item.id} file={item} />
-
-          {/* {item.id === currentFileIndex ? <Transpile key="code" file={item} /> : null} */}
 
           {item.id === expandIndex ?
             <>
@@ -109,29 +102,19 @@ function File({ file, dots }) {
 
   React.useEffect(() => {
     let [extension] = file.name.split(".").slice(-1)
-    let lastToastCloseFn;   
+
     // console.log(file.name + " " + extension  + " " + file.id + " " + currentFileIndex )
 
     if (file.name && extension === "gcscript" && file.id === currentFileIndex) {
-
       (async () => {
-
-
         try{
-          if(lastToastCloseFn){
-            lastToastCloseFn();
-            lastToastCloseFn=undefined;
-          }
-          //console.log("Filename: " + file.name)
           let topLevelFiles = files.filter((file) => file.parentId === -1)
-          //console.log({files})
-          //console.log({topLevelFiles})
 
           const transpiled = await transpile({
             fileUri:`ide://${file.name||""}`,
             files:topLevelFiles,
           });
-          // console.log("Transpile: " + file.id)
+
           setCode(transpiled);
         }catch(err){
           const {
@@ -148,23 +131,13 @@ function File({ file, dots }) {
             path,
             message
           });
-          const { hide } = toast.warn(`${message||"Unknown error"} [${[fileUri,path].join("->")}]`,{  
-            onClick: () => {
-              hide();
-            },
-            hideAfter:10,
-            heading:type||"UnknownError"
+          dispatch({
+            type: 'set-alert',
+            message: message
           });
-          lastToastCloseFn=hide;
         }
 
       })()
-    }
-    return ()=>{
-      if(lastToastCloseFn){
-        lastToastCloseFn();
-        lastToastCloseFn=undefined;
-      }
     }
   }, [file, currentFileIndex, files])
 

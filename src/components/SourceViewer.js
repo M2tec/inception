@@ -7,7 +7,7 @@ import { GameChangerSyntax } from './GameChangerSyntaxMonaco'
 import { useAppState, useStateDispatch } from '../AppContext.js';
 
 const SourceViewer = (props) => {
-  const { theme, advertisement } = useAppState();
+  const { theme, advertisement, alerts } = useAppState();
 
   const element = React.useRef(null);
   const [width, setWidth] = React.useState(0);
@@ -69,11 +69,14 @@ const SourceViewer = (props) => {
       // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
       // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
       // console.log(advertisement)
-      if (advertisement === true) {
-        setBodyHeight(cr.height -95 -110)
-      } else {
-        setBodyHeight(cr.height -95)
-      }
+      let tabAndNavHeight = 95;
+      let advertisementHeight;
+      let alertHeight;
+
+      advertisement === true ? advertisementHeight = 110 : advertisementHeight = 0
+      alerts.length > 0 ? alertHeight = 100 : alertHeight = 0
+
+      setBodyHeight(cr.height - tabAndNavHeight - alertHeight)
     }
   });
   ro.observe(document.body);

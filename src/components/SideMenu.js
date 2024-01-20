@@ -9,9 +9,6 @@ import {
   CloudUploadFill,
   Download
 } from 'react-bootstrap-icons';
-import { transpile } from "../services/gcscript.js";
-
-const gc = window.gc;
 
 export default function SideView(props) {
   let { files, currentFileIndex } = useAppState();
@@ -43,11 +40,11 @@ export default function SideView(props) {
 
     console.log("Deploy");
  
-    console.log(currentFileIndex)
-    console.log({files})
+    // console.log(currentFileIndex)
+    // console.log({files})
 
     let [currentFile] = files.filter((file) => file.id === currentFileIndex)
-    console.log({currentFile})
+    // console.log({currentFile})
     GcConnect(currentFile.data);
     
     return false;

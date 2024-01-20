@@ -207,7 +207,7 @@ function stateReducer(state, action) {
               data: JSON.stringify(action.data.code, null, 2)
             }
     
-            // console.log({newCodeFile:newCodeFile})
+            console.log({newCodeFile:newCodeFile})
 
             let newFiles = state.files.filter((file) => {
                 // console.log(file.name + " " + file.parentId + " " +  action.data.file.id)
@@ -227,16 +227,18 @@ function stateReducer(state, action) {
                 }
             })
             newFiles = [...newFiles, newCodeFile]
+            console.log({newFiles})
 
-            let allIds = newFiles.map((file) => file.id)
-            // console.log(allIds)
+            // let allIds = newFiles.map((file) => file.id)
+            // // console.log(allIds)
 
-            let newOpenFiles = state.openFiles.filter((id) => allIds.includes(id) )
-            // console.log(newOpenFiles)
+            // let newOpenFiles = state.openFiles.filter((id) => allIds.includes(id) )
+            // // console.log(newOpenFiles)
 
-            let newState = { ...state, files: newFiles, openFiles:newOpenFiles };
-            saveState(newState)
-            return newState
+            // let newState = { ...state, files: newFiles, openFiles:newOpenFiles };
+            // saveState(newState)
+            // return newState
+            return state
         }
 
         case 'deleted': {
@@ -369,7 +371,17 @@ function stateReducer(state, action) {
 
             return { ...state, advertisement: !state.advertisement }
         }
+        case 'set-alert': {
+            console.log("set-alert")
+            console.log({action})
 
+            let newAlerts = state.alerts
+            newAlerts.unshift(action.message)
+
+            let newState = {...state, alerts:newAlerts}
+            saveState(newState)
+            return newState
+        }
         case 'download-project': {
             console.log("download-project")
             console.log({ action: action })
@@ -418,7 +430,8 @@ if (storageState == null) {
     initialState = {
         ...Token_Locking,
         ...appData,
-        advertisement: true
+        advertisement: true,
+        alerts: []
     }
 } else {
     console.log("Load from storage")
@@ -430,8 +443,8 @@ if (storageState == null) {
         ...storageState,
         ...appData,
         currentFileIndex:smallest,
-        openFiles: [smallest]
-        // advertisement: true
+        openFiles: [smallest],
+        alerts: []
     };
 }
 

@@ -59,9 +59,9 @@ ul {
   height: 100%;
 }
 
-.TabPane {
+/* .TabPane {
   height: 100%;
-}
+} */
 
 .TabPaneActive {
   display: flex;
@@ -400,4 +400,10 @@ div.noMargin {
   display: flex;
   box-sizing: border-box;
   align-items: center;
+}
+
+.alert-warning {
+  height: 100px;
+  margin: 0px;
+  border-radius: 0px;
 }

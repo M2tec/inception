@@ -35,7 +35,7 @@ export default function FilesList() {
   let returnDataFiles = files.filter((file) => file.parentId === expandIndex && !file.name.includes("code"))
 
   let [codeFile] = files.filter((file) => file.parentId === expandIndex && file.name.includes("code"))
-
+  console.log({codeFile})
 
   let returnDataFileAmount = 0;
   if (returnDataFiles.length > 0) {
@@ -98,7 +98,7 @@ function File({ file, dots }) {
       });
     }
 
-  }, [code, file, dispatch])
+  }, [file])
 
   React.useEffect(() => {
     let [extension] = file.name.split(".").slice(-1)

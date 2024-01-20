@@ -229,16 +229,16 @@ function stateReducer(state, action) {
             newFiles = [...newFiles, newCodeFile]
             console.log({newFiles})
 
-            // let allIds = newFiles.map((file) => file.id)
-            // // console.log(allIds)
+            let allIds = newFiles.map((file) => file.id)
+            // console.log(allIds)
 
-            // let newOpenFiles = state.openFiles.filter((id) => allIds.includes(id) )
-            // // console.log(newOpenFiles)
+            let newOpenFiles = state.openFiles.filter((id) => allIds.includes(id) )
+            // console.log(newOpenFiles)
 
-            // let newState = { ...state, files: newFiles, openFiles:newOpenFiles };
-            // saveState(newState)
-            // return newState
-            return state
+            let newState = { ...state, files: newFiles, openFiles:newOpenFiles };
+            saveState(newState)
+            return newState
+            // return state
         }
 
         case 'deleted': {

@@ -69,9 +69,9 @@ export default function SideView(props) {
         try {
 
           let topLevelFiles = files.filter((file) => file.parentId === -1)
-
+          const fileUri=`ide://${file.name || ""}`;
           const transpiled = await transpile({
-            fileUri: `ide://${file.name || ""}`,
+            fileUri,
             files: topLevelFiles,
           });
 
@@ -80,7 +80,16 @@ export default function SideView(props) {
             type: 'add-code',
             data: { file, transpiled }
           });
-
+          dispatch({
+            type: 'console',
+            item:{
+              type:"success",
+              message:`Build successfull: ${fileUri}`,
+              extra:{
+                type:"TranspilerSuccess"
+              }
+            }            
+          });
         } catch (err) {
           const {
             type,
@@ -97,8 +106,17 @@ export default function SideView(props) {
             message
           });
           dispatch({
-            type: 'set-alert',
-            message: message
+            type: 'console',
+            item:{
+              type:"error",
+              message:message,
+              extra:{
+                type,
+                fileUri,
+                importTrace,
+                path,
+              }
+            }            
           });
 
 

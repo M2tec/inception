@@ -1,12 +1,13 @@
 import React from 'react';
 import SourceViewer from './SourceViewer';
+import Console from './Console';
 import { useAppState, useStateDispatch } from '../AppContext.js';
 import { X } from 'react-bootstrap-icons';
 import Alert from 'react-bootstrap/Alert';
 
 export default function TabComponent(props) {
     const dispatch = useStateDispatch();
-    const { alerts, files, openFiles, currentFileIndex } = useAppState();
+    const { console, files, openFiles, currentFileIndex } = useAppState();
 
     const GcTab = ({
         id
@@ -60,14 +61,35 @@ export default function TabComponent(props) {
                 {/* {console.log(currentFileIndex)} */}
                 <SourceViewer id={currentFileIndex} readOnly={false} />
             </div>
-
-            {alerts.length > 0 ? (
+            {/*console.length > 0 ? (
                 <Alert key={'warning'} variant={'warning'}>
-                    {alerts.map((alert, index) => <div key={index}>{alert}</div>)}
+                    {console.map((consoleItem, index) => {
+                        const {type,message,extra}=consoleItem||{};
+                        if(!type)
+                            return null;
+                        
+                        return <div className={`alert alert-${type}`} key={index}>{message||""}</div>})}
                 </Alert>)
                 :
-                null}
-
+            null*/}
+            {/* <div className="position-absolute bottom-5" style={{height:"100px",maxHeight:"100px"}}>
+                <Console console={console} clearConsole={()=>{}}/>
+            </div> */}
+            <div style={{height:"100px",maxHeight:"100px"}}>
+                <Console console={console} clearConsole={()=>{
+                    dispatch({
+                        type: 'clear-console',           
+                    });
+                }}/>
+            </div>
+            {/*console?.length > 0 && 
+                <div>
+                    {console.map((consoleItem, index) => {
+                        const {type,message,extra}=consoleItem||{};
+                        if(!type)
+                            return null;                        
+                        return <div className={`alert alert-error`} key={index}>{message||""}</div>})}
+                    </div>*/}
         </div>
     );
 };

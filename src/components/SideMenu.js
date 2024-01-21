@@ -9,6 +9,7 @@ import {
   PlayFill,
   CloudUploadFill,
   Download,
+  Upload,
   ArrowRepeat
 } from 'react-bootstrap-icons';
 
@@ -46,14 +47,14 @@ export default function SideView(props) {
   async function handleClickRun(e) {
 
     console.log("Deploy");
- 
+
     // console.log(currentFileIndex)
     // console.log({files})
 
     let [currentFile] = files.filter((file) => file.id === currentFileIndex)
     // console.log({currentFile})
     GcConnect(currentFile.data);
-    
+
     return false;
   }
 
@@ -63,15 +64,15 @@ export default function SideView(props) {
     // console.log("Transpile: " + file.name + " " + extension  + " " + file.id + " " + currentFileIndex )
 
     if (file.name && extension === "gcscript" && file.id === currentFileIndex) {
-      
+
       (async () => {
-        try{
-          
+        try {
+
           let topLevelFiles = files.filter((file) => file.parentId === -1)
 
           const transpiled = await transpile({
-            fileUri:`ide://${file.name||""}`,
-            files:topLevelFiles,
+            fileUri: `ide://${file.name || ""}`,
+            files: topLevelFiles,
           });
 
           console.log("transpiled ----")
@@ -80,15 +81,15 @@ export default function SideView(props) {
             data: { file, transpiled }
           });
 
-        }catch(err){
+        } catch (err) {
           const {
             type,
             fileUri,
             importTrace,
             path,
             message,
-          }=err||{};
-          console.error(`${type||"UnknownError"}:${message||"Unknown error"}`,{            
+          } = err || {};
+          console.error(`${type || "UnknownError"}:${message || "Unknown error"}`, {
             type,
             fileUri,
             importTrace,
@@ -101,16 +102,16 @@ export default function SideView(props) {
           });
 
 
-          console.log("Transpile: " + file.name + " " + extension  + " " + file.id + " " + currentFileIndex )
+          console.log("Transpile: " + file.name + " " + extension + " " + file.id + " " + currentFileIndex)
         }
 
-        
+
       })()
     }
 
 
     console.log("Generate");
-     
+
 
   }
 
@@ -141,13 +142,23 @@ export default function SideView(props) {
     </Button>
 
     <Button
-    onClick={() => {
-      dispatch({
-        type: 'download-project',
-      });
-    }}
+      onClick={() => {
+        dispatch({
+          type: 'download-project',
+        });
+      }}
       variant="primary">
       <Download size={"20px"} />
+    </Button>
+
+    <Button
+      onClick={() => {
+        dispatch({
+          type: 'upload-project',
+        });
+      }}
+      variant="primary">
+      <Upload size={"20px"} />
     </Button>
   </div>
 

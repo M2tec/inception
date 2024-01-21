@@ -394,15 +394,44 @@ function stateReducer(state, action) {
 
             const zip = new JSZip();
 
-            for (let file = 0; file < files.length; file++) {
+            console.log({files})
+            let zipFiles = state.files
+            let stateFile = { id: 9999,
+                              name: "state.json",
+                              data: JSON.stringify(state, null, 2)
+                            }
+
+            zipFiles = [...files, stateFile]
+            console.log({zipFiles})
+
+            for (let file = 0; file < zipFiles.length; file++) {
                 // Zip file with the file name.
-                zip.file(files[file].name, files[file].data);
+                zip.file(zipFiles[file].name, zipFiles[file].data);
             }
             zip.generateAsync({ type: "blob" }).then(content => {
                 saveAs(content, name + ".zip");
             });
 
             console.log({ state: state })
+
+            return state
+        }
+
+        case 'upload-project': {
+            console.log("upload-project")
+            console.log({ action: action })
+
+            // const zip = new JSZip();
+
+            // for (let file = 0; file < files.length; file++) {
+            //     // Zip file with the file name.
+            //     zip.file(files[file].name, files[file].data);
+            // }
+            // zip.generateAsync({ type: "blob" }).then(content => {
+            //     saveAs(content, name + ".zip");
+            // });
+
+            // console.log({ state: state })
 
             return state
         }

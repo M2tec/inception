@@ -115,6 +115,33 @@ export default function SideView(props) {
 
   }
 
+  function handleStateUpload(e) {
+    console.log({e})
+    console.log(e.target.files[0])
+
+
+    let reader = new FileReader();
+    reader.readAsText(e.target.files[0]);
+    
+    reader.onload = function() {
+        console.log(reader.result);  // prints file contents
+        let uploadData = JSON.parse(reader.result)
+        console.log({uploadData})
+
+        let projectKeys = Object.keys(localStorage).filter((project) => project.includes('data_'))
+        let keyIdArray = projectKeys.map((key) => parseInt(key.split("_")[1]))
+        let largest = Math.max.apply(0, keyIdArray);
+        let newProjectIndex = largest + 1
+
+        dispatch({
+          type: 'upload-project',
+          project: {newProjectIndex, uploadData}
+        });
+    };
+
+
+  }
+
   return (<div>
 
     <Button
@@ -151,15 +178,17 @@ export default function SideView(props) {
       <Download size={"20px"} />
     </Button>
 
-    <Button
-      onClick={() => {
-        dispatch({
-          type: 'upload-project',
-        });
-      }}
-      variant="primary">
+    <input 
+        accept=".json" 
+        id="icon-button-file"
+        type="file" 
+        style={{ display: 'none' }} 
+        onChange={handleStateUpload}
+        />
+    <label className="uploadInput" htmlFor="icon-button-file">
       <Upload size={"20px"} />
-    </Button>
+    </label>
+
   </div>
 
   );

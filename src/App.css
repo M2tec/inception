@@ -407,3 +407,14 @@ div.noMargin {
   margin: 0px;
   border-radius: 0px;
 }
+
+.uploadInput {
+  padding:15px;
+  color: white;
+}
+
+.uploadInput:hover {
+  padding:15px;
+  color: white;
+  background-color: rgb(62, 10, 62);
+}

@@ -420,18 +420,23 @@ function stateReducer(state, action) {
         case 'upload-project': {
             console.log("upload-project")
             console.log({ action: action })
+        
+            let projectState = action.project.uploadData
+            console.log({projectState})
 
-            // const zip = new JSZip();
+            let ids = projectState.files.map((file) => file.id);
+            let smallest = Math.min.apply(0, ids);
 
-            // for (let file = 0; file < files.length; file++) {
-            //     // Zip file with the file name.
-            //     zip.file(files[file].name, files[file].data);
-            // }
-            // zip.generateAsync({ type: "blob" }).then(content => {
-            //     saveAs(content, name + ".zip");
-            // });
+            let newProjectState = {
+                ...projectState,
+                currentProjectIndex: action.project.newProjectIndex,
+                currentFileIndex:smallest,
+                openFiles: [smallest],
+                alerts: []
+            };
+            console.log({newProjectState})
 
-            // console.log({ state: state })
+            localStorage.setItem("data_" + newProjectState.currentProjectIndex, JSON.stringify(newProjectState))
 
             return state
         }

@@ -181,10 +181,10 @@ export default function SideView(props) {
       <PlayFill size={"20px"} />
     </Button>
 
-    <Button
+    {/* <Button
       variant="primary">
       <CloudUploadFill size={"20px"} />
-    </Button>
+    </Button> */}
 
     <Button
       onClick={() => {

@@ -80,8 +80,6 @@ function stateReducer(state, action) {
         return newState
     }
 
-
-
     switch (action.type) {
 
         case 'menu-change': {
@@ -117,7 +115,7 @@ function stateReducer(state, action) {
             let newState = { ...state, 
                             openFiles, 
                             currentFileIndex: newFileIndex,
-                            alerts: []
+                            console: []
                            };
             saveState(newState)
             return newState
@@ -375,15 +373,33 @@ function stateReducer(state, action) {
 
             return { ...state, advertisement: !state.advertisement }
         }
+        // TODO: this could be reimplemented reusing console style messages but with toasts, maybe without history
+        //       as for history we have console notifications.
+        // case 'set-alert': {
+        //     console.log("set-alert")
+        //     console.log({action})
 
-        case 'set-alert': {
-            console.log("set-alert")
-            console.log({action})
+        //     let newAlerts = state.alerts
+        //     newAlerts.unshift(action.message)
 
-            let newAlerts = state.alerts
-            newAlerts.unshift(action.message)
+        //     let newState = {...state, alerts:newAlerts}
+        //     saveState(newState)
+        //     return newState
+        // }
 
-            let newState = {...state, alerts:newAlerts}
+        case 'console': {
+            const newItem=action?.item;
+            const {type,message,extra}=newItem||{};
+            if(!type || !message)
+                return state;
+            
+            const newConsole=[newItem,...(state?.console||[])]
+            let newState = {...state, console:newConsole}
+            saveState(newState)
+            return newState
+        }
+        case 'clear-console': {
+            let newState = {...state, console:[]}
             saveState(newState)
             return newState
         }
@@ -432,7 +448,7 @@ function stateReducer(state, action) {
                 currentProjectIndex: action.project.newProjectIndex,
                 currentFileIndex:smallest,
                 openFiles: [smallest],
-                alerts: []
+                console: []
             };
             console.log({newProjectState})
 
@@ -472,7 +488,7 @@ if (storageState == null) {
         ...Token_Locking,
         ...appData,
         advertisement: true,
-        alerts: []
+        console: []
     }
 } else {
     console.log("Load from storage")
@@ -485,7 +501,7 @@ if (storageState == null) {
         ...appData,
         currentFileIndex:smallest,
         openFiles: [smallest],
-        alerts: []
+        console: []
     };
 }
 

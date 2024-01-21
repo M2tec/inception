@@ -140,15 +140,15 @@ const macroHandlers={
                 files,
                 importTrace,
             })
-            .catch((err)=>{
-                throw createError({
-                    type:"TranspilerError",
-                    fileUri,
-                    importTrace,
-                    path,
-                    message:err?.message,
-                });
-            });
+            // .catch((err)=>{
+            //     throw createError({
+            //         type:"TranspilerError",
+            //         fileUri,
+            //         importTrace,
+            //         path,
+            //         message:err?.message,
+            //     });
+            // });
             //TODO: consider cleanning imported scripts to remove root-only script properties like returnURLPattern to avoid errors
             //      reasons not to do so could be to let devs use this to restrict code destination/reusability
             //      probably a flag for enabling this would be wise
@@ -209,14 +209,12 @@ const macroHandlers={
 //TODO: Ugly monkeypatching, make custom error classes instead
 export const createError=({
     type,
-    fileUri,
     importTrace,
     path,
     message,
 })=>{
     const error=new Error(message);
     error.type=type;
-    error.fileUri=fileUri;
     error.importTrace=importTrace;
     error.path=path2Str(path);
     return error;
@@ -229,8 +227,7 @@ export const transpile = async ({
 })=>{
     if([...(importTrace||[])].includes(fileUri)){
         throw createError({
-            type:"TranspilerError",
-            fileUri,
+            type:"TranspileError",
             importTrace,
             message:`Circular import of resource '${fileUri}' is not allowed`,
         });
@@ -240,8 +237,7 @@ export const transpile = async ({
     const fileBuff  =await getResource(fileUri,{files})
         .catch((err)=>{
             throw createError({
-                type:"TranspilerError",
-                fileUri,
+                type:"TranspileError",
                 importTrace,
                 message:err?.message,
             });
@@ -250,7 +246,6 @@ export const transpile = async ({
         .catch((err)=>{
             throw createError({
                 type:"SyntaxError",
-                fileUri,
                 importTrace,
                 message:err?.message,
             });
@@ -272,9 +267,8 @@ export const transpile = async ({
                     if(err?.type)
                         throw err;
                     throw createError({
-                        type:"UnknownError",
-                        fileUri,
-                        importTrace,
+                        type:"TranspileError",
+                        importTrace:context?.importTrace,
                         path,
                         message:err?.message,
                     });

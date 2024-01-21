@@ -7,7 +7,7 @@ import { GameChangerSyntax } from './GameChangerSyntaxMonaco'
 import { useAppState, useStateDispatch } from '../AppContext.js';
 
 const SourceViewer = (props) => {
-  const { theme, advertisement, alerts } = useAppState();
+  const { theme, advertisement, console } = useAppState();
 
   const element = React.useRef(null);
   const [width, setWidth] = React.useState(0);
@@ -74,8 +74,9 @@ const SourceViewer = (props) => {
       let alertHeight;
 
       advertisement === true ? advertisementHeight = 110 : advertisementHeight = 0
-      alerts.length > 0 ? alertHeight = 100 : alertHeight = 0
-
+      //console.length > 0 ? alertHeight = 100 : alertHeight = 0
+      alertHeight = 100;
+      
       setBodyHeight(cr.height - tabAndNavHeight - alertHeight)
     }
   });

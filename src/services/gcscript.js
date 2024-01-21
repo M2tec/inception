@@ -209,14 +209,12 @@ const macroHandlers={
 //TODO: Ugly monkeypatching, make custom error classes instead
 export const createError=({
     type,
-    fileUri,
     importTrace,
     path,
     message,
 })=>{
     const error=new Error(message);
     error.type=type;
-    //error.fileUri=fileUri;
     error.importTrace=importTrace;
     error.path=path2Str(path);
     return error;
@@ -230,7 +228,6 @@ export const transpile = async ({
     if([...(importTrace||[])].includes(fileUri)){
         throw createError({
             type:"TranspileError",
-            fileUri,
             importTrace,
             message:`Circular import of resource '${fileUri}' is not allowed`,
         });
@@ -241,7 +238,6 @@ export const transpile = async ({
         .catch((err)=>{
             throw createError({
                 type:"TranspileError",
-                fileUri,
                 importTrace,
                 message:err?.message,
             });
@@ -250,7 +246,6 @@ export const transpile = async ({
         .catch((err)=>{
             throw createError({
                 type:"SyntaxError",
-                fileUri,
                 importTrace,
                 message:err?.message,
             });
@@ -273,7 +268,6 @@ export const transpile = async ({
                         throw err;
                     throw createError({
                         type:"TranspileError",
-                        fileUri,
                         importTrace:context?.importTrace,
                         path,
                         message:err?.message,

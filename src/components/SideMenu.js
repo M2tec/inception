@@ -86,7 +86,7 @@ export default function SideView(props) {
               type:"success",
               message:`Build successfull: ${fileUri}`,
               extra:{
-                type:"TranspilerSuccess"
+                type:"TranspileSuccess"
               }
             }            
           });

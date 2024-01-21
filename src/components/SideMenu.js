@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { useAppState, useStateDispatch } from '../AppContext.js';
 import { GcConnect } from "./GameChangerAPI.js";
 import { transpile } from "../services/gcscript.js";
+import JSZip from "jszip";
 
 import {
   Files,
@@ -115,30 +116,71 @@ export default function SideView(props) {
 
   }
 
-  function handleStateUpload(e) {
-    console.log({e})
+  async function handleStateUpload(e) {
+    console.log({ e })
     console.log(e.target.files[0])
 
+    let projectKeys = Object.keys(localStorage).filter((project) => project.includes('data_'))
+    let keyIdArray = projectKeys.map((key) => parseInt(key.split("_")[1]))
+    let largest = Math.max.apply(0, keyIdArray);
+    let newProjectIndex = largest + 1
 
     let reader = new FileReader();
     reader.readAsText(e.target.files[0]);
-    
-    reader.onload = function() {
-        console.log(reader.result);  // prints file contents
-        let uploadData = JSON.parse(reader.result)
-        console.log({uploadData})
 
-        let projectKeys = Object.keys(localStorage).filter((project) => project.includes('data_'))
-        let keyIdArray = projectKeys.map((key) => parseInt(key.split("_")[1]))
-        let largest = Math.max.apply(0, keyIdArray);
-        let newProjectIndex = largest + 1
+    let fileName = e.target.files[0].name
+    console.log({ fileName })
 
-        dispatch({
-          type: 'upload-project',
-          project: {newProjectIndex, uploadData}
-        });
-    };
+    let [extension] = fileName.split(".").slice(-1)
 
+    console.log({extension})
+
+    switch (extension) {
+      case "json":
+
+        reader.onload = function () {
+          console.log(reader.result);  // prints file contents
+          let uploadData = JSON.parse(reader.result)
+          console.log({ uploadData })
+
+          dispatch({
+            type: 'upload-project',
+            project: { newProjectIndex, uploadData }
+          });
+        };
+        break;
+
+      // case "zip":
+      //   const zip = new JSZip();
+
+      //   reader.onload = async function () {
+          
+      //     console.log(typeof(reader.result))
+      //     console.log(reader.result)
+      //     // const unzippedFiles = await zip.loadAsync(file);
+
+      //     zip.loadAsync(reader.result).then(function(contents) {
+      //       Object.keys(contents.files).forEach(function(filename) {
+      //           zip.file(filename).async('nodebuffer').then(function(content) {
+      //               // var dest = path + filename;
+      //               console.log({content})
+      //           });
+      //       });
+      //     });
+
+      //     // console.log(reader.result);  // prints file contents
+      //     // let uploadData = JSON.parse(reader.result)
+      //     // console.log({ uploadData })
+
+      //     // dispatch({
+      //     //   type: 'upload-project',
+      //     //   project: { newProjectIndex, uploadData }
+      //     // });
+      //   };
+      //   break;
+      default:
+        console.log("Wrong file type");
+    }
 
   }
 
@@ -178,13 +220,13 @@ export default function SideView(props) {
       <Download size={"20px"} />
     </Button>
 
-    <input 
-        accept=".json" 
-        id="icon-button-file"
-        type="file" 
-        style={{ display: 'none' }} 
-        onChange={handleStateUpload}
-        />
+    <input
+      accept=".json"
+      id="icon-button-file"
+      type="file"
+      style={{ display: 'none' }}
+      onChange={handleStateUpload}
+    />
     <label className="uploadInput" htmlFor="icon-button-file">
       <Upload size={"20px"} />
     </label>

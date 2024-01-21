@@ -58,8 +58,6 @@ export default function SideView(props) {
   }
 
   async function handleClickGenerate(e) {
-
-
     let [extension] = file.name.split(".").slice(-1)
 
     // console.log("Transpile: " + file.name + " " + extension  + " " + file.id + " " + currentFileIndex )
@@ -75,6 +73,8 @@ export default function SideView(props) {
             fileUri:`ide://${file.name||""}`,
             files:topLevelFiles,
           });
+
+          console.log("transpiled ----")
           dispatch({
             type: 'add-code',
             data: { file, transpiled }

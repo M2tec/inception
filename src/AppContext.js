@@ -208,7 +208,7 @@ function stateReducer(state, action) {
               name: newName,
               parentId: action.data.file.id,
               type: "code",
-              data: JSON.stringify(action.data.code, null, 2)
+              data: JSON.stringify(action.data.transpiled, null, 2)
             }
     
             console.log({newCodeFile:newCodeFile})

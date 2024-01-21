@@ -2,12 +2,14 @@ import React from "react";
 import Button from 'react-bootstrap/Button';
 import { useAppState, useStateDispatch } from '../AppContext.js';
 import { GcConnect } from "./GameChangerAPI.js";
+import { transpile } from "../services/gcscript.js";
 
 import {
   Files,
   PlayFill,
   CloudUploadFill,
-  Download
+  Download,
+  ArrowRepeat
 } from 'react-bootstrap-icons';
 
 export default function SideView(props) {
@@ -18,9 +20,14 @@ export default function SideView(props) {
   let fileList = files.filter((file) => file.id === currentFileIndex)
   let file = fileList[0]
 
-  let isActiveAGCScript = false;
+  let isActiveCode = false;
   if (file !== undefined) {
-    isActiveAGCScript = file.name.endsWith('.code');
+    isActiveCode = file.name.endsWith('.code');
+  }
+
+  let isActiveGCScript = false;
+  if (file !== undefined) {
+    isActiveGCScript = file.name.endsWith('.gcscript');
   }
 
   // Detect when data is returned to master app 
@@ -50,6 +57,63 @@ export default function SideView(props) {
     return false;
   }
 
+  async function handleClickGenerate(e) {
+
+
+    let [extension] = file.name.split(".").slice(-1)
+
+    // console.log("Transpile: " + file.name + " " + extension  + " " + file.id + " " + currentFileIndex )
+
+    if (file.name && extension === "gcscript" && file.id === currentFileIndex) {
+      
+      (async () => {
+        try{
+          
+          let topLevelFiles = files.filter((file) => file.parentId === -1)
+
+          const transpiled = await transpile({
+            fileUri:`ide://${file.name||""}`,
+            files:topLevelFiles,
+          });
+          dispatch({
+            type: 'add-code',
+            data: { file, transpiled }
+          });
+
+        }catch(err){
+          const {
+            type,
+            fileUri,
+            importTrace,
+            path,
+            message,
+          }=err||{};
+          console.error(`${type||"UnknownError"}:${message||"Unknown error"}`,{            
+            type,
+            fileUri,
+            importTrace,
+            path,
+            message
+          });
+          dispatch({
+            type: 'set-alert',
+            message: message
+          });
+
+
+          console.log("Transpile: " + file.name + " " + extension  + " " + file.id + " " + currentFileIndex )
+        }
+
+        
+      })()
+    }
+
+
+    console.log("Generate");
+     
+
+  }
+
   return (<div>
 
     <Button
@@ -58,8 +122,15 @@ export default function SideView(props) {
     </Button>
 
     <Button
+      onClick={handleClickGenerate}
+      disabled={!isActiveGCScript}
+      variant="primary">
+      <ArrowRepeat size={"20px"} />
+    </Button>
+
+    <Button
       onClick={handleClickRun}
-      disabled={!isActiveAGCScript}
+      disabled={!isActiveCode}
       variant="primary">
       <PlayFill size={"20px"} />
     </Button>

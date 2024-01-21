@@ -82,64 +82,11 @@ export default function FilesList() {
   );
 }
 
-function File({ file, dots }) {
+function File({ file }) {
+  console.log({file})
   const [isEditing, setIsEditing] = React.useState(false);
-  let { files, currentFileIndex } = useAppState();
+  let { currentFileIndex } = useAppState();
   const dispatch = useStateDispatch();
-
-  const [code, setCode] = React.useState("")
-
-  React.useEffect(() => {
-
-    if (code !== '') {
-      dispatch({
-        type: 'add-code',
-        data: { file, code }
-      });
-    }
-
-  }, [file])
-
-  React.useEffect(() => {
-    let [extension] = file.name.split(".").slice(-1)
-
-    // console.log(file.name + " " + extension  + " " + file.id + " " + currentFileIndex )
-
-    if (file.name && extension === "gcscript" && file.id === currentFileIndex) {
-      (async () => {
-        try{
-          let topLevelFiles = files.filter((file) => file.parentId === -1)
-
-          const transpiled = await transpile({
-            fileUri:`ide://${file.name||""}`,
-            files:topLevelFiles,
-          });
-
-          setCode(transpiled);
-        }catch(err){
-          const {
-            type,
-            fileUri,
-            importTrace,
-            path,
-            message,
-          }=err||{};
-          console.error(`${type||"UnknownError"}:${message||"Unknown error"}`,{            
-            type,
-            fileUri,
-            importTrace,
-            path,
-            message
-          });
-          dispatch({
-            type: 'set-alert',
-            message: message
-          });
-        }
-
-      })()
-    }
-  }, [file, currentFileIndex, files])
 
   // console.log(file)
   let fileContent;
@@ -184,7 +131,6 @@ function File({ file, dots }) {
         }>
 
         <FileTypeIcon name={file.name} />
-
 
         <span
           onClick={(e) => {

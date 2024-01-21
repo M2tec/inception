@@ -83,7 +83,7 @@ export default function FilesList() {
 }
 
 function File({ file }) {
-  console.log({file})
+  // console.log({file})
   const [isEditing, setIsEditing] = React.useState(false);
   let { currentFileIndex } = useAppState();
   const dispatch = useStateDispatch();

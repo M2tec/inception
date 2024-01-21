@@ -114,7 +114,11 @@ function stateReducer(state, action) {
             newFileIndex = action.file.id;
             // console.log({newFileIndex})
 
-            let newState = { ...state, openFiles, currentFileIndex: newFileIndex };
+            let newState = { ...state, 
+                            openFiles, 
+                            currentFileIndex: newFileIndex,
+                            alerts: []
+                           };
             saveState(newState)
             return newState
  
@@ -371,6 +375,7 @@ function stateReducer(state, action) {
 
             return { ...state, advertisement: !state.advertisement }
         }
+
         case 'set-alert': {
             console.log("set-alert")
             console.log({action})
@@ -382,6 +387,7 @@ function stateReducer(state, action) {
             saveState(newState)
             return newState
         }
+
         case 'download-project': {
             console.log("download-project")
             console.log({ action: action })
@@ -400,6 +406,7 @@ function stateReducer(state, action) {
 
             return state
         }
+
         default: {
             throw Error('Unknown action: ' + action.type);
         }

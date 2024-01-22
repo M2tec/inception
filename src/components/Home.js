@@ -16,7 +16,7 @@ import {
   } from 'react-bootstrap-icons';
 
 export default function Home() {
-    const { theme } = useAppState();
+    const { theme, currentFileIndex } = useAppState();
 
     document.querySelector("body").setAttribute('data-theme', theme)
 

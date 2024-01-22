@@ -91,10 +91,6 @@ function File({ file }) {
 
   function handleSaveName(e) {
 
-    if (e.keyCode !== 13) {
-      e.preventDefault(); // Ensure it is only this code that runs
-      return
-    }
     console.log("handleSaveName")
     dispatch({
       type: 'renamed',
@@ -106,6 +102,13 @@ function File({ file }) {
     setIsEditing(false)
   }
 
+  function handleKeydown(e){
+    console.log("keyDown")
+    if (e.key === "Enter") {
+      handleSaveName(e)
+    }
+  }
+  
   if (isEditing) {
 
     fileContent = (
@@ -117,7 +120,7 @@ function File({ file }) {
             console.log({ e: e.target.value })
             setEditName(e.target.value)
           }}
-          onKeyDown={(e) => e.key === 'Enter' ? handleSaveName(e): null}
+          onKeyDown={(e) => handleKeydown(e)}
         />
         <Save size={12}
           onClick={(e) => handleSaveName(e)}
@@ -135,6 +138,7 @@ function File({ file }) {
               file: file
             });
           }}
+          
           className='file-item-text'> {file.name}</span>
         <Pencil size={12} className='file-item-child file-operation-icon' onClick={() => setIsEditing(true)} />
       </div>

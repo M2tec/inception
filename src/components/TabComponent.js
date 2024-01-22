@@ -61,9 +61,9 @@ export default function TabComponent(props) {
                 {/* {console.log(currentFileIndex)} */}
                 <SourceViewer id={currentFileIndex} readOnly={false} />
             </div>
-            
+
             {console.length > 0 ? (
-            <div calssName="alert-warning">
+            <div className="alert-warning">
                 <Console console={console} clearConsole={()=>{
                     dispatch({
                         type: 'clear-console',           

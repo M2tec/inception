@@ -89,13 +89,21 @@ function File({ file }) {
   // console.log(file)
   let fileContent;
 
-  function handleSaveName() {
+  function handleSaveName(e) {
+
+    if (e.keyCode !== 13) {
+      e.preventDefault(); // Ensure it is only this code that runs
+
+      return
+    }
+    console.log("handleSaveName")
     dispatch({
       type: 'renamed',
       file: {
         ...file,
         name: editName
-      }})
+      }
+    })
     setIsEditing(false)
   }
 
@@ -106,20 +114,29 @@ function File({ file }) {
       <div className='file-item-child'>
         <input
           value={editName}
+          onKeyDown={(e) => handleSaveName(e)}
           onChange={e => {
             console.log({ e: e.target.value })
-            setEditName = e.target.value
-            }}
-           />
-        <Save size={12} onClick={() => handleSaveName} />
-
+            setEditName(e.target.value)
+          }}
+        />
+        <Save size={12}
+          onClick={(e) => handleSaveName(e)}
+        />
       </div>
     );
   } else {
 
     fileContent = (<>
       <div className='file-item-child'>
-        <span className='file-item-text'>{file.name}</span>
+        <span
+          onClick={(e) => {
+            dispatch({
+              type: 'selected',
+              file: file
+            });
+          }}
+          className='file-item-text'> {file.name}</span>
         <Pencil size={12} className='file-item-child file-operation-icon' onClick={() => setIsEditing(true)} />
       </div>
     </>);
@@ -135,14 +152,7 @@ function File({ file }) {
 
         <FileTypeIcon name={file.name} />
 
-        <span
-          onClick={(e) => {
-            dispatch({
-              type: 'selected',
-              file: file
-            });
-          }}>
-          {fileContent}</span>
+        <span>{fileContent}</span>
 
         <Stickies
           className='file-operation-icon'
@@ -174,7 +184,12 @@ function File({ file }) {
 function FileTypeIcon({ name }) {
   let fileIcon;
 
-  let [extension] = name.split(".").slice(-1)
+  let extension = ""
+  try {
+    [extension] = name.split(".").slice(-1)
+  } catch (error) {
+    console.log("Malformed extension")
+  }
 
   switch (extension) {
     case 'json':

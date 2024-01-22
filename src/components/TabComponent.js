@@ -3,7 +3,6 @@ import SourceViewer from './SourceViewer';
 import Console from './Console';
 import { useAppState, useStateDispatch } from '../AppContext.js';
 import { X } from 'react-bootstrap-icons';
-import Alert from 'react-bootstrap/Alert';
 
 export default function TabComponent(props) {
     const dispatch = useStateDispatch();
@@ -62,14 +61,13 @@ export default function TabComponent(props) {
                 <SourceViewer id={currentFileIndex} readOnly={false} />
             </div>
 
-            {console.length > 0 ? (
-            <div className="alert-warning">
-                <Console console={console} clearConsole={()=>{
+            {console.length > 0 
+                ? 
+                (<Console console={console} clearConsole={()=>{
                     dispatch({
                         type: 'clear-console',           
                     });
-                }}/>
-            </div>)
+                }}/>)
                 :
             null}
         </div>

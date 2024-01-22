@@ -398,6 +398,7 @@ function stateReducer(state, action) {
             saveState(newState)
             return newState
         }
+        
         case 'clear-console': {
             let newState = {...state, console:[]}
             saveState(newState)

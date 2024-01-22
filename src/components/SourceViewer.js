@@ -74,9 +74,8 @@ const SourceViewer = (props) => {
       let alertHeight;
 
       advertisement === true ? advertisementHeight = 110 : advertisementHeight = 0
-      //console.length > 0 ? alertHeight = 100 : alertHeight = 0
-      alertHeight = 100;
-      
+      console.length > 0 ? alertHeight = 100 : alertHeight = 0
+           
       setBodyHeight(cr.height - tabAndNavHeight - alertHeight)
     }
   });

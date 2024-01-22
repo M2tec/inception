@@ -13,8 +13,7 @@ const Console=({console,clearConsole})=>{
         clearConsole();
     }
     const filteredConsole=[...(console||[])];
-    return(
-        <div style={{height:"100%"}}>
+    return(<div className="alert-warning">
             <button className="btn btn-sm btn-secondary m-2 position-absolute end-0" onClick={handleClear}>Clear</button>
             <div style={{height:"100%",overflowY:"scroll",overflowX:"auto"}} className="inner-shadowed p-3 bg-dark">
             {filteredConsole.map(({message,type,extra},index)=>{
@@ -58,7 +57,7 @@ const Console=({console,clearConsole})=>{
                 }
             })}
             </div>
-        </div>
+            </div>
     )
 }
 

@@ -22,7 +22,7 @@ export default function SearchAppBar() {
 
   function SearchList() {
 
-    console.log({ queryList })
+    // console.log({ queryList })
     if (queryList.length > 0) {
       let inactiveProjects = queryList.filter((item) => item.id !== "data_" + currentProjectIndex);
       let queryListSearch = inactiveProjects.filter((item) => item.data.name.includes(searchText));

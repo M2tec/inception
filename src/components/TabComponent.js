@@ -61,7 +61,7 @@ export default function TabComponent(props) {
                 <SourceViewer id={currentFileIndex} readOnly={false} />
             </div>
 
-            {console.length > 0 
+            {console?.length > 0 
                 ? 
                 (<Console console={console} clearConsole={()=>{
                     dispatch({

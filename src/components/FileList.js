@@ -11,9 +11,6 @@ import {
   FilePlay
 } from 'react-bootstrap-icons';
 
-// import toast from 'cogo-toast';
-import { transpile } from "../services/gcscript.js";
-
 export default function FilesList() {
   let { files, currentFileIndex } = useAppState();
 
@@ -35,7 +32,7 @@ export default function FilesList() {
   let returnDataFiles = files.filter((file) => file.parentId === expandIndex && !file.name.includes("code"))
 
   let [codeFile] = files.filter((file) => file.parentId === expandIndex && file.name.includes("code"))
-  console.log({codeFile})
+  // console.log({codeFile})
 
   let returnDataFileAmount = 0;
   if (returnDataFiles.length > 0) {
@@ -87,9 +84,20 @@ function File({ file }) {
   const [isEditing, setIsEditing] = React.useState(false);
   let { currentFileIndex } = useAppState();
   const dispatch = useStateDispatch();
+  let [editName, setEditName] = React.useState(file.name)
 
   // console.log(file)
   let fileContent;
+
+  function handleSaveName() {
+    dispatch({
+      type: 'renamed',
+      file: {
+        ...file,
+        name: editName
+      }})
+    setIsEditing(false)
+  }
 
   if (isEditing) {
 
@@ -97,18 +105,13 @@ function File({ file }) {
 
       <div className='file-item-child'>
         <input
-          value={file.name}
+          value={editName}
           onChange={e => {
             console.log({ e: e.target.value })
-            dispatch({
-              type: 'renamed',
-              file: {
-                ...file,
-                name: e.target.value
-              }
-            });
-          }} />
-        <Save size={12} onClick={() => setIsEditing(false)} />
+            setEditName = e.target.value
+            }}
+           />
+        <Save size={12} onClick={() => handleSaveName} />
 
       </div>
     );

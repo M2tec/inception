@@ -93,7 +93,6 @@ function File({ file }) {
 
     if (e.keyCode !== 13) {
       e.preventDefault(); // Ensure it is only this code that runs
-
       return
     }
     console.log("handleSaveName")
@@ -114,11 +113,11 @@ function File({ file }) {
       <div className='file-item-child'>
         <input
           value={editName}
-          onKeyDown={(e) => handleSaveName(e)}
           onChange={e => {
             console.log({ e: e.target.value })
             setEditName(e.target.value)
           }}
+          onKeyDown={(e) => e.key === 'Enter' ? handleSaveName(e): null}
         />
         <Save size={12}
           onClick={(e) => handleSaveName(e)}

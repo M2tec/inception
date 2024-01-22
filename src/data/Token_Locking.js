@@ -1,299 +1,76 @@
 const project = {
     name: "Token_Locking",
     type: "folder",
-    theme: 'dark',
+    theme: "dark",
     currentFileIndex: 0,
     openFiles: [0],
     files: [
-        {
-            id: 0,
-            name: "contract.hl",
-            parentId: -1,
-            type: "helios",
-            data: `
-spending MagicNumber
-
-struct Datum {
-    magicNumber: Int
+      {
+        "id": 0,
+        "name": "contract.hl",
+        "parentId": -1,
+        "type": "helios",
+        "data": `\nspending MagicNumber\n\nstruct Datum {\n    magicNumber: Int\n}\n\nstruct Redeemer {\n    magicNumber: Int \n}\n\nfunc main(datum: Datum, redeemer: Redeemer, _) -> Bool {   \n    redeemer.magicNumber==datum.magicNumber\n}`
+      },
+      {
+        "id": 8,
+        "name": "datum.json",
+        "parentId": -1,
+        "type": "json",
+        "data": `{\n    \"type\": \"plutusData\",\n    \"data\": {\n    \"fromJSON\": {\n        \"schema\": 1,\n        \"obj\": {\n            \"int\": 42\n            }\n    }\n    }\n}\n`
+      },
+      {
+        "id": 9,
+        "name": "redeemer.json",
+        "parentId": -1,
+        "type": "json",
+        "data": `{\n    \"type\": \"plutusData\",\n    \"data\": {\n    \"fromJSON\": {\n        \"schema\": 1,\n        \"obj\": {\n            \"int\": 42\n            }\n        }\n    }\n}            \n`
+      },
+      {
+        id: 3,
+        name: "token_lock.gcscript",
+        parentId: -1,
+        type: "json",
+        data: `{\n    \"type\": \"script\",\n    \"title\": \"Lock script\",\n    \"description\": \"This contract will lock some tokens\",\n    \"exportAs\": \"Lock_Demo\",\n    \"return\": {\n        \"mode\": \"last\"\n    },\n    \"run\": {\n        \"dependencies\": {\n            \"type\": \"script\",\n            \"run\": {\n                \"datumJson\":{\n                    \"type\":\"$importAsData\",\n                    \"as\":\"json\",\n                    \"from\":{\n                        \"datum\":\"ide://datum.json\"\n                    }\n                }, \n                \"helios\":{\n                    \"type\":\"$importAsData\",\n                    \"as\":\"hex\",\n                    \"from\":{\n                        \"contract\":\"ide://contract.hl\"\n                    }\n                },\n                \"amount\": {\n                    \"type\": \"data\",\n                    \"value\": [\n                        {\n                            \"policyId\": \"ada\",\n                            \"assetName\": \"ada\",\n                            \"quantity\": \"5000000\"\n                        }\n                    ]\n                },\n                \"stakeCredential\": {\n                    \"type\": \"data\",\n                    \"value\": \"ad03a4ae45b21f50fde67956365cff94db41bc08a2c2862403d8a234\"\n                },\n                \"contract\": {\n                    \"type\": \"plutusScript\",\n                    \"script\": {\n                      \"heliosCode\": \"{hexToStr(get('cache.dependencies.helios.contract'))}\",\n                      \"version\": \"0.15.2\"\n                    }\n                },                \n                \"address\": {\n                    \"type\": \"buildAddress\",\n                    \"name\": \"ContractAddress\",\n                    \"addr\": {\n                        \"spendScriptHashHex\": \"{get('cache.dependencies.contract.scriptHashHex')}\",\n                        \"stakePubKeyHashHex\": \"{get('cache.dependencies.stakeCredential')}\"\n                    }\n                }\n            }\n        },\n        \"buildLock\": {\n            \"type\": \"buildTx\",\n            \"name\": \"built-lock\",\n            \"tx\": {\n                \"outputs\": [\n                    {\n                        \"address\": \"{get('cache.dependencies.address')}\",\n                        \"datum\": {\n                            \"datumHashHex\": \"{get('cache.dependencies.datumJson.value.dataHashHex')}\"                            \n                        },\n                        \"assets\": \"{get('cache.dependencies.amount')}\",\n                        \"idPattern\":\"locked\"\n                    }\n                ],\n                \"options\": {\n                    \"changeOptimizer\": \"NO\"\n                }\n            }\n        },\n        \"signLock\": {\n            \"type\": \"signTxs\",\n            \"namePattern\": \"signed-lock\",\n            \"detailedPermissions\": false,\n            \"txs\": [\n                \"{get('cache.buildLock.txHex')}\"\n            ]\n        },\n        \"submitLock\": {\n            \"type\": \"submitTxs\",\n            \"namePattern\": \"submitted-lock\",\n            \"txs\": \"{get('cache.signLock')}\"\n        },\n        \"finally\": {\n            \"type\": \"script\",\n            \"run\": {\n                \"lock\": {\n                    \"type\": \"macro\",\n                    \"run\": \"{get('cache.dependencies.lock')}\"\n                },\n                \"smartContract\": {\n                    \"type\": \"macro\",\n                    \"run\": \"{get('cache.dependencies.contract.scriptHex')}\"\n                },\n                \"smartContractHash\": {\n                    \"type\": \"macro\",\n                    \"run\": \"{get('cache.dependencies.contract.scriptHashHex')}\"\n                },\n                \"smartContractAddress\": {\n                    \"type\": \"macro\",\n                    \"run\": \"{get('cache.dependencies.address')}\"\n                },\n                \"lockTx\": {\n                    \"type\": \"macro\",\n                    \"run\": \"{get('cache.buildLock.txHash')}\"\n                },\n                \"lockUTXO\": {\n                    \"type\": \"macro\",\n                    \"run\": \"{get('cache.buildLock.indexMap.output.locked')}\"\n                }\n            }\n        }\n    }\n}\n\n`
+      },
+      {
+        "id": 6,
+        "name": "data.json",
+        "parentId": 5,
+        "type": "json",
+        "data": "{\n    \"exports\": {\n        \"Lock_Demo\": {\n        \"lockUTXO\": 0,\n        \"lock\": [\n        {\n            \"policyId\": \"ada\",\n            \"assetName\": \"ada\",\n            \"quantity\": \"5000000\"\n        }\n        ],\n            \"smartContract\": \"56550100002225333573466e1cdd68011bad0031498581\",\n            \"smartContractHash\": \"c203151a6a8a55baef2e3d302690858a42c55ebdb7d140eade17a530\",\n            \"smartContractAddress\": \"addr_test1zrpqx9g6d299twh09c7nqf5ssk9y9327hkmazs82mct62v9dqwj2u3djrag0mene2cm9elu5mdqmcz9zc2rzgq7c5g6q5xcn4r\",\n            \"lockTx\": \"b9cb604d1cead1afdd6c9403cae411234b19efc7cc78c1c060af69746fd223c2\"\n        }\n    }\n}\n"
+      },
+      {
+        "id": 7,
+        "name": "data2.json",
+        "parentId": 5,
+        "type": "json",
+        "data": "{\n    \"exports\": {\n        \"Lock_Demo\": {\n        \"lockUTXO\": 0,\n        \"lock\": [\n        {\n            \"policyId\": \"ada\",\n            \"assetName\": \"ada\",\n            \"quantity\": \"5000000\"\n        }\n        ],\n            \"smartContract\": \"56550100002225333573466e1cdd68011bad0031498581\",\n            \"smartContractHash\": \"c203151a6a8a55baef2e3d302690858a42c55ebdb7d140eade17a530\",\n            \"smartContractAddress\": \"addr_test1zrpqx9g6d299twh09c7nqf5ssk9y9327hkmazs82mct62v9dqwj2u3djrag0mene2cm9elu5mdqmcz9zc2rzgq7c5g6q5xcn4r\",\n            \"lockTx\": \"b9cb604d1cead1afdd6c9403cae411234b19efc7cc78c1c060af69746fd223c2\"\n        }\n    }\n}\n"
+      },
+      {
+        "id": 15,
+        "name": "code-2024-1-22_1-54-43-654.code",
+        "parentId": 12,
+        "type": "code",
+        "data": "{\n  \"type\": \"script\",\n  \"title\": \"Lock script\",\n  \"description\": \"This contract will lock some tokens\",\n  \"exportAs\": \"Lock_Demo\",\n  \"return\": {\n    \"mode\": \"last\"\n  },\n  \"run\": {\n    \"dependencies\": {\n      \"type\": \"script\",\n      \"run\": {\n        \"datumJson\": {\n          \"type\": \"data\",\n          \"value\": {\n            \"datum\": {\n              \"type\": \"plutusData\",\n              \"data\": {\n                \"fromJSON\": {\n                  \"schema\": 1,\n                  \"obj\": {\n                    \"int\": 42\n                  }\n                }\n              }\n            }\n          }\n        },\n        \"datum\": {\n          \"type\": \"plutusData\",\n          \"data\": {\n            \"fromJSON\": {\n              \"schema\": 1,\n              \"obj\": \"get('cache.dependencies.datumJson.datum')\"\n            }\n          }\n        }\n      }\n    }\n  }\n}"
+      },
+      {
+        "id": 18,
+        "name": "code-2024-1-22_7-21-36-229.code",
+        "parentId": 3,
+        "type": "code",
+        "data": "{\n  \"type\": \"script\",\n  \"title\": \"Lock script\",\n  \"description\": \"This contract will lock some tokens\",\n  \"exportAs\": \"Lock_Demo\",\n  \"return\": {\n    \"mode\": \"last\"\n  },\n  \"run\": {\n    \"dependencies\": {\n      \"type\": \"script\",\n      \"run\": {\n        \"datumJson\": {\n          \"type\": \"data\",\n          \"value\": {\n            \"datum\": {\n              \"type\": \"plutusData\",\n              \"data\": {\n                \"fromJSON\": {\n                  \"schema\": 1,\n                  \"obj\": {\n                    \"int\": 42\n                  }\n                }\n              }\n            }\n          }\n        },\n        \"helios\": {\n          \"type\": \"data\",\n          \"value\": {\n            \"contract\": \"0a7370656e64696e67204d616769634e756d6265720a0a73747275637420446174756d207b0a202020206d616769634e756d6265723a20496e740a7d0a0a7374727563742052656465656d6572207b0a202020206d616769634e756d6265723a20496e74200a7d0a0a66756e63206d61696e28646174756d3a20446174756d2c2072656465656d65723a2052656465656d65722c205f29202d3e20426f6f6c207b2020200a2020202072656465656d65722e6d616769634e756d6265723d3d646174756d2e6d616769634e756d6265720a7d\"\n          }\n        },\n        \"amount\": {\n          \"type\": \"data\",\n          \"value\": [\n            {\n              \"policyId\": \"ada\",\n              \"assetName\": \"ada\",\n              \"quantity\": \"5000000\"\n            }\n          ]\n        },\n        \"stakeCredential\": {\n          \"type\": \"data\",\n          \"value\": \"ad03a4ae45b21f50fde67956365cff94db41bc08a2c2862403d8a234\"\n        },\n        \"contract\": {\n          \"type\": \"plutusScript\",\n          \"script\": {\n            \"heliosCode\": \"{hexToStr(get('cache.dependencies.helios.contract'))}\",\n            \"version\": \"0.15.2\"\n          }\n        },\n        \"address\": {\n          \"type\": \"buildAddress\",\n          \"name\": \"ContractAddress\",\n          \"addr\": {\n            \"spendScriptHashHex\": \"{get('cache.dependencies.contract.scriptHashHex')}\",\n            \"stakePubKeyHashHex\": \"{get('cache.dependencies.stakeCredential')}\"\n          }\n        }\n      }\n    },\n    \"buildLock\": {\n      \"type\": \"buildTx\",\n      \"name\": \"built-lock\",\n      \"tx\": {\n        \"outputs\": [\n          {\n            \"address\": \"{get('cache.dependencies.address')}\",\n            \"datum\": {\n              \"datumHashHex\": \"{get('cache.dependencies.datumJson.value.dataHashHex')}\"\n            },\n            \"assets\": \"{get('cache.dependencies.amount')}\",\n            \"idPattern\": \"locked\"\n          }\n        ],\n        \"options\": {\n          \"changeOptimizer\": \"NO\"\n        }\n      }\n    },\n    \"signLock\": {\n      \"type\": \"signTxs\",\n      \"namePattern\": \"signed-lock\",\n      \"detailedPermissions\": false,\n      \"txs\": [\n        \"{get('cache.buildLock.txHex')}\"\n      ]\n    },\n    \"submitLock\": {\n      \"type\": \"submitTxs\",\n      \"namePattern\": \"submitted-lock\",\n      \"txs\": \"{get('cache.signLock')}\"\n    },\n    \"finally\": {\n      \"type\": \"script\",\n      \"run\": {\n        \"lock\": {\n          \"type\": \"macro\",\n          \"run\": \"{get('cache.dependencies.lock')}\"\n        },\n        \"smartContract\": {\n          \"type\": \"macro\",\n          \"run\": \"{get('cache.dependencies.contract.scriptHex')}\"\n        },\n        \"smartContractHash\": {\n          \"type\": \"macro\",\n          \"run\": \"{get('cache.dependencies.contract.scriptHashHex')}\"\n        },\n        \"smartContractAddress\": {\n          \"type\": \"macro\",\n          \"run\": \"{get('cache.dependencies.address')}\"\n        },\n        \"lockTx\": {\n          \"type\": \"macro\",\n          \"run\": \"{get('cache.buildLock.txHash')}\"\n        },\n        \"lockUTXO\": {\n          \"type\": \"macro\",\n          \"run\": \"{get('cache.buildLock.indexMap.output.locked')}\"\n        }\n      }\n    }\n  }\n}"
+      },
+      {
+        "id": 19,
+        "name": "token_unlock.gcscript",
+        "parentId": -1,
+        "type": "json",
+        "data": "{\n    \"type\": \"script\",\n    \"title\": \"Lock script\",\n    \"description\": \"This contract will lock some tokens\",\n    \"exportAs\": \"Lock_Demo\",\n    \"return\": {\n        \"mode\": \"last\"\n    },\n    \"run\": {\n        \"dependencies\": {\n            \"type\": \"script\",\n            \"run\": {\n                \"redeemerJson\":{\n                    \"type\":\"$importAsData\",\n                    \"as\":\"json\",\n                    \"from\":{\n                        \"datum\":\"ide://redeemer.json\"\n                    }\n                }, \n                \"helios\":{\n                    \"type\":\"$importAsData\",\n                    \"as\":\"hex\",\n                    \"from\":{\n                        \"contract\":\"ide://contract.hl\"\n                    }\n                },\n                \"amount\": {\n                    \"type\": \"data\",\n                    \"value\": [\n                        {\n                            \"policyId\": \"ada\",\n                            \"assetName\": \"ada\",\n                            \"quantity\": \"5000000\"\n                        }\n                    ]\n                },\n                \"stakeCredential\": {\n                    \"type\": \"data\",\n                    \"value\": \"ad03a4ae45b21f50fde67956365cff94db41bc08a2c2862403d8a234\"\n                },\n                \"contract\": {\n                    \"type\": \"plutusScript\",\n                    \"script\": {\n                      \"heliosCode\": \"{hexToStr(get('cache.dependencies.helios.contract'))}\",\n                      \"version\": \"0.15.2\"\n                    }\n                },                \n                \"address\": {\n                    \"type\": \"buildAddress\",\n                    \"name\": \"ContractAddress\",\n                    \"addr\": {\n                        \"spendScriptHashHex\": \"{get('cache.dependencies.contract.scriptHashHex')}\",\n                        \"stakePubKeyHashHex\": \"{get('cache.dependencies.stakeCredential')}\"\n                    }\n                }\n            }\n        },\n      \"buildUnlock\": {\n        \"type\": \"buildTx\",\n        \"name\": \"built-unlock\",\n        \"parentTxHash\": \"{get('cache.buildLock.txHash')}\",\n        \"tx\": {\n          \"inputs\": [\n            {\n              \"txHash\": \"{get('cache.buildLock.txHash')}\",\n              \"index\": 0,\n              \"idPattern\": \"locked-input\"\n            }\n          ],\n          \"witnesses\": {\n            \"plutus\": {\n              \"scripts\": [\n                {\n                  \"scriptHex\": \"{get('cache.dependencies.contract.scriptHex')}\",\n                  \"lang\": \"{get('cache.dependencies.contract.lang')}\"\n                }\n              ],\n              \"consumers\": [\n                {\n                  \"scriptHashHex\": \"{get('cache.dependencies.contract.scriptHashHex')}\",\n                  \"datum\": {\n                    \"dataHex\": \"{get('cache.dependencies.datum.dataHex')}\"\n                  },\n                  \"redeemer\": {\n                    \"dataHex\": \"{get('cache.dependencies.redeemerJson.value.dataHex')}\",\n                    \"type\": \"spend\",\n                    \"itemIdPattern\": \"locked-input\"\n                  }\n                }\n              ]\n            }\n          },\n          \"options\": {\n            \"collateralCoinSelection\": \"LASLAD\"\n          }\n        }\n      },\n      \"signUnlock\": {\n        \"type\": \"signTxs\",\n        \"namePattern\": \"signed-unlock\",\n        \"detailedPermissions\": false,\n        \"txs\": [\n          \"{get('cache.buildUnlock.txHex')}\"\n        ]\n      },\n      \"submitUnlock\": {\n        \"type\": \"submitTxs\",\n        \"namePattern\": \"submitted-unlock\",\n        \"txs\": \"{get('cache.signUnlock')}\"\n      },\n      \"finally\": {\n        \"type\": \"script\",\n        \"run\": {\n          \"lock\": {\n            \"type\": \"macro\",\n            \"run\": \"{get('cache.dependencies.lock')}\"\n          },\n          \"redeemer\": {\n            \"type\": \"macro\",\n            \"run\": \"{get('cache.dependencies.redeemer')}\"\n          },\n          \"smartContract\": {\n            \"type\": \"macro\",\n            \"run\": \"{get('cache.dependencies.contract.scriptHex')}\"\n          },\n          \"smartContractHash\": {\n            \"type\": \"macro\",\n            \"run\": \"{get('cache.dependencies.contract.scriptHashHex')}\"\n          },\n          \"smartContractAddress\": {\n            \"type\": \"macro\",\n            \"run\": \"{get('cache.dependencies.address')}\"\n          },\n          \"lockTx\": {\n            \"type\": \"macro\",\n            \"run\": \"{get('cache.buildLock.txHash')}\"\n          },\n          \"unlockTx\": {\n            \"type\": \"macro\",\n            \"run\": \"{get('cache.buildUnlock.txHash')}\"\n          }\n        }\n      }\n    }"
+      }
+    ],
+    "currentProjectIndex": 0,
+    "console": []
 }
-
-struct Redeemer {
-    magicNumber: Int 
-}
-
-func main(datum: Datum, redeemer: Redeemer, _) -> Bool {   
-    redeemer.magicNumber==datum.magicNumber
-}`
-        },
-        {
-            id: 8,
-            name: "datum.json",
-            parentId: -1,
-            type: "json",
-            data: `{
-    "type": "plutusData",
-    "data": {
-    "fromJSON": {
-        "schema": 1,
-        "obj": {
-            "int": 42
-            }
-    }
-    }
-}
-`
-        },
-        {
-            id: 9,
-            name: "redeemer.json",
-            parentId: -1,
-            type: "json",
-            data: `{
-    "type": "plutusData",
-    "data": {
-    "fromJSON": {
-        "schema": 1,
-        "obj": {
-            "int": 42
-            }
-        }
-    }
-}            
-`
-        },
-        {
-            id: 3,
-            name: "gc_script_template.gcscript",
-            parentId: -1,
-            type: "json",
-            data: `{
-    "type": "script",
-    "title": "Lock script",
-    "description": "This contract will lock some tokens",
-    "exportAs": "Lock_Demo",
-    "return": {
-        "mode": "last"
-    },
-    "run": {
-        "dependencies": {
-            "type": "script",
-            "run": {
-                "datumJson":{
-                    "type":"$importAsData",
-                    "as":"json",
-                    "from":{
-                        "datum":"ide://datum.json"
-                    }
-                }, 
-                "datum":{
-                    "type": "plutusData",
-                    "data": {
-                        "fromJSON": {
-                            "schema": 1,
-                            "obj": "get('cache.dependencies.datumJson.datum')"
-                        }
-                    }
-                },
-                "helios":{
-                    "type":"$importAsData",
-                    "as":"hex",
-                    "from":{
-                        "contract":"ide://contract.hl"
-                    }
-                },
-                "imports":{
-                    "type":"$importAsScript",
-                    "argsByKey":{
-                        "listKeys":5,
-                        "erroneous":"foobar"
-                    },
-                    "from":{
-                        "listKeys":"ide://list_keys.gcscript",
-                        "erroneous":"ide://data.json"
-                    }
-                }, 
-                "moreImports":{
-                    "type":"$importAsScript",
-                    "title":"Wrapper script",
-                    "description":"this wrapper embedds external gcscripts",
-                    "args":{
-                        "foo":true,
-                        "bar":"baz"
-                    },
-                    "from":{
-                        "one":"ide://list_keys.gcscript",
-                        "two":"ide://data.json"
-                    }
-                }, 
-                "lock": {
-                    "type": "data",
-                    "value": [
-                        {
-                            "policyId": "ada",
-                            "assetName": "ada",
-                            "quantity": "5000000"
-                        }
-                    ]
-                },
-                "stakeCredential": {
-                    "type": "data",
-                    "value": "ad03a4ae45b21f50fde67956365cff94db41bc08a2c2862403d8a234"
-                },
-                "contract": {
-                    "type": "plutusScript",
-                    "script": {
-                      "heliosCode": "{hexToStr(get('cache.dependencies.helios.contract'))}",
-                      "version": "0.15.2"
-                    }
-                  },                
-                "address": {
-                    "type": "buildAddress",
-                    "name": "ContractAddress",
-                    "addr": {
-                        "spendScriptHashHex": "{get('cache.dependencies.contract.scriptHashHex')}",
-                        "stakePubKeyHashHex": "{get('cache.dependencies.stakeCredential')}"
-                    }
-                }
-            }
-        },
-        "buildLock": {
-            "type": "buildTx",
-            "name": "built-lock",
-            "tx": {
-                "outputs": [
-                    {
-                        "address": "{get('cache.dependencies.address')}",
-                        "datum": {
-                            "datumHashHex": "{get('cache.dependencies.datum.dataHashHex')}"                            
-                        },
-                        "assets": "{get('cache.dependencies.lock')}",
-                        "idPattern":"locked"
-                    }
-                ],
-                "options": {
-                    "changeOptimizer": "NO"
-                }
-            }
-        },
-        "signLock": {
-            "type": "signTxs",
-            "namePattern": "signed-lock",
-            "detailedPermissions": false,
-            "txs": [
-                "{get('cache.buildLock.txHex')}"
-            ]
-        },
-        "submitLock": {
-            "type": "submitTxs",
-            "namePattern": "submitted-lock",
-            "txs": "{get('cache.signLock')}"
-        },
-        "finally": {
-            "type": "script",
-            "run": {
-                "lock": {
-                    "type": "macro",
-                    "run": "{get('cache.dependencies.lock')}"
-                },
-                "smartContract": {
-                    "type": "macro",
-                    "run": "{get('cache.dependencies.contract.scriptHex')}"
-                },
-                "smartContractHash": {
-                    "type": "macro",
-                    "run": "{get('cache.dependencies.contract.scriptHashHex')}"
-                },
-                "smartContractAddress": {
-                    "type": "macro",
-                    "run": "{get('cache.dependencies.address')}"
-                },
-                "lockTx": {
-                    "type": "macro",
-                    "run": "{get('cache.buildLock.txHash')}"
-                },
-                "lockUTXO": {
-                    "type": "macro",
-                    "run": "{get('cache.buildLock.indexMap.output.locked')}"
-                }
-            }
-        }
-    }
-}
-
-`
-        },
-        {
-            id: 5,
-            name: "list_keys.gcscript",
-            parentId: -1,
-            type: "json",
-            data: `{
-    "type": "script",
-    "title": "List keys in workspace",
-    "description": "List and sort all keys in current workspace",
-    "exportAs": "data",
-    "run": {
-        "keys": {
-            "type": "getPublicKeys",
-            "keyPattern": "{artifactName}:{pubKeyHashHex}",
-            "sort": "ascending"
-        }
-    }
-}
-`},
-{
-            id: 6,
-            name: "data.json",
-            parentId: 5,
-            type: "json",
-            data: `{
-    "exports": {
-        "Lock_Demo": {
-        "lockUTXO": 0,
-        "lock": [
-        {
-            "policyId": "ada",
-            "assetName": "ada",
-            "quantity": "5000000"
-        }
-        ],
-            "smartContract": "56550100002225333573466e1cdd68011bad0031498581",
-            "smartContractHash": "c203151a6a8a55baef2e3d302690858a42c55ebdb7d140eade17a530",
-            "smartContractAddress": "addr_test1zrpqx9g6d299twh09c7nqf5ssk9y9327hkmazs82mct62v9dqwj2u3djrag0mene2cm9elu5mdqmcz9zc2rzgq7c5g6q5xcn4r",
-            "lockTx": "b9cb604d1cead1afdd6c9403cae411234b19efc7cc78c1c060af69746fd223c2"
-        }
-    }
-}
-`
-            },
-{
-            id: 7,
-            name: "data2.json",
-            parentId: 5,
-            type: "json",
-            data: `{
-    "exports": {
-        "Lock_Demo": {
-        "lockUTXO": 0,
-        "lock": [
-        {
-            "policyId": "ada",
-            "assetName": "ada",
-            "quantity": "5000000"
-        }
-        ],
-            "smartContract": "56550100002225333573466e1cdd68011bad0031498581",
-            "smartContractHash": "c203151a6a8a55baef2e3d302690858a42c55ebdb7d140eade17a530",
-            "smartContractAddress": "addr_test1zrpqx9g6d299twh09c7nqf5ssk9y9327hkmazs82mct62v9dqwj2u3djrag0mene2cm9elu5mdqmcz9zc2rzgq7c5g6q5xcn4r",
-            "lockTx": "b9cb604d1cead1afdd6c9403cae411234b19efc7cc78c1c060af69746fd223c2"
-        }
-    }
-}
-`
-            } 
-]
-        }
-;
 
 export default project;
-

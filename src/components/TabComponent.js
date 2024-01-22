@@ -61,35 +61,17 @@ export default function TabComponent(props) {
                 {/* {console.log(currentFileIndex)} */}
                 <SourceViewer id={currentFileIndex} readOnly={false} />
             </div>
-            {/*console.length > 0 ? (
-                <Alert key={'warning'} variant={'warning'}>
-                    {console.map((consoleItem, index) => {
-                        const {type,message,extra}=consoleItem||{};
-                        if(!type)
-                            return null;
-                        
-                        return <div className={`alert alert-${type}`} key={index}>{message||""}</div>})}
-                </Alert>)
-                :
-            null*/}
-            {/* <div className="position-absolute bottom-5" style={{height:"100px",maxHeight:"100px"}}>
-                <Console console={console} clearConsole={()=>{}}/>
-            </div> */}
-            <div style={{height:"100px",maxHeight:"100px"}}>
+            
+            {console.length > 0 ? (
+            <div calssName="alert-warning">
                 <Console console={console} clearConsole={()=>{
                     dispatch({
                         type: 'clear-console',           
                     });
                 }}/>
-            </div>
-            {/*console?.length > 0 && 
-                <div>
-                    {console.map((consoleItem, index) => {
-                        const {type,message,extra}=consoleItem||{};
-                        if(!type)
-                            return null;                        
-                        return <div className={`alert alert-error`} key={index}>{message||""}</div>})}
-                    </div>*/}
+            </div>)
+                :
+            null}
         </div>
     );
 };

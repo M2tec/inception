@@ -9,6 +9,7 @@ import { useAppState, useStateDispatch } from '../AppContext.js';
 const SourceViewer = (props) => {
   const { theme, advertisement, console } = useAppState();
 
+
   const element = React.useRef(null);
   const [width, setWidth] = React.useState(0);
   // const [height, setHeight] = React.useState(0);
@@ -59,6 +60,7 @@ const SourceViewer = (props) => {
     setViewFile({...file, type:fileType})
   }, [props,files])
 
+
   // Hack to get correct height for editor
   // For some reason the obeserver does not return the correct element heigth
   // Get the full body height and subtract het fixed elements 
@@ -68,15 +70,15 @@ const SourceViewer = (props) => {
       // console.log('Element:', entry.target);
       // console.log(`Element size: ${cr.width}px x ${cr.height}px`);
       // console.log(`Element padding: ${cr.top}px ; ${cr.left}px`);
-      // console.log(advertisement)
+      
       let tabAndNavHeight = 95;
       let advertisementHeight;
-      let alertHeight;
+      let consoleHeight;
 
-      advertisement === true ? advertisementHeight = 110 : advertisementHeight = 0
-      console.length > 0 ? alertHeight = 100 : alertHeight = 0
+      advertisement === true ? advertisementHeight = 110 : advertisementHeight = 0;
+      console.length > 0 ? consoleHeight = 100 : consoleHeight = 0;
            
-      setBodyHeight(cr.height - tabAndNavHeight - alertHeight)
+      setBodyHeight(cr.height - tabAndNavHeight - consoleHeight - advertisementHeight);
     }
   });
   ro.observe(document.body);

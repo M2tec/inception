@@ -58,6 +58,8 @@ function stateReducer(state, action) {
 
         let appData = {
             currentProjectIndex: state.currentProjectIndex,
+            console: state.console,
+            advertisement: state.advertisement
         }
         
         localStorage.setItem("app-data", JSON.stringify(appData))
@@ -371,7 +373,9 @@ function stateReducer(state, action) {
             console.log("ad-visibility")
             console.log({ action: action })
 
-            return { ...state, advertisement: !state.advertisement }
+            let newState = { ...state, advertisement: !state.advertisement }
+            saveState(newState)
+            return newState
         }
         // TODO: this could be reimplemented reusing console style messages but with toasts, maybe without history
         //       as for history we have console notifications.
@@ -398,7 +402,7 @@ function stateReducer(state, action) {
             saveState(newState)
             return newState
         }
-        
+
         case 'clear-console': {
             let newState = {...state, console:[]}
             saveState(newState)
@@ -465,45 +469,45 @@ function stateReducer(state, action) {
 }
 
 let appData = JSON.parse(localStorage.getItem('app-data'))
+console.log({appData})
 
 if (appData == null) {
     // console.log({ projects: projects })
-    appData = { currentProjectIndex: 0 }
+    appData = { currentProjectIndex: 0,
+                advertisement: true,
+                console: [] }
 
     localStorage.setItem('app-data', JSON.stringify(appData))
     localStorage.setItem('data_0', JSON.stringify(Token_Locking))
     localStorage.setItem('data_1', JSON.stringify(DAO_Demo))
 }
 
-console.log({ projectList: appData })
-
 let stateFile = "data_" + appData.currentProjectIndex
 let storageState = JSON.parse(localStorage.getItem(stateFile))
 console.log({ LoadFromStorage: storageState })
 
-let initialState = {}
+// let initialState = {}
 
-if (storageState == null) {
-    console.log("New from default data")
-    initialState = {
-        ...Token_Locking,
-        ...appData,
-        advertisement: true,
-        console: []
-    }
-} else {
-    console.log("Load from storage")
+// if (storageState == null) {
+//     console.log("New from default data")
+//     initialState = {
+//         ...Token_Locking,
+//         ...appData,
+//         advertisement: true,
+//         console: []
+//     }
+// } else {
+//     console.log("Load from storage")
 
     let ids = storageState.files.map((file) => file.id);
     let smallest = Math.min.apply(0, ids);
 
-    initialState = {
+    let initialState = {
         ...storageState,
         ...appData,
         currentFileIndex:smallest,
         openFiles: [smallest],
-        console: []
     };
-}
+// }
 
 console.log({ INIT: initialState })

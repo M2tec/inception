@@ -103,7 +103,7 @@ function File({ file }) {
   }
 
   function handleKeydown(e){
-    console.log("keyDown")
+    // console.log("keyDown")
     if (e.key === "Enter") {
       handleSaveName(e)
     }
@@ -117,7 +117,7 @@ function File({ file }) {
         <input
           value={editName}
           onChange={e => {
-            console.log({ e: e.target.value })
+            // console.log({ e: e.target.value })
             setEditName(e.target.value)
           }}
           onKeyDown={(e) => handleKeydown(e)}

@@ -361,7 +361,7 @@ function stateReducer(state, action) {
             let newProjectIndex = action.project.id
             newProjectIndex = parseInt(newProjectIndex.split("_")[1])
 
-            let newState = {
+            let newState = {...state,
                 currentProjectIndex: newProjectIndex,
                 ...projectData
             }

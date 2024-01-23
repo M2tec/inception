@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 // import projects from "./data/project-list.js";
 import DAO_Demo from "./data/DAO_Demo.js";
 import Token_Locking from "./data/Token_Locking.js";
-import Testing from "./data/Testing.js";
+import GC_Testing from "./data/GC_testing.js";
 
 const FilesContext = createContext(null);
 const FilesDispatchContext = createContext(null);
@@ -474,7 +474,7 @@ if (appData == null) {
     localStorage.setItem('app-data', JSON.stringify(appData))
     localStorage.setItem('data_0', JSON.stringify(Token_Locking))
     localStorage.setItem('data_1', JSON.stringify(DAO_Demo))
-    localStorage.setItem('data_3', JSON.stringify(Testing))
+    localStorage.setItem('data_3', JSON.stringify(GC_Testing))
 }
 
 let stateFile = "data_" + appData.currentProjectIndex

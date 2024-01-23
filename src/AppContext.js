@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 // import projects from "./data/project-list.js";
 import DAO_Demo from "./data/DAO_Demo.js";
 import Token_Locking from "./data/Token_Locking.js";
-
+import Testing from "./data/Testing.js";
 
 const FilesContext = createContext(null);
 const FilesDispatchContext = createContext(null);
@@ -48,7 +48,6 @@ function stateReducer(state, action) {
         let projectData = {
             name: state.name,
             type: state.type,
-            theme: state.theme,
             currentFileIndex: state.currentFileIndex,
             openFiles: state.openFiles,
             files: state.files
@@ -58,12 +57,15 @@ function stateReducer(state, action) {
 
         let appData = {
             currentProjectIndex: state.currentProjectIndex,
-            console: state.console,
-            advertisement: state.advertisement
+            console: state.console || [],
+            advertisement: state.advertisement || true,
+            theme: state.theme || "dark"
+
         }
+        console.log({appData})
         
         localStorage.setItem("app-data", JSON.stringify(appData))
-        console.log(state)
+        console.log({saveState:state})
     }
 
     function LoadState(state) {
@@ -356,15 +358,19 @@ function stateReducer(state, action) {
             console.log("set-project")
             console.log({ action: action })
 
+
             let projectData = action.project.data
 
             let newProjectIndex = action.project.id
             newProjectIndex = parseInt(newProjectIndex.split("_")[1])
 
-            let newState = {
+            let newState = {...state,
                 currentProjectIndex: newProjectIndex,
                 ...projectData
             }
+
+            console.log({projectState:newState})
+
             saveState(newState)
             return newState
         }
@@ -377,27 +383,14 @@ function stateReducer(state, action) {
             saveState(newState)
             return newState
         }
-        // TODO: this could be reimplemented reusing console style messages but with toasts, maybe without history
-        //       as for history we have console notifications.
-        // case 'set-alert': {
-        //     console.log("set-alert")
-        //     console.log({action})
-
-        //     let newAlerts = state.alerts
-        //     newAlerts.unshift(action.message)
-
-        //     let newState = {...state, alerts:newAlerts}
-        //     saveState(newState)
-        //     return newState
-        // }
 
         case 'console': {
             const newItem=action?.item;
-            const {type,message,extra}=newItem||{};
+            const {type,message,extra} = newItem || {};
             if(!type || !message)
                 return state;
             
-            const newConsole=[newItem,...(state?.console||[])]
+            const newConsole=[newItem,...(state?.console || [])]
             let newState = {...state, console:newConsole}
             saveState(newState)
             return newState
@@ -475,39 +468,28 @@ if (appData == null) {
     // console.log({ projects: projects })
     appData = { currentProjectIndex: 0,
                 advertisement: true,
-                console: [] }
+                console: [],
+                theme: "dark" }
 
     localStorage.setItem('app-data', JSON.stringify(appData))
     localStorage.setItem('data_0', JSON.stringify(Token_Locking))
     localStorage.setItem('data_1', JSON.stringify(DAO_Demo))
+    localStorage.setItem('data_3', JSON.stringify(Testing))
 }
 
 let stateFile = "data_" + appData.currentProjectIndex
 let storageState = JSON.parse(localStorage.getItem(stateFile))
 console.log({ LoadFromStorage: storageState })
 
-// let initialState = {}
+let ids = storageState.files.map((file) => file.id);
+let smallest = Math.min.apply(0, ids);
 
-// if (storageState == null) {
-//     console.log("New from default data")
-//     initialState = {
-//         ...Token_Locking,
-//         ...appData,
-//         advertisement: true,
-//         console: []
-//     }
-// } else {
-//     console.log("Load from storage")
+let initialState = {
+    ...storageState,
+    ...appData,
+    currentFileIndex:smallest,
+    openFiles: [smallest]
+};
 
-    let ids = storageState.files.map((file) => file.id);
-    let smallest = Math.min.apply(0, ids);
-
-    let initialState = {
-        ...storageState,
-        ...appData,
-        currentFileIndex:smallest,
-        openFiles: [smallest],
-    };
-// }
 
 console.log({ INIT: initialState })

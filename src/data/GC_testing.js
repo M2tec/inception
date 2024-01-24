@@ -1,7 +1,7 @@
 const project = {
   "name": "GC_testing",
   "type": "folder",
-  "currentFileIndex": 0,
+  "currentFileIndex": 53,
   "openFiles": [
   ],
   "files": [
@@ -17,7 +17,7 @@ const project = {
       "name": "datum.json",
       "parentId": -1,
       "type": "json",
-      "data": "{\n    \"type\": \"plutusData\",\n    \"data\": {\n    \"fromJSON\": {\n        \"schema\": 1,\n        \"obj\": {\n            \"int\": 42\n            }\n    }\n    }\n}\n"
+      "data": "{\n    \"int\": 42\n}"
     },
     {
       "id": 6,
@@ -73,7 +73,7 @@ const project = {
       "name": "import_as_data.gcscript",
       "parentId": -1,
       "type": "json",
-      "data": "{\n    \"title\": \"Arguments\",\n    \"exportAs\": \"myArgument\",\n    \"type\": \"script\",\n    \"run\": {\n        \"myDatum\": {\n            \"type\": \"$importAsData\",\n            \"as\": \"json\",\n            \"from\": {\n                \"datum\": \"ide://datum.json\"\n            }\n        }\n    }\n}"
+      "data": "{\n    \"type\": \"script\",\n    \"title\": \"Lock script\",\n    \"description\": \"This contract will lock some tokens\",\n    \"exportAs\": \"Lock_Demo\",\n    \"return\": {\n        \"mode\": \"last\"\n    },\n    \"run\": {\n        \"dependencies\": {\n            \"type\": \"script\",\n            \"run\": {\n                \"data\": {\n                    \"type\": \"$importAsData\",\n                    \"as\": \"json\",\n                    \"from\": {\n                        \"datum\": \"ide://datum.json\"\n                    }\n                },\n                \"myDatum\": {\n                    \"type\": \"plutusData\",\n                    \"data\": {\n                        \"fromJSON\": {\n                            \"schema\": 1,\n                            \"obj\": \"{get('cache.dependencies.data.datum')}\"\n                        }\n                    }\n                }\n            }\n        }\n    }\n}"
     },
     {
       "id": 56,

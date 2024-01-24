@@ -142,7 +142,13 @@ let gc =
             type: "plutusScript"
         },   
         {
-            type: "plutusData"
+            type: "plutusData",
+            data: {
+                fromJSON: {
+                    schema: 1,
+                    obj: "get('cache.dependencies.datumJson.datum')"
+                }
+            }
         },   
         {
             type: "macro"

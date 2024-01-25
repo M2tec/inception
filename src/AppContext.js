@@ -42,6 +42,15 @@ function stateReducer(state, action) {
     let ids = files.map((file) => file.id);
     let largest = Math.max.apply(0, ids);
 
+    function move(from, to, arr) {
+        const newArr = [...arr];
+    
+        const item = newArr.splice(from, 1)[0];
+        newArr.splice(to, 0, item);
+    
+        return newArr;
+    }
+
     function saveState(state) {
         console.log("saveState")
 
@@ -161,6 +170,37 @@ function stateReducer(state, action) {
             saveState(newState)
             return newState
         }
+
+        case 'up': {
+            console.log("up")
+            console.log({ action: action })
+
+            let fileIndex = files.indexOf(action.file)
+            console.log({fileIndex})
+
+            let newFiles = [...files]
+            newFiles = move(fileIndex, fileIndex - 1, newFiles);
+
+            let newState = { ...state, files:newFiles };
+            saveState(newState)
+            return newState
+        }
+
+        case 'down': {
+            console.log("down")
+            console.log({ action: action })
+
+            let fileIndex = files.indexOf(action.file)
+            console.log({fileIndex})
+
+            let newFiles = [...files]
+            newFiles = move(fileIndex, fileIndex + 1, newFiles);
+
+            let newState = { ...state, files:newFiles };
+            saveState(newState)
+            return newState
+        }
+
 
         case 'changed-data': {
             console.log("Changed data")

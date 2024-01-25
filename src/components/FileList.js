@@ -8,7 +8,9 @@ import {
   Pencil,
   Save,
   Stickies,
-  FilePlay
+  FilePlay,
+  ArrowUp,
+  ArrowDown
 } from 'react-bootstrap-icons';
 
 export default function FilesList() {
@@ -89,6 +91,25 @@ function File({ file }) {
   // console.log(file)
   let fileContent;
 
+
+  function handleUp(e) {
+    console.log("Up")
+    console.log(file.name)
+    dispatch({
+      type: 'up',
+      file: file
+    });
+  }
+
+
+  function handleDown(e) {
+    console.log("Down")
+    dispatch({
+      type: 'down',
+      file: file
+    });
+  }
+
   function handleSaveName(e) {
 
     console.log("handleSaveName")
@@ -140,6 +161,8 @@ function File({ file }) {
           }}
 
           className='file-item-text'> {file.name}</span>
+        <ArrowUp size={12} className='file-item-child file-operation-icon' onClick={(e) => handleUp(e)} />
+        <ArrowDown size={12} className='file-item-child file-operation-icon' onClick={(e) => handleDown(e)} />
         <Pencil size={12} className='file-item-child file-operation-icon' onClick={() => setIsEditing(true)} />
       </div>
     </>);

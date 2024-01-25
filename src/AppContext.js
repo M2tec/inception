@@ -215,23 +215,8 @@ function stateReducer(state, action) {
     
             console.log({newCodeFile:newCodeFile})
 
-            let newFiles = state.files.filter((file) => {
-                // console.log(file.name + " " + file.parentId + " " +  action.data.file.id)
+            let newFiles = state.files
 
-                if (file.type !== "code")// && ) 
-                {
-                    // console.log("true")
-                    return true 
-                } else {
-                    if (file.parentId === action.data.file.id){
-                        // console.log("false")
-                        return false
-                    } else {
-                        // console.log("true")
-                        return true
-                    }
-                }
-            })
             newFiles = [...newFiles, newCodeFile]
             console.log({newFiles})
 

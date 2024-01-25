@@ -31,8 +31,7 @@ export default function FilesList() {
 
   let returnDataFiles = files.filter((file) => file.parentId === expandIndex && !file.name.includes("code"))
 
-  let [codeFile] = files.filter((file) => file.parentId === expandIndex && file.name.includes("code"))
-  // console.log({codeFile})
+  let codeFile = files.filter((file) => file.parentId === expandIndex && file.name.includes("code"))
 
   let returnDataFileAmount = 0;
   if (returnDataFiles.length > 0) {
@@ -53,9 +52,10 @@ export default function FilesList() {
             <>
               {/* {console.log({codeFile:codeFile})} */}
               {codeFile !== undefined ?
-                <div key={codeFile} className='file-return-data-item'>
-                  <File key={codeFile.id} file={codeFile} />
-                </div>
+                codeFile.map((file, index) => (
+                  <div key={index} className='file-return-data-item'>
+                    <File key={index} file={file} />
+                  </div>))
                 : null}
 
               {returnDataFiles.length > 0 ?
@@ -102,13 +102,13 @@ function File({ file }) {
     setIsEditing(false)
   }
 
-  function handleKeydown(e){
+  function handleKeydown(e) {
     // console.log("keyDown")
     if (e.key === "Enter") {
       handleSaveName(e)
     }
   }
-  
+
   if (isEditing) {
 
     fileContent = (
@@ -138,7 +138,7 @@ function File({ file }) {
               file: file
             });
           }}
-          
+
           className='file-item-text'> {file.name}</span>
         <Pencil size={12} className='file-item-child file-operation-icon' onClick={() => setIsEditing(true)} />
       </div>

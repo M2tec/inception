@@ -8,7 +8,7 @@ import JSZip from "jszip";
 import {
   Files,
   PlayFill,
-  CloudUploadFill,
+  // CloudUploadFill,
   Download,
   Upload,
   ArrowRepeat
@@ -22,10 +22,10 @@ export default function SideView(props) {
   let fileList = files.filter((file) => file.id === currentFileIndex)
   let file = fileList[0]
 
-  let isActiveCode = false;
-  if (file !== undefined) {
-    isActiveCode = file.name.endsWith('.code');
-  }
+  // let isActiveCode = false;
+  // if (file !== undefined) {
+  //   isActiveCode = file.name.endsWith('.code');
+  // }
 
   let isActiveGCScript = false;
   if (file !== undefined) {
@@ -52,9 +52,70 @@ export default function SideView(props) {
     // console.log(currentFileIndex)
     // console.log({files})
 
-    let [currentFile] = files.filter((file) => file.id === currentFileIndex)
+    let [currentFile] = files.filter((file) => file.id === currentFileIndex);
+    let transpiled
+    (async () => {
+      try {
+        console.log({currentFile})
+        let topLevelFiles = files.filter((file) => file.parentId === -1)
+
+        const fileUri=`ide://${currentFile.name || ""}`;
+        transpiled = await transpile({
+          fileUri,
+          files: topLevelFiles,
+        });
+        dispatch({
+          type: 'console',
+          item:{
+            type:"success",
+            message:`Build successfull: ${fileUri}`,
+            extra:{
+              type:"TranspileSuccess"
+            }
+          }            
+        });
+        // console.log(transpiled)
+      } catch (err) {
+        const {
+          type,
+          fileUri,
+          importTrace,
+          path,
+          message,
+        } = err || {};
+        console.error(`${type || "UnknownError"}:${message || "Unknown error"}`, {
+          type,
+          fileUri,
+          importTrace,
+          path,
+          message
+        });
+        dispatch({
+          type: 'console',
+          item:{
+            type:"error",
+            message:message,
+            extra:{
+              type,
+              fileUri,
+              importTrace,
+              path,
+            }
+          }            
+        });
+
+
+        console.log("Transpile: " + file.name + " " + file.id + " " + currentFileIndex)
+      }
+
+      return transpiled
+    })().then(transpiled => {
+        console.log({transpiled})
+        GcConnect(transpiled)})
+
+    // GcConnect(transpiled);
     // console.log({currentFile})
-    GcConnect(currentFile.data);
+
 
     return false;
   }
@@ -76,7 +137,6 @@ export default function SideView(props) {
             files: topLevelFiles,
           });
 
-          console.log("transpiled ----")
           dispatch({
             type: 'add-code',
             data: { file, transpiled }
@@ -218,7 +278,7 @@ export default function SideView(props) {
 
     <Button
       onClick={handleClickRun}
-      disabled={!isActiveCode}
+      disabled={!isActiveGCScript}
       variant="primary">
       <PlayFill size={"20px"} />
     </Button>

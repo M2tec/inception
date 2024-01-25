@@ -1,8 +1,8 @@
 import React from "react";
 import Button from 'react-bootstrap/Button';
-import { useAppState, useStateDispatch } from '../AppContext.js';
-import { GcConnect } from "./GameChangerAPI.js";
-import { transpile } from "../services/gcscript.js";
+import { useAppState, useStateDispatch } from '../AppContext';
+import { GcConnect } from "./GameChangerAPI";
+import { transpile } from "../services/gcscript";
 import JSZip from "jszip";
 
 import {

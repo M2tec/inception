@@ -1,9 +1,9 @@
 import React from "react";
 import SearchAppBar from './SearchAppBar';
 import SideMenu from "./SideMenu";
-import { useAppState, useStateDispatch } from '../AppContext.js';
-import SourceBrowser from "./SourceBrowser.js";
-import TabComponent from "./TabComponent.js";
+import { useAppState, useStateDispatch } from '../AppContext';
+import SourceBrowser from "./SourceBrowser";
+import TabComponent from "./TabComponent";
 
 import {
     PanelGroup,

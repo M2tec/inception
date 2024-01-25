@@ -4,7 +4,7 @@ import Editor from "@monaco-editor/react";
 import { heliosSyntax } from './HeliosSyntaxMonaco';
 import { GameChangerSyntax } from './GameChangerSyntaxMonaco'
 
-import { useAppState, useStateDispatch } from '../AppContext.js';
+import { useAppState, useStateDispatch } from '../AppContext';
 
 const SourceViewer = (props) => {
   const { theme, advertisement, console } = useAppState();

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import DarkMode from './DarkMode/DarkMode'
-import { useAppState, useStateDispatch } from '../AppContext.js';
+import { useAppState, useStateDispatch } from '../AppContext';
 
 import {
   Trash,

@@ -1,7 +1,7 @@
 import React from 'react';
 import SourceViewer from './SourceViewer';
 import Console from './Console';
-import { useAppState, useStateDispatch } from '../AppContext.js';
+import { useAppState, useStateDispatch } from '../AppContext';
 import { X } from 'react-bootstrap-icons';
 
 export default function TabComponent(props) {

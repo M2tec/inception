@@ -272,9 +272,8 @@ export default function SideView(props) {
       variant="primary">
       <ArrowRepeat size={"20px"} />
     </Button>
-    <span>{network}</span>
+
     <Button
-    
       onClick={() => handleClickRun(network)}
       disabled={!isActiveGCScript}
       variant="primary">

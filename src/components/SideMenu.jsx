@@ -15,9 +15,8 @@ import {
 } from 'react-bootstrap-icons';
 
 export default function SideView(props) {
-  let { files, currentFileIndex } = useAppState();
+  let { files, currentFileIndex, network } = useAppState();
   const dispatch = useStateDispatch();
-
   // console.log({files:files})
   let fileList = files.filter((file) => file.id === currentFileIndex)
   let file = fileList[0]
@@ -45,8 +44,7 @@ export default function SideView(props) {
     }
   })
 
-  async function handleClickRun(e) {
-
+  async function handleClickRun(network) {
     console.log("Deploy");
 
     // console.log(currentFileIndex)
@@ -111,11 +109,8 @@ export default function SideView(props) {
       return transpiled
     })().then(transpiled => {
         console.log({transpiled})
-        GcConnect(transpiled)})
-
-    // GcConnect(transpiled);
-    // console.log({currentFile})
-
+        GcConnect(transpiled, network)
+      })
 
     return false;
   }
@@ -180,18 +175,11 @@ export default function SideView(props) {
             }            
           });
 
-
           console.log("Transpile: " + file.name + " " + extension + " " + file.id + " " + currentFileIndex)
         }
-
-
       })()
     }
-
-
     console.log("Generate");
-
-
   }
 
   async function handleStateUpload(e) {
@@ -277,7 +265,7 @@ export default function SideView(props) {
     </Button>
 
     <Button
-      onClick={handleClickRun}
+      onClick={() => handleClickRun(network)}
       disabled={!isActiveGCScript}
       variant="primary">
       <PlayFill size={"20px"} />

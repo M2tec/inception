@@ -8,7 +8,7 @@ import { useStateDispatch } from '../AppContext';
 
 const gc = window.gc;
 
-export function GcConnect(gc_script) {
+export function GcConnect(gc_script, network) {
 
     //gc_script = JSON.parse(gc_script)
     gc_script.returnURLPattern = window.location.origin + window.location.pathname + "receive/{result}";
@@ -21,7 +21,7 @@ export function GcConnect(gc_script) {
         const actionUrl = await gc.encode.url({
             input: gc_script,
             apiVersion: "2",
-            network: "preprod",
+            network: network,
             //encoding:"gzip",
         })
         console.log({actionUrl})

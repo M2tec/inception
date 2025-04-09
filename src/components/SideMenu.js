@@ -15,7 +15,8 @@ import {
 } from 'react-bootstrap-icons';
 
 export default function SideView(props) {
-  let { files, currentFileIndex } = useAppState();
+  let { files, currentFileIndex, network } = useAppState();
+  console.log("net: ", network)
   const dispatch = useStateDispatch();
 
   // console.log({files:files})
@@ -45,12 +46,8 @@ export default function SideView(props) {
     }
   })
 
-  async function handleClickRun(e) {
-
+  async function handleClickRun(network) {
     console.log("Deploy");
-
-    // console.log(currentFileIndex)
-    // console.log({files})
 
     let [currentFile] = files.filter((file) => file.id === currentFileIndex);
     let transpiled
@@ -111,7 +108,7 @@ export default function SideView(props) {
       return transpiled
     })().then(transpiled => {
         console.log({transpiled})
-        GcConnect(transpiled)})
+        GcConnect(transpiled, network)})
 
     // GcConnect(transpiled);
     // console.log({currentFile})
@@ -275,9 +272,10 @@ export default function SideView(props) {
       variant="primary">
       <ArrowRepeat size={"20px"} />
     </Button>
-
+    <span>{network}</span>
     <Button
-      onClick={handleClickRun}
+    
+      onClick={() => handleClickRun(network)}
       disabled={!isActiveGCScript}
       variant="primary">
       <PlayFill size={"20px"} />

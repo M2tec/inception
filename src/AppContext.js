@@ -35,7 +35,7 @@ export function useStateDispatch() {
 
 function stateReducer(state, action) {
 
-    let { name, files, openFiles, currentFileIndex, theme } = state;
+    let { name, files, openFiles, currentFileIndex, theme, network } = state;
     // console.log({ files: files })
     // console.log({ action: action })
 
@@ -50,7 +50,8 @@ function stateReducer(state, action) {
             type: state.type,
             currentFileIndex: state.currentFileIndex,
             openFiles: state.openFiles,
-            files: state.files
+            files: state.files,
+            network: state.network
         }
 
         localStorage.setItem("data_" + state.currentProjectIndex, JSON.stringify(projectData))
@@ -59,7 +60,8 @@ function stateReducer(state, action) {
             currentProjectIndex: state.currentProjectIndex,
             console: state.console || [],
             advertisement: state.advertisement || true,
-            theme: state.theme || "dark"
+            theme: state.theme || "dark",
+            network: state.network || "preprod"
 
         }
         console.log({appData})
@@ -100,6 +102,17 @@ function stateReducer(state, action) {
             document.querySelector("body").setAttribute('data-theme', theme)
 
             let newState = { ...state, theme };
+            saveState(newState)
+            return newState
+        }
+
+        case 'network': {
+            console.log('network')
+            network === "preprod" ? network = "mainnet" : network = "preprod"
+
+            document.querySelector("body").setAttribute('data-network', network)
+
+            let newState = { ...state, network };
             saveState(newState)
             return newState
         }

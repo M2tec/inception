@@ -6,6 +6,8 @@ import {
   Trash,
 } from 'react-bootstrap-icons';
 
+import NetworkMode from './NetworkMode/NetworkMode.js';
+
 export default function SearchAppBar() {
   let { currentProjectIndex } = useAppState();
   const dispatch = useStateDispatch();
@@ -120,7 +122,11 @@ export default function SearchAppBar() {
             <SearchList />
           </div>
         </div>
+        <div className='setting-toggles'>
+        
+        <NetworkMode />
         <DarkMode />
+        </div>
       </div>
     </div>
   );

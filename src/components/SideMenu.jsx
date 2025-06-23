@@ -107,16 +107,8 @@ export default function SideView(props) {
       return transpiled
     })().then(transpiled => {
         console.log({transpiled})
-<<<<<<< HEAD:src/components/SideMenu.js
-        GcConnect(transpiled, network)})
-
-    // GcConnect(transpiled);
-    // console.log({currentFile})
-
-=======
         GcConnect(transpiled, network)
       })
->>>>>>> feat/vite:src/components/SideMenu.jsx
 
     return false;
   }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import DarkMode from './DarkMode/DarkMode'
-import { useAppState, useStateDispatch } from '../AppContext.js';
+import NetworkMode from './NetworkMode/NetworkMode'
+import { useAppState, useStateDispatch } from '../AppContext';
 
 import {
   Trash,
@@ -123,7 +124,10 @@ export default function SearchAppBar() {
           </div>
         </div>
         <div className='setting-toggles'>
+<<<<<<< HEAD:src/components/SearchAppBar.js
         
+=======
+>>>>>>> feat/vite:src/components/SearchAppBar.jsx
         <NetworkMode />
         <DarkMode />
         </div>

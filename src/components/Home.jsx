@@ -1,9 +1,9 @@
 import React from "react";
 import SearchAppBar from './SearchAppBar';
 import SideMenu from "./SideMenu";
-import { useAppState, useStateDispatch } from '../AppContext.js';
-import SourceBrowser from "./SourceBrowser.js";
-import TabComponent from "./TabComponent.js";
+import { useAppState, useStateDispatch } from '../AppContext';
+import SourceBrowser from "./SourceBrowser";
+import TabComponent from "./TabComponent";
 
 import {
     PanelGroup,
@@ -13,7 +13,7 @@ import {
 
 import {
     XSquare
-  } from 'react-bootstrap-icons';
+} from 'react-bootstrap-icons';
 
 export default function Home() {
     const { theme, currentFileIndex } = useAppState();
@@ -26,7 +26,7 @@ export default function Home() {
             <div className="View">
                 <SideMenu />
                 <PanelGroup direction="horizontal">
-                    <Panel defaultSizePercentage={20}>
+                    <Panel>
                         <SourceBrowser />
                     </Panel>
                     <PanelResizeHandle style={{ width: "8px" }} />
@@ -36,7 +36,6 @@ export default function Home() {
                 </PanelGroup>
             </div>
             <Advertisement />
-
         </div>
     );
 }
@@ -45,25 +44,28 @@ function Advertisement() {
     const { advertisement } = useAppState();
     const dispatch = useStateDispatch();
 
-    function handleClose () {
+    function handleClose() {
         dispatch({
             type: 'ad-visibility',
-          });
+        });
     }
     return (<>
         {advertisement === true ?
             <div className="advertisement">
-                <a href="https://cardano.ideascale.com/c/idea/112215" rel="nofollow" data-target="animated-image.originalLink">
-                    <img src="gc-pbl.gif"
-                        alt="Andamio - Gamechanger Helios dAPP and application backend course"
-                        data-target="animated-image.originalImage" />
+
+                <a href="https://cardano.ideascale.com/c/idea/120115">
+                <img src="https://raw.githubusercontent.com/GameChangerFinance/gamechanger.wallet/main/catalyst/img/fund12/inception.jpg" 
+                     alt="Gamechanger: Inception IDE" 
+                     height="100px"
+                    />
                 </a>
-           
-        <XSquare className="advertisement-close"
-        onClick={(e) => handleClose()}
-        size={20} />
-         </div>
+
+                <XSquare className="advertisement-close"
+                    onClick={(e) => handleClose()}
+                    size={20} />
+            </div>
             :
             null}
     </>)
 }
+

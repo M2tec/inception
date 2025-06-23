@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppState, useStateDispatch } from '../AppContext.js';
+import { useAppState, useStateDispatch } from '../AppContext';
 import {
   FiletypeJson,
   BlockquoteLeft,

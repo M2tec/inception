@@ -1,8 +1,8 @@
 import React from "react";
 import Button from 'react-bootstrap/Button';
-import { useAppState, useStateDispatch } from '../AppContext.js';
-import { GcConnect } from "./GameChangerAPI.js";
-import { transpile } from "../services/gcscript.js";
+import { useAppState, useStateDispatch } from '../AppContext';
+import { GcConnect } from "./GameChangerAPI";
+import { transpile } from "../services/gcscript";
 import JSZip from "jszip";
 
 import {
@@ -16,9 +16,11 @@ import {
 
 export default function SideView(props) {
   let { files, currentFileIndex, network } = useAppState();
+<<<<<<< HEAD:src/components/SideMenu.js
   console.log("net: ", network)
+=======
+>>>>>>> feat/vite:src/components/SideMenu.jsx
   const dispatch = useStateDispatch();
-
   // console.log({files:files})
   let fileList = files.filter((file) => file.id === currentFileIndex)
   let file = fileList[0]
@@ -108,11 +110,16 @@ export default function SideView(props) {
       return transpiled
     })().then(transpiled => {
         console.log({transpiled})
+<<<<<<< HEAD:src/components/SideMenu.js
         GcConnect(transpiled, network)})
 
     // GcConnect(transpiled);
     // console.log({currentFile})
 
+=======
+        GcConnect(transpiled, network)
+      })
+>>>>>>> feat/vite:src/components/SideMenu.jsx
 
     return false;
   }
@@ -177,18 +184,11 @@ export default function SideView(props) {
             }            
           });
 
-
           console.log("Transpile: " + file.name + " " + extension + " " + file.id + " " + currentFileIndex)
         }
-
-
       })()
     }
-
-
     console.log("Generate");
-
-
   }
 
   async function handleStateUpload(e) {

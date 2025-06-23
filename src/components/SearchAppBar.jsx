@@ -124,10 +124,6 @@ export default function SearchAppBar() {
           </div>
         </div>
         <div className='setting-toggles'>
-<<<<<<< HEAD:src/components/SearchAppBar.js
-        
-=======
->>>>>>> feat/vite:src/components/SearchAppBar.jsx
         <NetworkMode />
         <DarkMode />
         </div>

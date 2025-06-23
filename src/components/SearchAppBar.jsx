@@ -1,6 +1,6 @@
 import * as React from 'react';
 import DarkMode from './DarkMode/DarkMode'
-import NetworkMode from './NetworkMode/NetworkMode'
+
 import { useAppState, useStateDispatch } from '../AppContext';
 
 import {
